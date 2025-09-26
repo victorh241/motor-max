@@ -46,7 +46,7 @@ def registrarVeiculos(ui, stackWidget):
     else:
         cursor = cnx.cursor()
 
-        sqlCommand = "INSERT INTO serviços(descrição, Valor_mãodeObra) VALUES (%s, %s)"
+        sqlCommand = "INSERT INTO serviços(descrição, valor mão de obra) VALUES (%s, %s)"
         dados = (descrição, valor)
         cursor.execute(sqlCommand, dados)
         cnx.commit()

@@ -24,9 +24,7 @@ from tela_cadastroVeiculos import configTelaVeiculosCadastro, atualizarComboBox 
 #endregion
 #endregion
 
-#region notacão das telas
-#Esse arquivo já foi concluido
-#TODO: substituir todas funções de carregarBD
+#TODO: Fazer o try e exception para todas as telas
 
 '''
 Ordem do stack: 
@@ -51,48 +49,60 @@ Ordem do stack:
 #endregion
 
 def verificarTela(index, stackWidget):
-    if index == 1:
-        nivelAcesso(stackWidget.currentWidget())
+    try:
+        if index == 1:
+            nivelAcesso(stackWidget.currentWidget())
 
-    if index == 11:
-        atualizarComboBox(stackWidget.currentWidget())
+        if index == 11:
+            atualizarComboBox(stackWidget.currentWidget())
 
-    if index == 12:
-        updateCdsUsuario(stackWidget.currentWidget())
+        if index == 12:
+            updateCdsUsuario(stackWidget.currentWidget())
 
-    if index == 14:
-        updateCdsVeiculos(stackWidget.currentWidget())
+        if index == 14:
+            updateCdsVeiculos(stackWidget.currentWidget())
+    except Exception as e:
+        print(f"erro: {e}")
+
+#fazer o debug
 
 def janela():
-    app = QApplication([])
-    tela = QMainWindow()
-    stack_widget = QStackedWidget()
-    tela.setCentralWidget(stack_widget)
+    try:
+        app = QApplication([])
+        tela = QMainWindow()
+        stack_widget = QStackedWidget()
+        tela.setCentralWidget(stack_widget)
 
-    #region funções de iniciação das 
-    configLogin(stack_widget)
-    configTelaPrincipal(stack_widget)
-    configTelaFuncionarios(stack_widget)
-    configTelaClientes(stack_widget)
-    configTelaVeiculos(stack_widget)
-    configTelaOrdem(stack_widget)
-    configTelaUsuarios(stack_widget)
-    configTelaProdutos(stack_widget)
-    configTelaFuncionarioCadastro(stack_widget)
-    configClienteCadastro(stack_widget)
-    configCadastroServico(stack_widget)
-    configTelaOrdemCadastro(stack_widget)
-    configTelaUsuariosCadastro(stack_widget)
-    configTelaProdutoCadastro(stack_widget)
-    configTelaVeiculosCadastro(stack_widget)
-    configTelaRecuperar(stack_widget)
-    configNovaSenha(stack_widget)
-    #endregion
+        #region funções de iniciação das 
+        try:
+            configLogin(stack_widget)
+            configTelaPrincipal(stack_widget)
+            configTelaFuncionarios(stack_widget)
+            configTelaClientes(stack_widget)
+            configTelaVeiculos(stack_widget)
+            configTelaOrdem(stack_widget)
+            configTelaUsuarios(stack_widget)
+            configTelaProdutos(stack_widget)
+            configTelaFuncionarioCadastro(stack_widget)
+            configClienteCadastro(stack_widget)
+            configCadastroServico(stack_widget)
+            configTelaOrdemCadastro(stack_widget)
+            configTelaUsuariosCadastro(stack_widget)
+            configTelaProdutoCadastro(stack_widget)
+            configTelaVeiculosCadastro(stack_widget)
+            configTelaRecuperar(stack_widget)
+            configNovaSenha(stack_widget)
+        except Exception as e:
+            print(f"Erro na configuração de uma das telas, Erro: {e}")
+        #endregion
 
-    stack_widget.setCurrentIndex(0)
+        stack_widget.setCurrentIndex(0)
 
-    stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
-    tela.show()
-    app.exec()
+        stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
+        tela.show()
+        app.exec()
+    except Exception as e:
+        print(f"Erro ao iniciar a aplicação: {e}")
 
-janela()
+if __name__ == "__main__":
+    janela()

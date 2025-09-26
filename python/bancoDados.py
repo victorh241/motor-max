@@ -5,7 +5,7 @@ def carregarBD():
     db = {
         'host': 'localhost',
         'user': 'root',
-        'password': '1234',
+        'password': '',
         'database': 'motormax'
     }
     try:
@@ -13,3 +13,8 @@ def carregarBD():
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     return conexao
+
+def fechar_conecxao():
+    cnx = carregarBD()
+    if cnx.is_connected():
+        cnx.close()

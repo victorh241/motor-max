@@ -237,9 +237,9 @@ def configTelaOrdemCadastro(stackWidget):
     ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
     ui.pushButton_3.clicked.connect(lambda: voltarTelaPrincipal(ui ,stackWidget))
     ui.pushButton_4.clicked.connect(lambda: aumentarServico(ui))
-    ui.pushButton_6.clicked.connect(lambda: diminuirServico(ui))
-    ui.pushButton_8.clicked.connect(lambda: aumentarProduto(ui))
-    ui.pushButton_9.clicked.connect(lambda: diminuirProduto(ui))
+    ui.pushButton_5.clicked.connect(lambda: diminuirServico(ui))
+    ui.pushButton_6.clicked.connect(lambda: aumentarProduto(ui))
+    ui.pushButton_7.clicked.connect(lambda: diminuirProduto(ui))
 
     #combo box
     ui.comboBox_2.currentIndexChanged.connect(lambda: configVeiculosComboBox(ui))
