@@ -1,0 +1,2 @@
+lvlPermiUserAtual = ""
+login = ""
