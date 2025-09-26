@@ -5,7 +5,7 @@ from PyQt5 import uic
 import bancoDados
 
 #region telas
-from login import configLogin
+from login import configLogin, verificarTelaLogin
 from tela_principal import configTelaPrincipal, nivelAcesso
 from tela_funcionarios import configTelaFuncionarios
 from tela_clientes import configTelaClientes
@@ -51,6 +51,9 @@ Ordem do stack:
 
 def verificarTela(index, stackWidget):
     try:
+        if index == 0:
+            verificarTelaLogin(stackWidget.currentWidget())
+
         if index == 1:
             nivelAcesso(stackWidget.currentWidget())
 

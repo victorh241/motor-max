@@ -6,7 +6,21 @@ import user
 import mysql.connector
 from bancoDados import carregarBD
 
-#concluido
+def verificarTelaLogin(ui):
+    ui.lineEdit.clear()
+    ui.lineEdit_2.clear()
+    ui.progressBar.hide()
+    ui.label_2.hide()
+    ui.label_4.hide()
+
+    ui.pushButton.setEnabled(True)
+    ui.pushButton.setDisabled(False)
+    ui.pushButton_2.setEnabled(True)
+    ui.pushButton_2.setDisabled(False)
+    ui.lineEdit.setDisabled(False)
+    ui.lineEdit_2.setDisabled(False)
+    ui.lineEdit.setEnabled(True)
+
 def dados_usuarios() -> list:
     db = carregarBD()
     lista = []
@@ -29,7 +43,6 @@ def barraProgressoConfig(ui):
     ui.pushButton_2.setDisabled(True)
     ui.lineEdit.setDisabled(True)
     ui.lineEdit_2.setDisabled(True)
-    ui.lineEdit.setEnabled(False)
     ui.lineEdit.setEnabled(False)
 
 def entrarButton(ui, stackWidget):

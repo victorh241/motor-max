@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 import user
 
 #region butões funções
@@ -20,6 +20,17 @@ def botaoUsuarios(stackWidget):
 
 def botaoProdutos(stackWidget):
     stackWidget.setCurrentIndex(7)
+
+def botaoLogout(ui, stackWidget):
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer sair da conta")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        stackWidget.setCurrentIndex(0)
+    else:
+        pass
 #endregion
 
 def nivelAcesso(ui):
@@ -49,3 +60,4 @@ def configTelaPrincipal(stackWidget):
     ui.pushButton_3.clicked.connect(lambda: botaoOrdem(stackWidget))#ordem
     ui.pushButton_4.clicked.connect(lambda: botaoUsuarios(stackWidget))#usuarios
     ui.pushButton_5.clicked.connect(lambda: botaoProdutos(stackWidget))#produtos
+    ui.pushButton_7.clicked.connect(lambda: botaoLogout(ui, stackWidget))#logout 
