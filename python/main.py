@@ -27,6 +27,7 @@ from tela_cadastroVeiculos import configTelaVeiculosCadastro, atualizarComboBox 
 
 #TODO: Fazer o try e exception para todas as telas
 
+#region notes
 '''
 Ordem do stack: 
 0 = login

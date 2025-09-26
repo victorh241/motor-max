@@ -15,7 +15,6 @@ def atualizarComboBox(ui):
     for i in result:
         ui.comboBox.addItem(i[0])
 
-
 def voltarTela(ui ,stackWidget):
     stackWidget.setCurrentIndex(4)
 
@@ -86,31 +85,38 @@ def configComboBoxCliente(ui):
         ui.comboBox.addItem(i[0])
 
 def registrarNovoVeiculo(stackWidget, ui):
-    cnx = carregarBD()
-    placa = ui.lineEdit_5.text()
-    ano = ui.lineEdit_6.text()
-    marca = ui.lineEdit_7.text()
-    modelo = ui.lineEdit_8.text()
-    clienteNome = ui.comboBox.currentText()
+    try:
+        cnx = carregarBD()
+        placa = ui.lineEdit_5.text()
+        ano = ui.lineEdit_6.text()
+        marca = ui.lineEdit_7.text()
+        modelo = ui.lineEdit_8.text()
+        clienteNome = ui.comboBox.currentText()
 
-    cursor = cnx.cursor()
+        cursor = cnx.cursor()
 
-    if placa.strip() == "" or ano.strip() == "" or marca.strip() == "" or modelo.strip() == "" or clienteNome == "":
-        erroCampos(ui)
-    else:
-        id_cliente = 0
-        cursor.execute("SELECT id_cliente, nome FROM clientes")
-        dadosCliente = cursor.fetchall()
-        for _cliente in dadosCliente:
-            if _cliente[1] == clienteNome:
-                id_cliente = _cliente[0]
+        if placa.strip() == "" or ano.strip() == "" or marca.strip() == "" or modelo.strip() == "" or clienteNome == "":
+            erroCampos(ui)
+        else:
+            id_cliente = 0
+            cursor.execute("SELECT id_cliente, nome FROM clientes")
+            dadosCliente = cursor.fetchall()
+            for _cliente in dadosCliente:
+                if _cliente[1] == clienteNome:
+                    id_cliente = _cliente[0]
 
-        sql = "INSERT INTO veiculos(id_cliente, placa, ano, marca, modelo) VALUES (%s, %s, %s, %s, %s)"
-        dadosVeiculos = (id_cliente, placa, ano, marca, modelo)
-        cursor.execute(sql, dadosVeiculos)
-        cnx.commit()
+            sql = "INSERT INTO veiculos(id_cliente, placa, ano, marca, modelo) VALUES (%s, %s, %s, %s, %s)"
+            dadosVeiculos = (id_cliente, placa, ano, marca, modelo)
+            cursor.execute(sql, dadosVeiculos)
+            cnx.commit()
 
-        stackWidget.setCurrentIndex(4)
+            ui.lineEdit_5.setText("")
+            ui.lineEdit_6.setText("")
+            ui.lineEdit_7.setText("")
+            ui.lineEdit_8.setText("")
+            stackWidget.setCurrentIndex(4)
+    except Exception as e:
+        print(f"Erro: {e}")
 
 def configTelaVeiculosCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_veiculos_cadastro.ui")
