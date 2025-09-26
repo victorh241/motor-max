@@ -90,7 +90,7 @@ def registrarNovoCliente(ui, stackWidget):
                 cursor.execute(comandoTelefone, dadosTelefone)
                 cnx.commit()
             else:
-                telefones = listaTelefones()
+                telefones = listaTelefones
                 for _telefone in telefones:
                     comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
                     dadosTelefone = (id_cliente, _telefone)
@@ -118,23 +118,18 @@ def excluirTelefone(ui):
     if qntOpcoes == 0:
         ui.frame_3.hide()
 
-def listaTelefones(lista=None):
-    return lista
-
 def exibirFrameTelefone(ui):
+    global listaTelefones
     ui.frame_3.show()
     i = 1
     ui.comboBox_2.addItem(f"telefone {ui.comboBox_2.count() + 1}")
     novoIndex = ui.comboBox_2.count() - 1
     ui.comboBox_2.setCurrentIndex(novoIndex)
 
-    listaTeleFones = []
+    listaTelefones = []
     telefoneAtual = ui.lineEdit_7.text()
     if ui.comboBox_2.count() > 0:
-        listaTeleFones.append(telefoneAtual)
-        listaTeleFones(listaTeleFones)
-        ui.lineEdit_7.setText("")
-        print(listaTeleFones)
+        listaTelefones.append(telefoneAtual)
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
