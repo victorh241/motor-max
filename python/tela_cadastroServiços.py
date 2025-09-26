@@ -46,10 +46,14 @@ def registrarVeiculos(ui, stackWidget):
     else:
         cursor = cnx.cursor()
 
-        sqlCommand = "INSERT INTO serviços(descrição, valor mão de obra) VALUES (%s, %s)"
+        sqlCommand = "INSERT INTO serviços(descrição, valorMaoObra) VALUES (%s, %s)"
         dados = (descrição, valor)
         cursor.execute(sqlCommand, dados)
         cnx.commit()
+        
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        stackWidget.setCurrentIndex(5)
 
 def configCadastroServico(stackWidget):
     ui = uic.loadUi("Telas/tela_serviços_cadastro.ui")

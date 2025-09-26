@@ -90,7 +90,7 @@ def alterarLabelServico(ui):
     cursor = cnx.cursor()
     servicoAtual = ui.comboBox_4.currentText()
 
-    cursor.execute("SELECT descrição, valor mão de obra FROM serviços")
+    cursor.execute("SELECT descrição, valorMaoObra FROM serviços")
     dadosServico = cursor.fetchall()
     for _servico in dadosServico:
         if servicoAtual == _servico[0]:

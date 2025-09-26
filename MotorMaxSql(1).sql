@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Serviços` (
   `id_serviço` INT NOT NULL AUTO_INCREMENT,
   `id_produto` INT NULL,
   `descrição` VARCHAR(45) NOT NULL,
-  `valor mão de obra` DECIMAL(10,2) NOT NULL,
+  `valorMaoObra` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id_serviço`),
   INDEX `fk_Serviço_Produtos1_idx` (`id_produto` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Produtos1`
