@@ -2,6 +2,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
 from PyQt5 import uic
+import bancoDados
 
 #region telas
 from login import configLogin
@@ -101,6 +102,7 @@ def janela():
         stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
         tela.show()
         app.exec()
+        bancoDados.fechar_conecxao()
     except Exception as e:
         print(f"Erro ao iniciar a aplicação: {e}")
 

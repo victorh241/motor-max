@@ -125,9 +125,18 @@ def configSubTotal(ui):
 
         subTotal = float(TotalServico)
         ui.label_17.setText(str(subTotal))
+        if ui.lineEdit_4.text().strip != "":
+            desconto = float(ui.lineEdit_4.text())/100
+            subTotal = float(TotalServico) * desconto
+            ui.label_17.setText(str(subTotal))
     elif ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() != "":
         subTotal = float(TotalServico) + float(TotalProdutos)
         ui.label_17.setText(str(subTotal))
+        
+        if ui.lineEdit_4.text().strip != "":
+            desconto = float(ui.lineEdit_4.text())/100
+            subTotal = (float(TotalServico) + float(TotalProdutos))* desconto
+            ui.label_17.setText(str(subTotal))
 
 def configCodigoServico(ui):
     codigo = gere_codigo_ordem()
@@ -159,17 +168,22 @@ def diminuirProduto(ui):
 #endregion
 
 def registrarOrdem(ui, stackWidget):
+    #region campos
     cnx = carregarBD()
     desconto = ui.lineEdit_4.text()
     cliente = ui.comboBox_2.currentText()
     veiculo = ui.comboBox.currentText()
     status = ui.comboBox.currentText()
+    codigo = ui.lineEdit_5.text()
     data = ui.lineEdit_6.text()
     servico = ui.comboBox_4.currentText()
     produto = ui.comboBox_5.currentText()
     quantidadeServicos = ui.spinBox.value()
     quantidadeProdutos = ui.spinBox_2.value()
+    #endregion
 
+    #region procura e assimilação de dados
+    #servico
     cursor = cnx.cursor()
     id_servico = 0
     valorServico = 0
@@ -221,9 +235,16 @@ def registrarOrdem(ui, stackWidget):
         comandoSqlUpdateServico = "UPDATE serviço SET id_produto WHERE id_servico = %s"
         val = (id_produto,)
         cursor.execute(comandoSqlUpdateServico, val)
+    #endregion
+
+    if desconto.strip() != "":
+        desconto = float(desconto)/100
+        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_carro, Status, desconto,agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, desconto,data, quantidadeServicos, quantidadeProdutos)
+        cursor.execute(comandoInsertOrdem, dadosOrdem)
 
     comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_carro, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-    dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, data, ui.spinBox.value(), ui.spinBox_2.value())
+    dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, data, quantidadeServicos, quantidadeProdutos)
     cursor.execute(comandoInsertOrdem, dadosOrdem)
 
 def configTelaOrdemCadastro(stackWidget):
