@@ -90,7 +90,7 @@ def alterarLabelServico(ui):
     cursor = cnx.cursor()
     servicoAtual = ui.comboBox_4.currentText()
 
-    cursor.execute("SELECT descrição, Valor_mãodeObra FROM serviços")
+    cursor.execute("SELECT descrição, valor mão de obra FROM serviços")
     dadosServico = cursor.fetchall()
     for _servico in dadosServico:
         if servicoAtual == _servico[0]:
@@ -187,7 +187,7 @@ def registrarOrdem(ui, stackWidget):
     cursor = cnx.cursor()
     id_servico = 0
     valorServico = 0
-    cursor.execute("SELECT id_servico, descrição,Valor_mãodeObra FROM serviços")
+    cursor.execute("SELECT id_servico, descrição, valor mão de obra FROM serviços")
     dadosServico = cursor.fetchall()
 
     for _servico in dadosServico:

@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
   `codigo` VARCHAR(7) NOT NULL,
   `id_carro` INT NOT NULL,
   `Status` ENUM("Concluiido", "em adamento", "Agendado", "Cancelado") NOT NULL,
-  `desconto` DECIMAL(10,2) NULL,
+  `desconto` DECIMAL(4,2) NULL,
   `Agendamento` DATETIME NOT NULL,
   `quantidade_produtos` INT NULL,
   `quantidade_serviços` INT NOT NULL,
@@ -176,7 +176,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `motormax`.`Telefones` (
   `id_telefone` INT NOT NULL AUTO_INCREMENT,
   `id_cliente` INT NOT NULL,
-  
+  `telefone` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id_telefone`),
   INDEX `fk_Telefone_Cliente1_idx` (`id_cliente` ASC) VISIBLE,
   CONSTRAINT `fk_Telefone_Cliente1`

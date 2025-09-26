@@ -5,6 +5,7 @@ from bancoDados import carregarBD
 
 #TODO: fazer o reporte do campos vazios
 
+#region outros butões
 def voltarTelaPrincipal(ui, stackWidget):
     stackWidget.setCurrentIndex(3)
 
@@ -21,6 +22,7 @@ def excluir(ui, stackWidget):
     ui.lineEdit_4.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
+#endregion
 
 def erroCampos(ui):
     ui.lineEdit_5.setStyleSheet('''
@@ -81,11 +83,19 @@ def registrarNovoCliente(ui, stackWidget):
                 if i[1] == nome:
                     id_cliente = i[0]
 
-            #telefone
-            comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
-            dadosTelefone = (id_cliente, novoTelefone)
-            cursor.execute(comandoTelefone, dadosTelefone)
-            cnx.commit()
+            #telefones
+            if ui.comboBox_2.count() > 0:
+                comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
+                dadosTelefone = (id_cliente, novoTelefone)
+                cursor.execute(comandoTelefone, dadosTelefone)
+                cnx.commit()
+            else:
+                telefones = listaTelefones()
+                for _telefone in telefones:
+                    comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
+                    dadosTelefone = (id_cliente, _telefone)
+                    cursor.execute(comandoTelefone, dadosTelefone)
+                    cnx.commit()
             
             stackWidget.setCurrentIndex(3)
         else:
@@ -108,12 +118,23 @@ def excluirTelefone(ui):
     if qntOpcoes == 0:
         ui.frame_3.hide()
 
+def listaTelefones(lista=None):
+    return lista
+
 def exibirFrameTelefone(ui):
     ui.frame_3.show()
     i = 1
     ui.comboBox_2.addItem(f"telefone {ui.comboBox_2.count() + 1}")
     novoIndex = ui.comboBox_2.count() - 1
     ui.comboBox_2.setCurrentIndex(novoIndex)
+
+    listaTeleFones = []
+    telefoneAtual = ui.lineEdit_7.text()
+    if ui.comboBox_2.count() > 0:
+        listaTeleFones.append(telefoneAtual)
+        listaTeleFones(listaTeleFones)
+        ui.lineEdit_7.setText("")
+        print(listaTeleFones)
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
