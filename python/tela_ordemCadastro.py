@@ -92,7 +92,7 @@ def alterarLabelServico(ui):
     global TotalServico
     cnx = carregarBD()
     cursor = cnx.cursor()
-    servicoAtual = ui.comboBox_4.currentText()
+    servicoAtual = ui.comboBox_6.currentText()
 
     cursor.execute("SELECT descrição, valorMaoObra FROM serviços")
     dadosServico = cursor.fetchall()
@@ -107,10 +107,10 @@ def alterarLabelServico(ui):
     ui.label_26.setText(TotalServico)
 
 def alterarLabelProduto(ui):
+    global TotalProdutos
     cnx = carregarBD()
     cursor = cnx.cursor()
-    global TotalProdutos
-    produtoAtual = ui.comboBox_5.currentText()
+    produtoAtual = ui.comboBox_7.currentText()
 
     cursor.execute("SELECT descrição, preco_unitario, em_estoque FROM produtos")
     dadosProduto = cursor.fetchall()
@@ -124,22 +124,25 @@ def alterarLabelProduto(ui):
     ui.label_28.setText(TotalProdutos)
 
 def configSubTotal(ui):
-    if ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() == "":
-
-        subTotal = float(TotalServico)
-        ui.label_30.setText(str(subTotal))
-        if ui.lineEdit_4.text().strip != "":
-            desconto = float(ui.lineEdit_4.text())/100
-            subTotal = float(TotalServico) * desconto
-            ui.label_30.setText(str(subTotal))
-    elif ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() != "":
-        subTotal = float(TotalServico) + float(TotalProdutos)
-        ui.label_30.setText(str(subTotal))
-        
-        if ui.lineEdit_4.text().strip != "":
-            desconto = float(ui.lineEdit_4.text())/100
-            subTotal = (float(TotalServico) + float(TotalProdutos))* desconto
-            ui.label_30.setText(str(subTotal))
+    textoDesconto = ui.lineEdit_4.text()
+    subTotal = 0
+    
+    if textoDesconto.strip() != "":
+        if ui.spinBox_2.value() == 0:
+            valorDesconto = float(textoDesconto)
+            subTotal = float(TotalServico) * valorDesconto/100
+            ui.label_31.setText(str(subTotal))
+        else:
+            valorDesconto = float(textoDesconto)
+            subTotal = (float(TotalServico) + float(TotalProdutos))* valorDesconto/100
+            ui.label_31.setText(str(subTotal))
+    else:
+        if ui.spinBox_2.value() == 0:
+            subTotal = float(TotalServico)
+            ui.label_31.setText(str(subTotal))
+        else:
+            subTotal = float(TotalServico) + float(TotalProdutos)
+            ui.label_31.setText(str(subTotal))
 
 def configCodigoServico(ui):
     codigo = gere_codigo_ordem()
