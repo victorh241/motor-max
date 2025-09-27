@@ -16,8 +16,8 @@ def atualizarComboBox(ui):
     cnx = carregarBD()
     cursor = cnx.cursor()
     comboCliente = ui.comboBox_2
-    comboServico = ui.comboBox_4
-    comboProdutos = ui.comboBox_5
+    comboServico = ui.comboBox_6
+    comboProdutos = ui.comboBox_7
     comboCliente.clear()
     comboServico.clear()
     comboProdutos.clear()
@@ -127,19 +127,19 @@ def configSubTotal(ui):
     if ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() == "":
 
         subTotal = float(TotalServico)
-        ui.label_17.setText(str(subTotal))
+        ui.label_30.setText(str(subTotal))
         if ui.lineEdit_4.text().strip != "":
             desconto = float(ui.lineEdit_4.text())/100
             subTotal = float(TotalServico) * desconto
-            ui.label_17.setText(str(subTotal))
+            ui.label_30.setText(str(subTotal))
     elif ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() != "":
         subTotal = float(TotalServico) + float(TotalProdutos)
-        ui.label_17.setText(str(subTotal))
+        ui.label_30.setText(str(subTotal))
         
         if ui.lineEdit_4.text().strip != "":
             desconto = float(ui.lineEdit_4.text())/100
             subTotal = (float(TotalServico) + float(TotalProdutos))* desconto
-            ui.label_17.setText(str(subTotal))
+            ui.label_30.setText(str(subTotal))
 
 def configCodigoServico(ui):
     codigo = gere_codigo_ordem()
@@ -172,10 +172,31 @@ def diminuirProduto(ui):
 
 #region adcionar serviço e produto
 def adcionarNovoServico(ui):
-    pass
+    global listaServico
+    ui.frame_5.show()
+
+    index = 0
+    listaServico = []
+    if ui.comboBox_4.count() > 0:
+        ui.comboBox_4.addItem(f"Serviço {index + 1}")
+        servico = ui.comboBox_6.currentText()
+        qnt = ui.spinBox.value()
+        novoServico = [servico, qnt]
+        listaServico.append(novoServico)
+
 
 def adcionarNovoProduto(ui):
-    pass
+    global listaProduto
+    ui.frame_6.show()
+
+    index = 0
+    listaProduto = []
+    if ui.comboBox_5.count() > 0:
+        ui.comboBox_5.addItem(f"Produto {index + 1}")
+        produto = ui.comboBox_7.currentText()
+        qnt = ui.spinBox_2.value()
+        novoProduto = [produto, qnt]
+        listaProduto.append(novoProduto)
 #endregion
 
 def registrarOrdem(ui, stackWidget):
