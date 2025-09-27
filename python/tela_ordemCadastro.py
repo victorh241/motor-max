@@ -127,7 +127,7 @@ def configSubTotal(ui):
     textoDesconto = ui.lineEdit_4.text()
     subTotal = 0
     
-    if textoDesconto.strip() != "":
+    if textoDesconto.strip() != ".":
         if ui.spinBox_2.value() == 0:
             valorDesconto = float(textoDesconto)
             subTotal = float(TotalServico) * valorDesconto/100

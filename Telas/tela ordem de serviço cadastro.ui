@@ -371,6 +371,9 @@ QLineEdit:hover{
 background-color: rgb(234, 236, 240);
 }</string>
        </property>
+       <property name="inputMask">
+        <string>99.99</string>
+       </property>
        <property name="echoMode">
         <enum>QLineEdit::Normal</enum>
        </property>
