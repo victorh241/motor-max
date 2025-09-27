@@ -54,12 +54,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `motormax`.`Produtos` (
   `id_produto` INT NOT NULL AUTO_INCREMENT,
-  `codigo_peça` VARCHAR(7) NOT NULL,
+  `codigo_produto` VARCHAR(7) NOT NULL,
   `descrição` VARCHAR(45) NOT NULL,
   `preco_unitario` DECIMAL(10,2) NOT NULL,
   `em_estoque` INT NOT NULL,
   PRIMARY KEY (`id_produto`),
-  UNIQUE INDEX `codigo_peça_UNIQUE` (`codigo_peça` ASC) VISIBLE)
+  UNIQUE INDEX `codigo_peça_UNIQUE` (`codigo_produto` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 

@@ -90,6 +90,8 @@ def registraProduto(ui, stackWidget):
         cursor.execute(sqlComando, dados)
         cnx.commit()
 
+        stackWidget.setCurrentIndex(7)
+
 
 def configTelaProdutoCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_produtos_cadastro.ui")

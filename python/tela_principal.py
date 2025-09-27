@@ -24,7 +24,7 @@ def botaoProdutos(stackWidget):
 def botaoLogout(ui, stackWidget):
     msg = QMessageBox()
     msg.setWindowTitle("Aviso !")
-    msg.setText("Você tem certeza que quer sair da conta")
+    msg.setText("Você tem certeza que quer sair da conta ?")
     msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
     resposta = msg.exec_()
     if resposta == QMessageBox.Ok:

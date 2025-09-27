@@ -677,7 +677,7 @@ border: none;
 }
 
 QComboBox::down-arrow {
-image: url(C:/Users/victor/Documents/vscode/python/curso/imagem/icons/arrow-down.png);
+image: url(C:\Users\victor\Documents\vscode\python\projeto motor max\motor-max\imagem\icons\arrow-down.png);
 width: 18px;
 height: 18px;
 right: 6px;
@@ -799,7 +799,7 @@ background-color: rgb(234, 236, 240);
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="placeholderText">
-        <string>Ex: 50</string>
+        <string/>
        </property>
       </widget>
       <widget class="QLabel" name="label_11">
@@ -874,7 +874,7 @@ background-color: rgb(234, 236, 240);
          <x>100</x>
          <y>290</y>
          <width>900</width>
-         <height>80</height>
+         <height>91</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -910,7 +910,7 @@ font-weight: bold;
 }</string>
         </property>
         <property name="text">
-         <string>TextLabel</string>
+         <string>Total:</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_12">
@@ -943,34 +943,7 @@ font-weight: bold;
        <widget class="QLabel" name="label_13">
         <property name="geometry">
          <rect>
-          <x>170</x>
-          <y>10</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel{
-border: none;
-font-size: 14px;
-font-weight: bold;
-}</string>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_14">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
+          <x>60</x>
           <y>10</y>
           <width>101</width>
           <height>21</height>
@@ -997,7 +970,7 @@ font-weight: bold;
        <widget class="QPushButton" name="pushButton_4">
         <property name="geometry">
          <rect>
-          <x>490</x>
+          <x>330</x>
           <y>20</y>
           <width>41</width>
           <height>41</height>
@@ -1033,7 +1006,7 @@ background-color: rgb(210, 203, 150);
        <widget class="QPushButton" name="pushButton_5">
         <property name="geometry">
          <rect>
-          <x>640</x>
+          <x>480</x>
           <y>20</y>
           <width>41</width>
           <height>41</height>
@@ -1069,7 +1042,7 @@ background-color: rgb(210, 203, 150);
        <widget class="QSpinBox" name="spinBox">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>380</x>
           <y>20</y>
           <width>91</width>
           <height>41</height>
@@ -1145,6 +1118,52 @@ font-weight: bold;
          <string>999</string>
         </property>
        </widget>
+       <widget class="QComboBox" name="comboBox_6">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>5</y>
+          <width>271</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QComboBox {
+border: 2px solid #e5e7eb;
+border-radius: 8px;
+padding: 12px;
+font-size: 14px;
+color: #374151;
+}
+QComboBox:hover{
+background-color: rgb(234, 236, 240);
+}
+
+QComboBox:focus{
+border: 2px solid #7f8082;
+}
+
+QComboBox::drop-down {
+border: none;
+}
+
+QComboBox::down-arrow {
+image: url(C:\Users\victor\Documents\vscode\python\projeto motor max\motor-max\imagem\icons\arrow-down.png);
+width: 18px;
+height: 18px;
+right: 6px;
+}</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="maxVisibleItems">
+         <number>5</number>
+        </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::InsertAtCurrent</enum>
+        </property>
+       </widget>
       </widget>
       <widget class="QFrame" name="frame_6">
        <property name="geometry">
@@ -1188,7 +1207,7 @@ font-weight: bold;
 }</string>
         </property>
         <property name="text">
-         <string>Total</string>
+         <string>Total:</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_16">
@@ -1221,34 +1240,7 @@ font-weight: bold;
        <widget class="QLabel" name="label_17">
         <property name="geometry">
          <rect>
-          <x>170</x>
-          <y>10</y>
-          <width>101</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLabel{
-border: none;
-font-size: 14px;
-font-weight: bold;
-}</string>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_18">
-        <property name="geometry">
-         <rect>
-          <x>270</x>
+          <x>60</x>
           <y>10</y>
           <width>101</width>
           <height>21</height>
@@ -1275,7 +1267,7 @@ font-weight: bold;
        <widget class="QPushButton" name="pushButton_6">
         <property name="geometry">
          <rect>
-          <x>490</x>
+          <x>330</x>
           <y>20</y>
           <width>41</width>
           <height>41</height>
@@ -1311,7 +1303,7 @@ background-color: rgb(210, 203, 150);
        <widget class="QPushButton" name="pushButton_7">
         <property name="geometry">
          <rect>
-          <x>640</x>
+          <x>480</x>
           <y>20</y>
           <width>41</width>
           <height>41</height>
@@ -1347,7 +1339,7 @@ background-color: rgb(210, 203, 150);
        <widget class="QSpinBox" name="spinBox_2">
         <property name="geometry">
          <rect>
-          <x>540</x>
+          <x>380</x>
           <y>20</y>
           <width>91</width>
           <height>41</height>
@@ -1421,6 +1413,52 @@ font-weight: bold;
         </property>
         <property name="text">
          <string>9999</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_7">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>5</y>
+          <width>271</width>
+          <height>40</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QComboBox {
+border: 2px solid #e5e7eb;
+border-radius: 8px;
+padding: 12px;
+font-size: 14px;
+color: #374151;
+}
+QComboBox:hover{
+background-color: rgb(234, 236, 240);
+}
+
+QComboBox:focus{
+border: 2px solid #7f8082;
+}
+
+QComboBox::drop-down {
+border: none;
+}
+
+QComboBox::down-arrow {
+image: url(C:/Users/victor/Documents/vscode/python/curso/imagem/icons/arrow-down.png);
+width: 18px;
+height: 18px;
+right: 6px;
+}</string>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="maxVisibleItems">
+         <number>5</number>
+        </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::InsertAtCurrent</enum>
         </property>
        </widget>
       </widget>
@@ -1685,6 +1723,100 @@ font-weight: bold;
          <string>99999</string>
         </property>
        </widget>
+      </widget>
+      <widget class="QPushButton" name="pushButton_8">
+       <property name="geometry">
+        <rect>
+         <x>550</x>
+         <y>230</y>
+         <width>141</width>
+         <height>44</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+background-color: #f59e0b;
+color: black;
+border: none;
+border-radius: 8px;
+padding: 12px;
+font-size: 14px;
+font-weight: bold;
+min-height: 20px;
+}
+
+QPushButton:hover{
+background-color: #d97706;
+}
+
+QPushButton:pressed{
+background-color: #b45309;
+}
+
+QPushButton:disable{
+background-color: #582503;
+}</string>
+       </property>
+       <property name="text">
+        <string>Adicionar Serviço</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_9">
+       <property name="geometry">
+        <rect>
+         <x>540</x>
+         <y>390</y>
+         <width>151</width>
+         <height>44</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>-1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+background-color: #f59e0b;
+color: black;
+border: none;
+border-radius: 8px;
+padding: 12px;
+font-size: 14px;
+font-weight: bold;
+min-height: 20px;
+}
+
+QPushButton:hover{
+background-color: #d97706;
+}
+
+QPushButton:pressed{
+background-color: #b45309;
+}
+
+QPushButton:disable{
+background-color: #582503;
+}</string>
+       </property>
+       <property name="text">
+        <string>Adicionar Produto</string>
+       </property>
       </widget>
      </widget>
     </item>

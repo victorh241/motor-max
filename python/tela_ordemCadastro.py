@@ -30,18 +30,18 @@ def atualizarComboBox(ui):
         comboCliente.addItem(_cliente[0])
     
     #servico
-    cursor.execute("SELECT descrição, Valor_mãodeObra FROM serviços")
+    cursor.execute("SELECT descrição FROM serviços")
     dadosServico = cursor.fetchall()
 
     for _servico in dadosServico:
         comboServico.addItem(_servico[0])
     
     #produtos
-    cursor.execute("SELECT descrição, preco_unitario, em_estoque FROM produtos")
+    cursor.execute("SELECT descrição, em_estoque FROM produtos")
     dadosProduto = cursor.fetchall()
 
     for _produto in dadosProduto:
-        if _produto[2] > 0:
+        if _produto[1] > 0:
             comboProdutos.addItem(_produto[0])
     
 def voltarTelaPrincipal(ui, stackWidget):
@@ -50,6 +50,8 @@ def voltarTelaPrincipal(ui, stackWidget):
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox_3.setCurrentIndex(-1)
+    ui.frame_5.hide()
+    ui.frame_6.hide()
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(5)
@@ -57,6 +59,8 @@ def excluir(ui, stackWidget):
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox_3.setCurrentIndex(-1)
+    ui.frame_5.hide()
+    ui.frame_6.hide()
 
 def configVeiculosComboBox(ui):
     clienteAtual = ui.comboBox_2.currentText()
@@ -95,12 +99,12 @@ def alterarLabelServico(ui):
     for _servico in dadosServico:
         if servicoAtual == _servico[0]:
             ui.label_12.setText(_servico[0])
-            ui.label_13.setText(f"Preço unitario: {_servico[1]}")
+            ui.label_19.setText(f"Preço unitario: {_servico[1]}")
             valor = ui.spinBox.value() * _servico[1]
-            ui.label_11.setText(str(valor))
+            ui.label_13.setText(str(valor))
     
-    TotalServico = ui.label_11.text()
-    ui.label_21.setText(TotalServico)
+    TotalServico = ui.label_13.text()
+    ui.label_26.setText(TotalServico)
 
 def alterarLabelProduto(ui):
     cnx = carregarBD()
@@ -112,13 +116,12 @@ def alterarLabelProduto(ui):
     dadosProduto = cursor.fetchall()
     for _produto in dadosProduto:
         if produtoAtual == _produto[0]:
-            ui.label_15.setText(_produto[0])
-            ui.label_16.setText(f"Preço unitario: {_produto[1]}")
+            ui.label_20.setText(f"Preço unitario: {_produto[1]}")
             valor = _produto[1] * ui.spinBox_2.value()
-            ui.label_14.setText(str(valor))
+            ui.label_17.setText(str(valor))
     
-    TotalProdutos = ui.label_14.text()
-    ui.label_22.setText(TotalProdutos)
+    TotalProdutos = ui.label_17.text()
+    ui.label_28.setText(TotalProdutos)
 
 def configSubTotal(ui):
     if ui.comboBox_4.currentText() != "" and ui.comboBox_5.currentText() == "":
@@ -165,6 +168,14 @@ def diminuirProduto(ui):
     valorAtual = ui.spinBox_2.value()
     novoValor = valorAtual - 1
     ui.spinBox_2.setValue(novoValor)
+#endregion
+
+#region adcionar serviço e produto
+def adcionarNovoServico(ui):
+    pass
+
+def adcionarNovoProduto(ui):
+    pass
 #endregion
 
 def registrarOrdem(ui, stackWidget):
@@ -252,6 +263,8 @@ def configTelaOrdemCadastro(stackWidget):
 
     stackWidget.addWidget(ui)
     configCodigoServico(ui)
+    ui.frame_5.hide()
+    ui.frame_6.hide()
 
     #butões
     ui.pushButton.clicked.connect(lambda: registrarOrdem(ui, stackWidget))
@@ -261,6 +274,8 @@ def configTelaOrdemCadastro(stackWidget):
     ui.pushButton_5.clicked.connect(lambda: diminuirServico(ui))
     ui.pushButton_6.clicked.connect(lambda: aumentarProduto(ui))
     ui.pushButton_7.clicked.connect(lambda: diminuirProduto(ui))
+    ui.pushbutton_8.clicked.connect(lambda: adcionarNovoServico(ui))
+    ui.pushButton_9.clicked.connect(lambda: adcionarNovoProduto(ui))
 
     #combo box
     ui.comboBox_2.currentIndexChanged.connect(lambda: configVeiculosComboBox(ui))
