@@ -20,8 +20,6 @@ def verificarTelaLogin(ui):
     ui.lineEdit.setDisabled(False)
     ui.lineEdit_2.setDisabled(False)
     ui.lineEdit.setEnabled(True)
-    ui.pushButton_2.setEnabled(True)
-    ui.pushButton_2.setDisabled(False)
 
 def dados_usuarios() -> list:
     db = carregarBD()
@@ -120,5 +118,5 @@ def configLogin(stackWidget):
     ui.label_4.hide()
 
     ui.pushButton.clicked.connect(lambda: entrarButton(ui, stackWidget))
-    ui.pushButton_3.clicked.connect(lambda: mostrarSenha(ui))
     ui.pushButton_2.clicked.connect(lambda: telaReperarSenha(stackWidget))
+    ui.pushButton_3.clicked.connect(lambda: mostrarSenha(ui))

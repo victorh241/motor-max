@@ -295,7 +295,7 @@ def configTelaOrdemCadastro(stackWidget):
     ui.pushButton_5.clicked.connect(lambda: diminuirServico(ui))
     ui.pushButton_6.clicked.connect(lambda: aumentarProduto(ui))
     ui.pushButton_7.clicked.connect(lambda: diminuirProduto(ui))
-    ui.pushbutton_8.clicked.connect(lambda: adcionarNovoServico(ui))
+    ui.pushButton_8.clicked.connect(lambda: adcionarNovoServico(ui))
     ui.pushButton_9.clicked.connect(lambda: adcionarNovoProduto(ui))
 
     #combo box
