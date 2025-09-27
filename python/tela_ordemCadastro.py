@@ -98,8 +98,7 @@ def alterarLabelServico(ui):
     dadosServico = cursor.fetchall()
     for _servico in dadosServico:
         if servicoAtual == _servico[0]:
-            ui.label_12.setText(_servico[0])
-            ui.label_19.setText(f"Preço unitario: {_servico[1]}")
+            ui.label_19.setText(str(_servico[1]))
             valor = ui.spinBox.value() * _servico[1]
             ui.label_13.setText(str(valor))
     
@@ -116,11 +115,11 @@ def alterarLabelProduto(ui):
     dadosProduto = cursor.fetchall()
     for _produto in dadosProduto:
         if produtoAtual == _produto[0]:
-            ui.label_20.setText(f"Preço unitario: {_produto[1]}")
+            ui.label_20.setText(str(_produto[1]))
             valor = _produto[1] * ui.spinBox_2.value()
             ui.label_17.setText(str(valor))
-    
-    TotalProdutos = ui.label_17.text()
+
+    TotalProdutos += ui.label_17.text()
     ui.label_28.setText(TotalProdutos)
 
 def configSubTotal(ui):
@@ -177,25 +176,28 @@ def diminuirProduto(ui):
 def adcionarNovoServico(ui):
     global listaServico
     ui.frame_5.show()
-
-    index = 0
+    ui.comboBox_4.addItem(f"Serviço {ui.comboBox_4.count() + 1}")
+    novoIndex = ui.comboBox_4.count() - 1
+    ui.comboBox_4.setCurrentIndex(novoIndex)
+    
     listaServico = []
     if ui.comboBox_4.count() > 0:
-        ui.comboBox_4.addItem(f"Serviço {index + 1}")
         servico = ui.comboBox_6.currentText()
+        totalServicoAtual = float(ui.label_13.text())
         qnt = ui.spinBox.value()
-        novoServico = [servico, qnt]
+        novoServico = [servico, totalServicoAtual,qnt]
         listaServico.append(novoServico)
-
 
 def adcionarNovoProduto(ui):
     global listaProduto
     ui.frame_6.show()
+    ui.comboBox_5.addItem(f"Produto {ui.comboBox_5.count() + 1}")
+    novoIndex = ui.comboBox_5.count() - 1
+    ui.comboBox_5.setCurrentIndex(novoIndex)
+    
 
-    index = 0
     listaProduto = []
     if ui.comboBox_5.count() > 0:
-        ui.comboBox_5.addItem(f"Produto {index + 1}")
         produto = ui.comboBox_7.currentText()
         qnt = ui.spinBox_2.value()
         novoProduto = [produto, qnt]

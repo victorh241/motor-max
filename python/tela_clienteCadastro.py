@@ -121,7 +121,6 @@ def excluirTelefone(ui):
 def exibirFrameTelefone(ui):
     global listaTelefones
     ui.frame_3.show()
-    i = 1
     ui.comboBox_2.addItem(f"telefone {ui.comboBox_2.count() + 1}")
     novoIndex = ui.comboBox_2.count() - 1
     ui.comboBox_2.setCurrentIndex(novoIndex)
