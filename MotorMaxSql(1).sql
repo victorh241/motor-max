@@ -125,19 +125,19 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
   `id_cliente` INT NOT NULL,
   `id_serviço` INT NOT NULL,
   `codigo` VARCHAR(7) NOT NULL,
-  `id_carro` INT NOT NULL,
-  `Status` ENUM("Concluiido", "em adamento", "Agendado", "Cancelado") NOT NULL,
+  `id_veiculo` INT NOT NULL,
+  `Status` VARCHAR(30) NOT NULL,
   `desconto` DECIMAL(4,2) NULL,
-  `Agendamento` DATETIME NOT NULL,
+  `Agendamento` VARCHAR(10) NOT NULL,
   `quantidade_produtos` INT NULL,
   `quantidade_serviços` INT NOT NULL,
-  INDEX `fk_Serviço_Carro1_idx` (`id_carro` ASC) VISIBLE,
+  INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
   PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Serviço1_idx` (`id_serviço` ASC) VISIBLE,
   INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_cliente` ASC, `id_funcionario` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
-    FOREIGN KEY (`id_carro`)
+    FOREIGN KEY (`id_veiculo`)
     REFERENCES `motormax`.`Veiculos` (`id_veiculo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,

@@ -143,18 +143,18 @@ def configSubTotal(ui):
     if textoDesconto.strip() != ".":
         if ui.spinBox_2.value() == 0:
             valorDesconto = float(textoDesconto)
-            subTotal = float(TotalServico) * valorDesconto/100
+            subTotal = TotalServico * valorDesconto/100
             ui.label_31.setText(str(subTotal))
         else:
             valorDesconto = float(textoDesconto)
-            subTotal = (float(TotalServico) + float(TotalProdutos))* valorDesconto/100
+            subTotal = (TotalServico + TotalProdutos)* valorDesconto/100
             ui.label_31.setText(str(subTotal))
     else:
         if ui.spinBox_2.value() == 0:
-            subTotal = float(TotalServico)
+            subTotal = TotalServico
             ui.label_31.setText(str(subTotal))
         else:
-            subTotal = float(TotalServico) + float(TotalProdutos)
+            subTotal = TotalServico + TotalProdutos
             ui.label_31.setText(str(subTotal))
 
 def configCodigoServico(ui):
@@ -240,13 +240,12 @@ def registrarOrdem(ui, stackWidget):
     cursor = cnx.cursor()
     id_servico = 0
     valorServico = 0
-    cursor.execute("SELECT id_servico, descrição, valor mão de obra FROM serviços")
+    cursor.execute("SELECT id_serviço, descrição FROM serviços")
     dadosServico = cursor.fetchall()
 
     for _servico in dadosServico:
         if _servico[1] == servico:
             id_servico = _servico[0]
-            valorServico = _servico[2]
     
     #veiculo
     id_veiculo = 0
@@ -276,29 +275,31 @@ def registrarOrdem(ui, stackWidget):
 
     if produto != "":
         id_produto = 0
-        valorProduto = 0
-        cursor.execute("SELECT id_produto, preco_unitario, descrição FROM produtos")
+        cursor.execute("SELECT id_produto, descrição FROM produtos")
         dadosProdutos = cursor.fetchall()
 
         for _produto in dadosProdutos:
-                if _produto[2] == produto:
-                    valorProduto = _produto[1]
+                if _produto[1] == produto:
                     id_produto = _produto[0]
 
-        comandoSqlUpdateServico = "UPDATE serviço SET id_produto WHERE id_servico = %s"
-        val = (id_produto,)
+        comandoSqlUpdateServico = "UPDATE serviços SET id_produto = %s WHERE id_serviço = %s"
+        val = (id_produto, id_servico)
         cursor.execute(comandoSqlUpdateServico, val)
     #endregion
 
-    if desconto.strip() != "":
+    if desconto.strip() != ".":
         desconto = float(desconto)/100
-        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_carro, Status, desconto,agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_veiculo, Status, desconto,agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, desconto,data, quantidadeServicos, quantidadeProdutos)
         cursor.execute(comandoInsertOrdem, dadosOrdem)
+        cnx.commit()
+        print("sucesso !")
 
     comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_carro, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, data, quantidadeServicos, quantidadeProdutos)
     cursor.execute(comandoInsertOrdem, dadosOrdem)
+    cnx.commit()
+    print("sucesso !")
 
 def configTelaOrdemCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço cadastro.ui")

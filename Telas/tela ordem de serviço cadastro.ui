@@ -160,7 +160,7 @@ border: none;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -216,7 +216,7 @@ border: 1px solid rgba(0, 0, 0,0.1); </string>
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -286,7 +286,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -352,7 +352,7 @@ background-color: rgb(210, 203, 150);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -577,7 +577,7 @@ right: 6px;
         <string>Concluido</string>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="maxVisibleItems">
         <number>5</number>
@@ -590,12 +590,17 @@ right: 6px;
        </property>
        <item>
         <property name="text">
-         <string>Agendado</string>
+         <string>Concluido</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Concluido</string>
+         <string>Em Andamento</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Agendado</string>
         </property>
        </item>
        <item>
@@ -776,7 +781,7 @@ right: 6px;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -839,7 +844,7 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -900,7 +905,7 @@ background-color: rgb(234, 236, 240);
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -927,7 +932,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -954,7 +959,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1105,7 +1110,7 @@ background-color: rgb(210, 203, 150);
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1196,7 +1201,7 @@ right: 6px;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1223,7 +1228,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1250,7 +1255,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1401,7 +1406,7 @@ background-color: rgb(210, 203, 150);
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1492,7 +1497,7 @@ right: 6px;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1519,7 +1524,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1546,7 +1551,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1573,7 +1578,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1600,7 +1605,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1627,7 +1632,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1654,7 +1659,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1681,7 +1686,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1708,7 +1713,7 @@ font-weight: bold;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
           <weight>75</weight>
           <bold>true</bold>
          </font>
@@ -1736,7 +1741,7 @@ font-weight: bold;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1783,7 +1788,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
