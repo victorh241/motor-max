@@ -93,6 +93,7 @@ def alterarLabelServico(ui):
     cnx = carregarBD()
     cursor = cnx.cursor()
     servicoAtual = ui.comboBox_6.currentText()
+    TotalServico = 0
 
     cursor.execute("SELECT descrição, valorMaoObra FROM serviços")
     dadosServico = cursor.fetchall()
@@ -102,25 +103,38 @@ def alterarLabelServico(ui):
             valor = ui.spinBox.value() * _servico[1]
             ui.label_13.setText(str(valor))
     
-    TotalServico = ui.label_13.text()
-    ui.label_26.setText(TotalServico)
+    if ui.comboBox_4.count() == 1:
+        TotalServico += float(ui.label_13.text())
+        ui.label_26.setText(str(TotalServico))
+    else:
+        for _servico in listaServico:
+            TotalServico += _servico[1] + float(ui.label_13.text())
+        
+        ui.label_26.setText(str(TotalServico))
 
 def alterarLabelProduto(ui):
     global TotalProdutos
     cnx = carregarBD()
     cursor = cnx.cursor()
     produtoAtual = ui.comboBox_7.currentText()
+    TotalProdutos = 0
 
     cursor.execute("SELECT descrição, preco_unitario, em_estoque FROM produtos")
     dadosProduto = cursor.fetchall()
     for _produto in dadosProduto:
         if produtoAtual == _produto[0]:
             ui.label_20.setText(str(_produto[1]))
-            valor = _produto[1] * ui.spinBox_2.value()
+            valor = ui.spinBox_2.value() * _produto[1]
             ui.label_17.setText(str(valor))
 
-    TotalProdutos += ui.label_17.text()
-    ui.label_28.setText(TotalProdutos)
+    if ui.comboBox_5.count() == 1:
+        TotalProdutos += float(ui.label_17.text())
+        ui.label_28.setText(str(TotalProdutos))
+    else:
+        for _produto in listaProduto:
+            TotalProdutos += _produto[1] + float(ui.label_17.text())
+        
+        ui.label_28.setText(str(TotalProdutos))
 
 def configSubTotal(ui):
     textoDesconto = ui.lineEdit_4.text()
@@ -187,6 +201,7 @@ def adcionarNovoServico(ui):
         qnt = ui.spinBox.value()
         novoServico = [servico, totalServicoAtual,qnt]
         listaServico.append(novoServico)
+        ui.spinBox.setValue(0)
 
 def adcionarNovoProduto(ui):
     global listaProduto
@@ -195,13 +210,14 @@ def adcionarNovoProduto(ui):
     novoIndex = ui.comboBox_5.count() - 1
     ui.comboBox_5.setCurrentIndex(novoIndex)
     
-
     listaProduto = []
     if ui.comboBox_5.count() > 0:
         produto = ui.comboBox_7.currentText()
         qnt = ui.spinBox_2.value()
-        novoProduto = [produto, qnt]
+        totalProdutoAtual = float(ui.label_17.text()) 
+        novoProduto = [produto, totalProdutoAtual, qnt]
         listaProduto.append(novoProduto)
+        ui.spinBox_2.setValue(0)
 #endregion
 
 def registrarOrdem(ui, stackWidget):
