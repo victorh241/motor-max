@@ -1,5 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel
+from PyQt5.QtGui import QIcon, Qpiel
 from bancoDados import carregarBD
 
 #region butões
@@ -43,6 +44,10 @@ def mostrarFuncionarios(ui):
     #config dos botões
     botaoEditar.setGeometry(140, 80, 30, 30)
     botaoExcluir.setGeometry(180, 80, 30, 30)
+
+    botaoEditar.setStyleSheet('''
+        
+    ''')
 
     #configs do frame
     frame.setFixedSize(220, 120)

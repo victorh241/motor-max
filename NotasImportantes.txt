@@ -1,4 +1,5 @@
-Bloco de notas de lembretes o codigo é muito grande não dá pra ver tudo
+Bloco de notas de lembretes o código é muito grande não dá pra ver tudo
 Fazer os debugs 
-Fazer O visual do nivel de acesso mais aparente uma cor mais desbotada algo do tipo que seja mais obvio
+Fazer O visual do nível de acesso mais aparente uma cor mais desbotada algo do tipo que seja mais obvio
 Registrar o valor total no banco de dados
+Fazer as listagens vão custar um tempo

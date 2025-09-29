@@ -227,6 +227,21 @@ CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `mydb`.`Venda_final`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `motormax`.`Venda_final` (
+  `idVenda_final` INT NOT NULL AUTO_INCREMENT,
+  `id_ordem` INT NOT NULL,
+  `valor final` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`idVenda_final`),
+  INDEX `fk_Venda_final_Ordem de Serviço1_idx` (`id_ordem` ASC) VISIBLE,
+  CONSTRAINT `fk_Venda_final_Ordem de Serviço1`
+    FOREIGN KEY (`id_ordem`)
+    REFERENCES `mydb`.`Ordem de Serviço` (`id_ordemServiço`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
