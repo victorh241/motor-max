@@ -7,6 +7,9 @@ from bancoDados import carregarBD
 
 #TODO: fazer os campos vazios
 
+def carregarDadosFuncionario(ui, id_funcionario):
+    pass
+
 def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")

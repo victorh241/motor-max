@@ -2,16 +2,23 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
+
 from bancoDados import carregarBD
+from tela_funcionarioCadastro import carregarDadosFuncionario
 
-def funcEditar(ui):
-    pass
+def funcEditar(ui, stackWidget, index):
+    funcId = index + 1
 
-def funcExcluir(ui):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+        
+
+def funcExcluir(ui, stackWidget):
     pass
 
 #region butões
-def mostrarFuncionarios(ui):
+def mostrarFuncionarios(ui, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
 
@@ -59,18 +66,6 @@ def mostrarFuncionarios(ui):
         labelFunc = QLabel(f"Disponibilidade: {textoDisponivel}", frame)
         botaoExcluir = QPushButton("", frame)
         botaoEditar = QPushButton("", frame)
-
-        #sombra
-        sombra = QGraphicsDropShadowEffect()
-
-        #region config sombra
-        sombra.setBlurRadius(15)
-        sombra.setOffset(20, 0)
-        sombra.setColor(QColor(60, 60, 60))
-
-        frame.enterEvent(lambda: frame.setGraphicsEffect(sombra))
-        frame.leaveEvent(lambda: frame.setGraphicsEffect(None))
-        #endregion
 
         #config dos labels
         labelNome.setGeometry(10 , 10 , 100, 20)
@@ -149,7 +144,8 @@ def mostrarFuncionarios(ui):
             ''')
         
         #funções botões
-        botaoEditar.clicked.connect(lambda: funcEditar())
+        botaoEditar.clicked.connect(lambda _,idx=i: funcEditar(ui, stackWidget, idx))
+        botaoExcluir.clicked.connect(lambda: funcExcluir(ui, stackWidget))
 
         #formatação de tabela de widget
         row = i // colunas

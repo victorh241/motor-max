@@ -59,7 +59,7 @@ def verificarTela(index, stackWidget):
             nivelAcesso(stackWidget.currentWidget())
 
         if index == 2:
-            mostrarFuncionarios(stackWidget.currentWidget())
+            mostrarFuncionarios(stackWidget.currentWidget(), stackWidget)
 
         if index == 11:
             atualizarComboBox(stackWidget.currentWidget())
