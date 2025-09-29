@@ -92,6 +92,7 @@ def autenticarUsuario(ui, stackWidget):
         if userAtual['login'] == usuario.strip() and userAtual['senha'] == senha.strip():
             acesso = userAtual['acesso']
             user.lvlPermiUserAtual = acesso
+            user.login = userAtual['login']
             stackWidget.setCurrentIndex(1)
         else:
             senhaErrada(ui)

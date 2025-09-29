@@ -244,4 +244,4 @@ SELECT * FROM serviços;
 SELECT * FROM veiculos;
 SELECT * FROM clientes;
 
-select * FROM `ordem de serviços`;
+SELECT * FROM `ordem de serviços`;

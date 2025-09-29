@@ -69,8 +69,6 @@ def verificarTela(index, stackWidget):
     except Exception as e:
         print(f"erro: {e}")
 
-#fazer o debug
-
 def janela():
     try:
         app = QApplication([])

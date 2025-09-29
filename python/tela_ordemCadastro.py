@@ -220,20 +220,58 @@ def adcionarNovoProduto(ui):
         ui.spinBox_2.setValue(0)
 #endregion
 
+def cadastrarItemAtendente(ui):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    #buscar id do cliente
+    cursor.execute("SELECT id_cliente, nome FROM clientes")
+    dadosCliente = cursor.fetchall()
+    id_cliente = 0
+
+    for _cliente in dadosCliente:
+        if ui.comboBox_2.currentText() == _cliente[1]:
+            id_cliente = _cliente[0]
+    
+    #busca id do funcionario que registra a nota
+    cursor.execute("SELECT id_funcionario, login FROM usuarios")
+    dadosUser = cursor.fetchall()
+    id_funcionario = 0
+
+    for _user in dadosUser:
+        if _user[1] == user.login:
+            id_funcionario= _user[0]
+
+    #registrar
+    sqlComando = "INSERT INTO Atendente(Clientes_id_cliente, Funcionario_id_funcionario) VALUES (%s, %s)"
+    dadosComando = (id_cliente, id_funcionario)
+    cursor.execute(sqlComando, dadosComando)
+    cnx.commit()
+
+def cadastrarItemEquipeMecanicos(ui):
+    pass
+    #buscar mecanico
+
 def registrarOrdem(ui, stackWidget):
     #region campos
     cnx = carregarBD()
     desconto = ui.lineEdit_4.text()
     cliente = ui.comboBox_2.currentText()
     veiculo = ui.comboBox.currentText()
-    status = ui.comboBox.currentText()
+    status = ui.comboBox_3.currentText()
     codigo = ui.lineEdit_5.text()
     data = ui.lineEdit_6.text()
-    servico = ui.comboBox_4.currentText()
-    produto = ui.comboBox_5.currentText()
+    servico = ui.comboBox_6.currentText()
+    produto = ui.comboBox_7.currentText()
     quantidadeServicos = ui.spinBox.value()
     quantidadeProdutos = ui.spinBox_2.value()
     #endregion
+
+    #registrar atendente
+    cadastrarItemAtendente(ui)
+
+    #registrar equipe mecanicos
+    
 
     #region procura e assimilação de dados
     #servico
@@ -252,7 +290,8 @@ def registrarOrdem(ui, stackWidget):
     cursor.execute("SELECT id_veiculo, marca, modelo FROM veiculos")
     dadosVeiculos = cursor.fetchall()
     for _veiculo in dadosVeiculos:
-        if veiculo.strip() == _veiculo[1] + _veiculo[2]:
+        nomeVeiculo = f"{_veiculo[1]} {_veiculo[2]}"
+        if veiculo == nomeVeiculo:
             id_veiculo = _veiculo[0]
 
     #id_funcioario
@@ -264,6 +303,7 @@ def registrarOrdem(ui, stackWidget):
         if _usuario[1] == user.login:
             id_funcionario = _usuario[0]
 
+    print(id_funcionario)
     #cliente
     cursor.execute("SELECT id_cliente, nome FROM clientes")
     dadoscliente = cursor.fetchall()
@@ -273,6 +313,7 @@ def registrarOrdem(ui, stackWidget):
         if cliente == _cliente[1]:
             id_cliente = _cliente[0]
 
+    #produto
     if produto != "":
         id_produto = 0
         cursor.execute("SELECT id_produto, descrição FROM produtos")
@@ -295,7 +336,7 @@ def registrarOrdem(ui, stackWidget):
         cnx.commit()
         print("sucesso !")
 
-    comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_carro, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_funcionario, id_cliente, id_serviço, codigo, id_veiculo, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, data, quantidadeServicos, quantidadeProdutos)
     cursor.execute(comandoInsertOrdem, dadosOrdem)
     cnx.commit()
