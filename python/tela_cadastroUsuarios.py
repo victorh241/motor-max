@@ -60,7 +60,7 @@ def registrarNovoUsuario(ui, stackWidget):
     senha = ui.lineEdit_6.text()
     funcionario = ui.comboBox_2.currentText()
     func = ui.comboBox.currentText()
-    
+
     if login.strip() == "" or senha.strip() == "" or func == "" or funcionario == "":
         errorCampos(ui)
     else:
@@ -77,6 +77,12 @@ def registrarNovoUsuario(ui, stackWidget):
         val = (id_funcionario, login, senha, func)
         cursor.execute(sql, val)
         cnx.commit()
+
+        if func == "Mecânico":
+            sqlComando = "INSERT INTO mecanicos(id_funcionario) VALUES (%s)"
+            dadosComando = (id_funcionario,)
+
+            cursor.execute(sqlComando, dadosComando)
 
         stackWidget.setCurrentIndex(6)
 

@@ -248,10 +248,6 @@ def cadastrarItemAtendente(ui):
     cursor.execute(sqlComando, dadosComando)
     cnx.commit()
 
-def cadastrarItemEquipeMecanicos(ui):
-    pass
-    #buscar mecanico
-
 def registrarOrdem(ui, stackWidget):
     #region campos
     cnx = carregarBD()
@@ -269,9 +265,6 @@ def registrarOrdem(ui, stackWidget):
 
     #registrar atendente
     cadastrarItemAtendente(ui)
-
-    #registrar equipe mecanicos
-    
 
     #region procura e assimilação de dados
     #servico
@@ -340,7 +333,9 @@ def registrarOrdem(ui, stackWidget):
     dadosOrdem = (id_funcionario, id_cliente, id_servico, codigo, id_veiculo, status, data, quantidadeServicos, quantidadeProdutos)
     cursor.execute(comandoInsertOrdem, dadosOrdem)
     cnx.commit()
-    print("sucesso !")
+    
+    #registrar equipe mecanicos
+    comandosqlRegistroEquipe = "INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)"
 
 def configTelaOrdemCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço cadastro.ui")

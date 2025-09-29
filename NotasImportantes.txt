@@ -1,0 +1,4 @@
+Bloco de notas de lembretes o codigo é muito grande não dá pra ver tudo
+Fazer os debugs 
+Fazer O visual do nivel de acesso mais aparente uma cor mais desbotada algo do tipo que seja mais obvio
+Registrar o valor total

@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Atendente` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Clientes_has_Funcionario_Funcionario1`
     FOREIGN KEY (`Funcionario_id_funcionario`)
-    REFERENCES `motormax`.`Funcionario` (`id_funcionario`)
+    REFERENCES `motormax`.`Funcionarios` (`id_funcionario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
