@@ -4,6 +4,12 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize
 from bancoDados import carregarBD
 
+def funcEditar(ui):
+    pass
+
+def funcExcluir(ui):
+    pass
+
 #region butões
 def mostrarFuncionarios(ui):
     cnx = carregarBD()
@@ -97,9 +103,11 @@ def mostrarFuncionarios(ui):
         }
         ''')
 
-
     tabela.setCellWidget(0, 0, frame)
     #endregion
+
+    #funções botões
+    botaoEditar.clicked.connect()
 
 def voltarTelaPrincipal(stackWidget):
     stackWidget.setCurrentIndex(1)
