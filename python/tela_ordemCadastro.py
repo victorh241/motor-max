@@ -349,6 +349,9 @@ def registrarOrdem(ui, stackWidget):
     cursor.execute(comandoInsertOrdem, dadosOrdem)
     cursor.commit()
 
+    #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
+
+
     stackWidget.setCurrentIndex(5)
 
 def configTelaOrdemCadastro(stackWidget):

@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`mecanicos` (
   INDEX `fk_mecanico_Funcionario1_idx` (`id_funcionario` ASC) VISIBLE,
   CONSTRAINT `fk_mecanico_Funcionario1`
     FOREIGN KEY (`id_funcionario`)
-    REFERENCES `motormax`.`Funcionario` (`id_funcionario`)
+    REFERENCES `motormax`.`Funcionarios` (`id_funcionario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
