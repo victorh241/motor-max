@@ -1,7 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QWidget, QProgressBar, QLabel, QFrame 
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QTimer, Qt
+from PyQt5.QtCore import QTimer
 import user
 import mysql.connector
 from bancoDados import carregarBD
