@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QHBoxLayout, QPushButton, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel
 from bancoDados import carregarBD
 
 #region butões
@@ -16,18 +16,47 @@ def mostrarFuncionarios(ui):
     tabela.setColumnCount(1)
 
     #region criar o frame
-    frame = QWidget()
-    labelNome = QLabel("teste 1")
-    labelFunc = QLabel("teste 2")
-    botaoExcluir = QPushButton("Excluir")
-    botaoEditar = QPushButton("Editar")
+    frame = QFrame()
+    labelNome = QLabel("teste 1", frame)
+    labelFunc = QLabel("teste 2", frame)
+    botaoExcluir = QPushButton("Excluir", frame)
+    botaoEditar = QPushButton("Editar", frame)
 
-    frame.addWidget(labelNome)
-    frame.addWidget(labelFunc)
-    frame.addWidget(botaoEditar)
-    frame.addWidget(botaoExcluir)
+    #config dos labels
+    labelNome.setGeometry(10, 10, 80, 20)
+    labelFunc.setGeometry(10, 50, 80, 20)
 
-    tabela.setCellWidget(1, 1, frame)
+    labelNome.setStyleSheet('''
+        QLabel{
+        border: none;
+        font-size: 14px;
+        }   
+    ''')
+
+    labelFunc.setStyleSheet('''
+        QLabel{
+        border: none;
+        font-size: 14px;
+        }   
+    ''')
+
+    #config dos botões
+    botaoEditar.setGeometry(140, 80, 30, 30)
+    botaoExcluir.setGeometry(180, 80, 30, 30)
+
+    #configs do frame
+    frame.setFixedSize(220, 120)
+    frame.setGeometry(0, 0, 220, 120)
+    frame.setStyleSheet('''
+        QFrame{
+        background-color: white;
+        border-radius: 15px;
+        border: 1px solid
+        }
+        ''')
+
+
+    tabela.setCellWidget(0, 0, frame)
     #endregion
 
 def voltarTelaPrincipal(stackWidget):
