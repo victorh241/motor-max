@@ -45,7 +45,7 @@ def mostraClientes(ui, stackWidget):
         tabela = ui.tableWidget
 
         #configurações da tabela
-        colunas = 2
+        colunas = 1
 
         tabela.setRowCount(len(dados))
         tabela.setColumnCount(colunas)
@@ -53,8 +53,7 @@ def mostraClientes(ui, stackWidget):
         #espaçamento
         esp_vertical = 20 # espaçamento vertical
 
-        tabela.setColumnWidth(0, 520)
-        tabela.setColumnWidth(1, 490)
+        tabela.setColumnWidth(0, 640)
 
         for r in range(len(dados)):
             tabela.setRowHeight(r, 120 + esp_vertical)
@@ -76,7 +75,7 @@ def mostraClientes(ui, stackWidget):
 
             #region config do frame
             #config do frame
-            frame.setFixedSize(480, 120)
+            frame.setFixedSize(620, 120)
 
             frame.setStyleSheet('''
                 QFrame{

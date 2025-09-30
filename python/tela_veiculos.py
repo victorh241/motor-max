@@ -16,7 +16,7 @@ def mostrarVeiculos(ui, stackWidget):
             cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (dados[1],))
             nomeCliente = cursor.fetchone()[0]
 
-
+        
     except Exception as e:
         print("Erro ao conectar ao banco de dados: ", e)
         return
