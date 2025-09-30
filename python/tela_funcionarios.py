@@ -1,21 +1,33 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 
 from bancoDados import carregarBD
 from tela_funcionarioCadastro import carregarDadosFuncionario
 
-def funcEditar(ui, stackWidget, index):
+def funcEditar(stackWidget, index):
     funcId = index + 1
+    stackWidget.setCurrentIndex(8)
+    carregarDadosFuncionario(stackWidget.widget(8), funcId, stackWidget)
 
-    cnx = carregarBD()
-    cursor = cnx.cursor()
+def funcExcluir(ui, index):# aqui existe um problema, se o usuario quer que exclua o funcionario ele precisa primeiro excluir o usuario vinculado a ele
+    id_funcionario = index + 1
 
-        
+    #mensagem de confirmação
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse funcionário ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
+    else:
+        pass
 
-def funcExcluir(ui, stackWidget):
-    pass
+    
 
 #region butões
 def mostrarFuncionarios(ui, stackWidget):
@@ -129,6 +141,9 @@ def mostrarFuncionarios(ui, stackWidget):
         botaoEditar.setIconSize(QSize(20, 20))
         botaoExcluir.setIconSize(QSize(20, 20))
 
+        botaoEditar.setCursor(Qt.PointingHandCursor)
+        botaoExcluir.setCursor(Qt.PointingHandCursor)
+
         #texto e coisas
         #for _funcionario in dadosFuncionarios:
         
@@ -144,8 +159,8 @@ def mostrarFuncionarios(ui, stackWidget):
             ''')
         
         #funções botões
-        botaoEditar.clicked.connect(lambda _,idx=i: funcEditar(ui, stackWidget, idx))
-        botaoExcluir.clicked.connect(lambda: funcExcluir(ui, stackWidget))
+        botaoEditar.clicked.connect(lambda _,idx=i: funcEditar(stackWidget, idx))
+        botaoExcluir.clicked.connect(lambda _, idx=i: funcExcluir(ui, idx))
 
         #formatação de tabela de widget
         row = i // colunas

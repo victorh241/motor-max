@@ -7,8 +7,57 @@ from bancoDados import carregarBD
 
 #TODO: fazer os campos vazios
 
-def carregarDadosFuncionario(ui, id_funcionario):
-    pass
+def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    nome = ui.lineEdit_5.text()
+    email = ui.lineEdit_4.text()
+    cpf = ui.lineEdit_6.text()
+
+    if nome.strip() == "" or email.strip() == "" or cpf.strip() == "":
+        errorCampos(ui)
+    else:
+        if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            sql = "UPDATE funcionarios SET nome = %s, email = %s, cpf = %s WHERE id_funcionario = %s"
+            val = (nome, email, cpf, id_funcionario)
+
+            cursor.execute(sql, val)
+            cnx.commit()
+
+            ui.lineEdit_5.setText("")
+            ui.lineEdit_4.setText("")
+            ui.lineEdit_6.setText("")
+
+            ui.pushButton.setText("Salvar")
+            ui.pushButton.clicked.disconnect()
+            ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
+        else:
+            ui.lineEdit_4.setStyleSheet('''
+            QLineEdit {
+            border: 2px solid red;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            color: #374151;
+            }
+            ''')
+
+def carregarDadosFuncionario(ui, id_funcionario, stackWidget):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    cursor.execute("SELECT nome, email, cpf FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
+    dados = cursor.fetchone() #Explicação isso serve para pegar apenas um resultado
+    if dados:
+        ui.lineEdit_5.setText(dados[0])
+        ui.lineEdit_4.setText(dados[1])
+        ui.lineEdit_6.setText(dados[2])
+
+    ui.pushButton.setText("Atualizar")
+
+    ui.pushButton.clicked.disconnect()
+    ui.pushButton.clicked.connect(lambda: atualizarDadosFuncionario(ui, id_funcionario, stackWidget))
 
 def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_5.setText("")
