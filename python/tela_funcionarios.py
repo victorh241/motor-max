@@ -6,6 +6,8 @@ from PyQt5.QtCore import QSize, Qt
 from bancoDados import carregarBD
 from tela_funcionarioCadastro import carregarDadosFuncionario
 
+#TODO: melhorar os espaçamentos
+
 def funcEditar(stackWidget, index):
     funcId = index + 1
     stackWidget.setCurrentIndex(8)

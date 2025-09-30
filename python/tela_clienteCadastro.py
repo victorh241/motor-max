@@ -3,29 +3,58 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import re
 from bancoDados import carregarBD
 
-#TODO: fazer o reporte do campos vazios
+def carregarDadosCliente(ui, clienteId, stackWidget):
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+
+        cursor.execute("SELECT nome, cpf, email FROM Clientes WHERE id_cliente = %s", (clienteId,))
+        dadosCliente = cursor.fetchone()
+
+        if dadosCliente:
+            ui.lineEdit.setText(dadosCliente[0])  # nome
+            ui.lineEdit_2.setText(dadosCliente[2])  # email
+            ui.lineEdit_3.setText(dadosCliente[1])  # cpf
+
+            cursor.execute("SELECT telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
+            telefones = cursor.fetchall()
+            ui.frame_3.show()
+            ui.comboBox_2.clear()
+            for _telefone in telefones:
+
+
+                novoIndex = ui.comboBox_2.count() + 1
+                ui.comboBox_2.addItem(f"telefone {novoIndex}")
+                ui.comboBox_2.setCurrentIndex(novoIndex - 1)
+                if ui.lineEdit_7.text() == "":
+                    ui.lineEdit_7.setText(_telefone[0])
+                else:
+                    ui.comboBox_2.addItem(f"telefone {novoIndex + 1}")
+                    ui.lineEdit_7.setText("")
+    except Exception as e:
+        print(f"Erro ao carregar dados do cliente: {e}")
 
 #region outros butões
 def voltarTelaPrincipal(ui, stackWidget):
     stackWidget.setCurrentIndex(3)
 
-    ui.lineEdit_5.setText("")
-    ui.lineEdit_6.setText("")
-    ui.lineEdit_4.setText("")
+    ui.lineEdit.setText("")
+    ui.lineEdit_2.setText("")
+    ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(3)
 
-    ui.lineEdit_5.setText("")
-    ui.lineEdit_6.setText("")
-    ui.lineEdit_4.setText("")
+    ui.lineEdit.setText("")
+    ui.lineEdit_2.setText("")
+    ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
 #endregion
 
 def erroCampos(ui):
-    ui.lineEdit_5.setStyleSheet('''
+    ui.lineEdit.setStyleSheet('''
     QLineEdit {
     border: 2px solid red;
     border-radius: 8px;
@@ -35,7 +64,7 @@ def erroCampos(ui):
     }
     ''')
 
-    ui.lineEdit_4.setStyleSheet('''
+    ui.lineEdit_2.setStyleSheet('''
     QLineEdit {
     border: 2px solid red;
     border-radius: 8px;
@@ -46,7 +75,7 @@ def erroCampos(ui):
     '''
     )
 
-    ui.lineEdit_6.setStyleSheet('''
+    ui.lineEdit_3.setStyleSheet('''
     QLineEdit {
     border: 2px solid red;
     border-radius: 8px;
@@ -59,9 +88,9 @@ def erroCampos(ui):
 def registrarNovoCliente(ui, stackWidget):
     #cliente
     cnx = carregarBD()
-    nome = ui.lineEdit_5.text()
-    email = ui.lineEdit_4.text()
-    cpf = ui.lineEdit_6.text()
+    nome = ui.lineEdit.text()
+    email = ui.lineEdit_2.text()
+    cpf = ui.lineEdit_3.text()
     novoTelefone = ui.lineEdit_7.text()
 
     qntOpcoesTelefones = ui.comboBox_2.count()
@@ -99,7 +128,7 @@ def registrarNovoCliente(ui, stackWidget):
             
             stackWidget.setCurrentIndex(3)
         else:
-            ui.lineEdit_4.setStyleSheet('''
+            ui.lineEdit_2.setStyleSheet('''
             QLineEdit {
             border: 2px solid red;
             border-radius: 8px;

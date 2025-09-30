@@ -341,7 +341,7 @@ background-color: rgb(210, 203, 150);
         <string>Excluir</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_4">
+      <widget class="QLineEdit" name="lineEdit_2">
        <property name="geometry">
         <rect>
          <x>460</x>
@@ -427,7 +427,7 @@ background-color: rgb(234, 236, 240);
         <string>Email *</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_5">
+      <widget class="QLineEdit" name="lineEdit">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -467,7 +467,7 @@ background-color: rgb(234, 236, 240);
         <string>Ex: Cleiton</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_6">
+      <widget class="QLineEdit" name="lineEdit_3">
        <property name="geometry">
         <rect>
          <x>800</x>

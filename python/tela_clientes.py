@@ -1,23 +1,36 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidgetItem, QTableWidget, QFrame, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QTableWidgetItem, QTableWidget, QFrame, QLabel, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import QSize, Qt
 
 from bancoDados import carregarBD
+from tela_clienteCadastro import carregarDadosCliente
 #carregar tela de cadastro cliente
 
-def editarCliente(dados, ui, stackWidget):
+#TODO: melhorar os espeçamentos
+
+def editarCliente(idx, ui, stackWidget):
     try:
         stackWidget.setCurrentIndex(9)
+        carregarDadosCliente(stackWidget.widget(9), idx + 1, stackWidget)
+
     except Exception as e:
         print(f"Erro ao editar cliente: {e}")
 
-def excluirCliente(dados, ui, stackWidget):
+def excluirCliente(idx, ui, stackWidget):
     try:
         cnx = carregarBD()
         cursor = carregarBD.cursor()
-        cursor.execute("DELETE FROM clientes WHERE id = %s", (dados[0],))
-        cnx.commit()
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Você tem certeza que quer editar esse cliente ?")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        respota = msg.exec_()
+        if respota == QMessageBox.Ok:
+            cnx = carregarBD()
+            cursor = cnx.cursor()
+            cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx + 1,))
+            cnx.commit()
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
 
@@ -36,12 +49,11 @@ def mostraClientes(ui, stackWidget):
         tabela.setRowCount(len(dados))
         tabela.setColumnCount(colunas)
 
-        #espaçamento 
-        esp_horizontal = 30 # espaçamento horizontal
+        #espaçamento
         esp_vertical = 20 # espaçamento vertical
 
-        for c in range(colunas):
-            tabela.setColumnWidth(c , 220 + esp_horizontal)
+        tabela.setColumnWidth(0, 520)
+        tabela.setColumnWidth(1, 490)
 
         for r in range(len(dados)):
             tabela.setRowHeight(r, 120 + esp_vertical)
@@ -63,15 +75,14 @@ def mostraClientes(ui, stackWidget):
 
             #region config do frame
             #config do frame
-            frame.setFixedSize(520, 100)
+            frame.setFixedSize(480, 120)
 
             frame.setStyleSheet('''
                 QFrame{
-                    QFrame{
                     background-color: white;
                     border-radius: 15px;
                     border: 1px solid;
-                    }
+                }
             ''')
 
             #endregion
@@ -109,7 +120,8 @@ def mostraClientes(ui, stackWidget):
             labelTituloCpf = QLabel("Cpf:", frame)
             labelCpf = QLabel(f"{_cliente[2]}", frame)
             labelEmail = QLabel(f"Email: {_cliente[3]}", frame)
-            labelTelefone = QLabel(f"telefone {telefones[0]}", frame)#depois eu coloco algo coisa pra falar que tem mais de um telefone
+            labelTelefone = QLabel(f"Telefone: {telefones[0][0]}", frame)#depois eu coloco algo coisa pra falar que tem mais de um telefone
+
 
             #region labels configs
             labelNome.setStyleSheet('''
@@ -153,7 +165,7 @@ def mostraClientes(ui, stackWidget):
             labelNome.setGeometry(30, 20, 370, 30)
             labelTituloCpf.setGeometry(10 , 80 , 30, 20)
             labelCpf.setGeometry(45, 80, 200, 20)
-            labelEmail.setGeometry(40 , 50 , 200, 50)
+            labelEmail.setGeometry(40 , 50 , 200, 20)
             labelTelefone.setGeometry(270, 50, 200, 20)
             #endregion
 
@@ -161,13 +173,11 @@ def mostraClientes(ui, stackWidget):
             botaoEditar = QPushButton("", frame)
             botaoExcluir = QPushButton("", frame)
 
-            # Define o cursor para indicar que é clicável
+            #region config dos botões
             botaoEditar.setCursor(Qt.PointingHandCursor)
             botaoExcluir.setCursor(Qt.PointingHandCursor)
-
-            #region config dos botões
-            botaoEditar.setIcon(QIcon("Imagens/editar.png"))
-            botaoExcluir.setIcon(QIcon("Imagens/excluir.png"))
+            botaoEditar.setIcon(QIcon("imagem/icons/edit.png"))
+            botaoExcluir.setIcon(QIcon("imagem/icons/delete.png"))
             botaoEditar.setIconSize(QSize(20, 20))
             botaoExcluir.setIconSize(QSize(20, 20))
 
@@ -204,6 +214,9 @@ def mostraClientes(ui, stackWidget):
                     background-color: rgb(167, 167, 167);
                 }
             ''')
+
+            botaoEditar.setGeometry(440, 15, 30, 30)
+            botaoExcluir.setGeometry(480, 15, 30, 30)
             #endregion
             row = idx // colunas
             column = idx % colunas
