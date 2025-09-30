@@ -16,7 +16,8 @@ def dados() -> list:
     
     return lista
 
-def voltarParaTelaLogin(stackWidget):
+def voltarParaTelaLogin(ui ,stackWidget):
+    ui.lineEdit.setText("")
     stackWidget.setCurrentIndex(0)
 
 def erro(ui):
@@ -45,5 +46,5 @@ def configTelaRecuperar(stackWidget):
     ui = uic.loadUi("Telas/tela_recuperar_senha.ui")
 
     stackWidget.addWidget(ui)
-    ui.pushButton_2.clicked.connect(lambda: voltarParaTelaLogin(stackWidget))
+    ui.pushButton_2.clicked.connect(lambda: voltarParaTelaLogin(ui ,stackWidget))
     ui.pushButton.clicked.connect(lambda: novaSenhaTela(ui, stackWidget))

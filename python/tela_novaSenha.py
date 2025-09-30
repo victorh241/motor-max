@@ -4,7 +4,9 @@ from PyQt5.QtGui import QIcon
 from bancoDados import carregarBD
 import user
 
-def voltarLogin(stackWidget):
+def voltarLogin(ui ,stackWidget):
+    ui.lineEdit.setText("")
+    ui.lineEdit_2.setText("")
     stackWidget.setCurrentIndex(0)
 
 def erro(ui):
@@ -61,4 +63,4 @@ def configNovaSenha(stackWidget):
     stackWidget.addWidget(ui)
 
     ui.pushButton.clicked.connect(lambda: atulizarSenha(stackWidget, ui))
-    ui.pushButton_2.clicked.connect(lambda: voltarLogin(stackWidget))
+    ui.pushButton_2.clicked.connect(lambda: voltarLogin(ui ,stackWidget))

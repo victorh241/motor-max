@@ -51,8 +51,8 @@ def carregarDadosFuncionario(ui, id_funcionario, stackWidget):
     dados = cursor.fetchone() #Explicação isso serve para pegar apenas um resultado
     if dados:
         ui.lineEdit_5.setText(dados[0])
-        ui.lineEdit_4.setText(dados[1])
-        ui.lineEdit_6.setText(dados[2])
+        ui.lineEdit_4.setText(dados[2])
+        ui.lineEdit_6.setText(dados[1])
 
     ui.pushButton.setText("Atualizar")
 
