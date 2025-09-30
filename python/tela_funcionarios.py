@@ -154,7 +154,7 @@ def mostrarFuncionarios(ui, stackWidget):
             QFrame{
             background-color: white;
             border-radius: 15px;
-            border: 1px solid
+            border: 1px solid;
             }
             ''')
         

@@ -8,7 +8,7 @@ import bancoDados
 from login import configLogin, verificarTelaLogin
 from tela_principal import configTelaPrincipal, nivelAcesso
 from tela_funcionarios import configTelaFuncionarios, mostrarFuncionarios
-from tela_clientes import configTelaClientes
+from tela_clientes import configTelaClientes, mostraClientes
 from tela_veiculos import configTelaVeiculos
 from tela_ordem import configTelaOrdem
 from tela_usuarios import configTelaUsuarios
@@ -60,6 +60,9 @@ def verificarTela(index, stackWidget):
 
         if index == 2:
             mostrarFuncionarios(stackWidget.currentWidget(), stackWidget)
+
+        if index == 3:
+            mostraClientes(stackWidget.currentWidget(), stackWidget)
 
         if index == 11:
             atualizarComboBox(stackWidget.currentWidget())
