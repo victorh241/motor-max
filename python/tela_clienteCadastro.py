@@ -3,6 +3,25 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import re
 from bancoDados import carregarBD
 
+def atualizarCliente(ui, clienteId, stackWidget):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    nome = ui.lineEdit.text()
+    email = ui.lineEdit_2.text()
+    cpf = ui.lineEdit_3.text()
+    novoTelefone = ui.lineEdit_7.text()
+    qntOpcoesTelefones = ui.comboBox_2.count()
+
+    if nome.strip() == "" or email.strip() == "" or cpf.strip() == "" or novoTelefone.strip() == "" or qntOpcoesTelefones == 0:
+        erroCampos(ui)
+    else:
+        sql = "UPDATE Clientes SET nome = %s, email = %s, cpf = %s WHERE id_cliente = %s"
+        valores = (nome, email, cpf, clienteId)
+
+        cursor.execute(sql, valores)
+        cnx.commit()
+
 def carregarDadosCliente(ui, clienteId, stackWidget):
     try:
         cnx = carregarBD()
@@ -16,13 +35,16 @@ def carregarDadosCliente(ui, clienteId, stackWidget):
             ui.lineEdit_2.setText(dadosCliente[2])  # email
             ui.lineEdit_3.setText(dadosCliente[1])  # cpf
 
+            # nome do butão
+            ui.pushButton.setText("Atualizar")
+            ui.pushButton.clicked.disconnect()
+            ui.pushButton.clicked.connect(lambda: atualizarCliente(ui, clienteId, stackWidget))
+
             cursor.execute("SELECT telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
             telefones = cursor.fetchall()
             ui.frame_3.show()
             ui.comboBox_2.clear()
             for _telefone in telefones:
-
-
                 novoIndex = ui.comboBox_2.count() + 1
                 ui.comboBox_2.addItem(f"telefone {novoIndex}")
                 ui.comboBox_2.setCurrentIndex(novoIndex - 1)

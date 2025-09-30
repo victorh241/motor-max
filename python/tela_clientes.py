@@ -17,7 +17,7 @@ def editarCliente(idx, ui, stackWidget):
     except Exception as e:
         print(f"Erro ao editar cliente: {e}")
 
-def excluirCliente(idx, ui, stackWidget):
+def excluirCliente(idx, ui, stackWidget):# aqui também tem dependencias no veiculo, ordem de serviço e telefones
     try:
         cnx = carregarBD()
         cursor = carregarBD.cursor()
@@ -30,6 +30,7 @@ def excluirCliente(idx, ui, stackWidget):
             cnx = carregarBD()
             cursor = cnx.cursor()
             cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx + 1,))
+            cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx + 1,))#não é muito um ponto de discurssão porque o telefone depende diretamente de cliente
             cnx.commit()
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
