@@ -2,6 +2,58 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from bancoDados import carregarBD
 
+def atualizarVeiculo(stackWidget, ui, id_veiculo):
+    placa = ui.lineEdit_5.text()
+    ano = ui.lineEdit_6.text()
+    marca = ui.lineEdit_7.text()
+    modelo = ui.lineEdit_8.text()
+    clienteNome = ui.comboBox.currentText()
+
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+    if placa.strip() == "" or ano.strip() == "" or marca.strip() == "" or modelo.strip() == "" or clienteNome == "":
+        erroCampos(ui)
+    else:
+        cursor.execute("SELECT id_cliente, nome FROM clientes")
+        dadosCliente = cursor.fetchall()
+        id_cliente = 0
+        for _cliente in dadosCliente:
+            if _cliente[1] == clienteNome:
+                id_cliente = _cliente[0]
+        
+        sql = "UPDATE veiculos SET id_cliente = %s, placa = %s, ano = %s, marca = %s, modelo = %s WHERE id_veiculo = %s"
+        dadosVeiculos = (id_cliente, placa, ano, marca, modelo, id_veiculo)
+        cursor.execute(sql, dadosVeiculos)
+        cnx.commit()
+
+
+def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("SELECT id_veiculo, id_cliente, placa, ano, modelo, marca FROM veiculos WHERE id_veiculo = %s", (id_veiculo,))
+        dadosVeiculo = cursor.fetchone()
+
+        if dadosVeiculo:
+            ui.lineEdit_5.setText(dadosVeiculo[2])  # placa
+            ui.lineEdit_6.setText(str(dadosVeiculo[3]))  # ano
+            ui.lineEdit_7.setText(dadosVeiculo[5])  # marca
+            ui.lineEdit_8.setText(dadosVeiculo[4])  # modelo
+
+            # Carregar o nome do cliente no comboBox
+            cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (dadosVeiculo[1],))
+            cliente = cursor.fetchone()
+
+            ui.comboBox.clear()
+            if cliente:
+                ui.comboBox.addItem(cliente[0])
+            
+            ui.pushButton.setText("Atualizar")
+            ui.pushButton.disconnect()
+            ui.pushButton.clicked.connect(lambda: atualizarVeiculo(stackWidget, ui, id_veiculo))
+    except Exception as e:
+        print(f"Erro ao carregar dados do veiculo: {e}")
+
 def atualizarComboBox(ui):
     cnx = carregarBD()
     cursor = cnx.cursor()
