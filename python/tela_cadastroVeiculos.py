@@ -26,6 +26,8 @@ def atualizarVeiculo(stackWidget, ui, id_veiculo):
         cursor.execute(sql, dadosVeiculos)
         cnx.commit()
 
+        stackWidget.setCurrentIndex(4)
+
 
 def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
     try:

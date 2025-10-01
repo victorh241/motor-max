@@ -9,7 +9,7 @@ from tela_cadastroVeiculos import carregarDadosVeiculo
 def editarVeiculo(idx, stackWidget):
     try:
         stackWidget.setCurrentIndex(14)
-        carregarDadosVeiculo(stackWidget.widget(14), idx + 1, stackWidget)
+        carregarDadosVeiculo(stackWidget.widget(14), idx, stackWidget)
     except Exception as e:
         print(f"Erro ao editar veiculo: {e}")
 
@@ -222,8 +222,8 @@ def mostrarVeiculos(ui, stackWidget):#tem algum erro aqui
 
             tabela.setCellWidget(index, 0, frame)
 
-            botaoEditar.clicked.connect(lambda _, id=_veiculo[0]: editarVeiculo(id, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, id=_veiculo[0]: excluirVeiculo(id, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, id=_veiculo[1]: editarVeiculo(id, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, id=_veiculo[1]: excluirVeiculo(id, ui, stackWidget))
     except Exception as e:
         print("Erro ao conectar ao banco de dados: ", e)
         return
