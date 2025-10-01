@@ -10,7 +10,7 @@ from tela_principal import configTelaPrincipal, nivelAcesso
 from tela_funcionarios import configTelaFuncionarios, mostrarFuncionarios
 from tela_clientes import configTelaClientes, mostraClientes
 from tela_veiculos import configTelaVeiculos, mostrarVeiculos
-from tela_ordem import configTelaOrdem
+from tela_ordem import configTelaOrdem, mostrarServicos
 from tela_usuarios import configTelaUsuarios
 from telaProduto import configTelaProdutos
 from tela_funcionarioCadastro import configTelaFuncionarioCadastro
@@ -67,6 +67,9 @@ def verificarTela(index, stackWidget):
         if index == 4:
             mostrarVeiculos(stackWidget.currentWidget(), stackWidget)
 
+        if index == 5:
+            mostrarServicos(stackWidget.currentWidget(), stackWidget)
+
         if index == 11:
             atualizarComboBox(stackWidget.currentWidget())
 
@@ -111,7 +114,9 @@ def janela():
         stack_widget.setCurrentIndex(0)
 
         stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
-        tela.show()
+
+
+        tela.showMaximized()
         app.exec()
         bancoDados.fechar_conecxao()
     except Exception as e:

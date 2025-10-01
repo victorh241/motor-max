@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Venda_final`
+-- Table `motormax`.`Venda_final`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `motormax`.`Venda_final` (
   `idVenda_final` INT NOT NULL AUTO_INCREMENT,
