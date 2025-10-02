@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>807</height>
+    <height>1007</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,7 +169,7 @@ border: none;
       </property>
       <property name="font">
        <font>
-        <pointsize>1</pointsize>
+        <pointsize>-1</pointsize>
         <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
@@ -196,7 +196,7 @@ margin-bottom: 15px;
       <property name="minimumSize">
        <size>
         <width>1200</width>
-        <height>500</height>
+        <height>720</height>
        </size>
       </property>
       <property name="maximumSize">

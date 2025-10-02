@@ -11,8 +11,8 @@ from tela_funcionarios import configTelaFuncionarios, mostrarFuncionarios
 from tela_clientes import configTelaClientes, mostraClientes
 from tela_veiculos import configTelaVeiculos, mostrarVeiculos
 from tela_ordem import configTelaOrdem, mostrarServicos
-from tela_usuarios import configTelaUsuarios
-from telaProduto import configTelaProdutos
+from tela_usuarios import configTelaUsuarios, mostrarUsuarios
+from telaProduto import configTelaProdutos, mostrarProdutos
 from tela_funcionarioCadastro import configTelaFuncionarioCadastro
 from tela_clienteCadastro import configClienteCadastro
 from tela_cadastroServiços import configCadastroServico
@@ -69,6 +69,12 @@ def verificarTela(index, stackWidget):
 
         if index == 5:
             mostrarServicos(stackWidget.currentWidget(), stackWidget)
+
+        if index == 6:
+            mostrarUsuarios(stackWidget.currentWidget(), stackWidget)
+
+        if index == 7:
+            mostrarProdutos(stackWidget.currentWidget(), stackWidget)
 
         if index == 11:
             atualizarComboBox(stackWidget.currentWidget())

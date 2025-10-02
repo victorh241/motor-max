@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1118</width>
-    <height>921</height>
+    <width>1280</width>
+    <height>901</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -98,13 +98,13 @@ border: none;
       <property name="minimumSize">
        <size>
         <width>400</width>
-        <height>90</height>
+        <height>80</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>400</width>
-        <height>90</height>
+        <height>80</height>
        </size>
       </property>
       <property name="frameShape">
@@ -165,13 +165,13 @@ border: none;
       <property name="minimumSize">
        <size>
         <width>1100</width>
-        <height>700</height>
+        <height>680</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>1100</width>
-        <height>700</height>
+        <height>690</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -334,7 +334,7 @@ border:1px solid rgba(0,0,0,0.1);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1118</width>
+     <width>1280</width>
      <height>21</height>
     </rect>
    </property>
