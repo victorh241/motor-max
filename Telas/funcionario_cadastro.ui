@@ -26,7 +26,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>80</height>
+        <height>40</height>
        </size>
       </property>
       <widget class="QFrame" name="frame_3">
@@ -172,7 +172,7 @@ border: none;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
@@ -182,7 +182,6 @@ border: none;
         <string notr="true">QLabel{
 font-size: 22px;
 margin-top: 30px;
-margin-bottom: 15px;
 font: plain;
 }</string>
        </property>
@@ -197,13 +196,13 @@ font: plain;
       <property name="minimumSize">
        <size>
         <width>1200</width>
-        <height>700</height>
+        <height>600</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>1200</width>
-        <height>700</height>
+        <height>600</height>
        </size>
       </property>
       <property name="styleSheet">
@@ -221,14 +220,14 @@ border: 1px solid rgba(0, 0, 0,0.1); </string>
        <property name="geometry">
         <rect>
          <x>420</x>
-         <y>580</y>
+         <y>520</y>
          <width>150</width>
          <height>45</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -291,14 +290,14 @@ background-color: #582503;
        <property name="geometry">
         <rect>
          <x>620</x>
-         <y>580</y>
+         <y>520</y>
          <width>150</width>
          <height>48</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -341,7 +340,7 @@ background-color: rgb(210, 203, 150);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -430,7 +429,7 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -470,7 +469,7 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">

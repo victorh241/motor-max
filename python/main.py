@@ -122,7 +122,7 @@ def janela():
         stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
 
 
-        tela.showMaximized()
+        tela.show()
         app.exec()
         bancoDados.fechar_conecxao()
     except Exception as e:

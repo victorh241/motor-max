@@ -1,0 +1,57 @@
+Nome do projeto: MotorMax
+Grupo: Victor santos, diogo Miranda, Ruy Ribeiro, Juliene de Sousa, Antônio Silva, Adreson 'Patrick' Oliveira.
+
+falta:
+falta melhorar o espaçamento dos frames em todas as listagens. - detalhe 
+fazer a listagem do usuário. - importante
+fazer a listagem da ordem de serviço. - importante
+fazer a listagem dos produtos.
+fazer a função de procura dos produtos
+fazer a função de procura do usuário
+fazer a função de procura do cliente
+precisa ver o delete caso a pessoa queira fazer um delete de entidade dependente
+estilização dos frames da listagem
+colocar o texto do telefone quando carregar dados do cliente
+carregar outros telefones quando carregar dados do cliente
+quando adiciona um novo telefone a caixa tem que estar vazia
+mudar o texto da caixa quando mudar índice
+adicionar função de excluir na tela do cliente
+bug no excluir veiculo
+falha de texto funcionário (aumentar tamanho)
+tirar o texto quando sair da tela cadastro funcionário
+aviso caso tenha o cpf que já foi cadastrado
+erro de campo cadastro ordem de serviço
+erro no duplicata quando: mysql.connector.errors.IntegrityError: 1062 (23000)
+bug no funcionário quando excluir
+criar executável
+
+pronto:
+listagem clientes
+tela de login
+campos errados
+formatação de email de todas as partes
+cadastro de telefones
+cadastro de múltiplo telefones
+cadastro do funcionário
+listagem do funcionários
+cadastro do cliente
+listagem do cliente
+cadastro do veículos
+listagem do veículos
+tela de recuperar senha
+tela de alterar senha
+tela de cadastro de produtos
+tela de cadastro de serviços
+tela de listagem de serviços
+campos de erro na tela de produtos
+campos de erro na tela de serviço
+campos de erro na tela de veículos
+funções de carregar dados
+banco de dados
+o arquivo do user
+
+dia 06: 
+dia 08: problemas de dependência
+dia 13: problemas da tela ordem cadastro
+dia 15: funções do cliente
+dia 17: correções de bugs

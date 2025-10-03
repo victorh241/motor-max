@@ -26,8 +26,6 @@ def funcExcluir(ui, index):# aqui existe um problema, se o usuario quer que excl
         cnx = carregarBD()
         cursor = cnx.cursor()
         cursor.execute("DELETE FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
-    else:
-        pass
 
     
 
@@ -62,8 +60,21 @@ def mostrarFuncionarios(ui, stackWidget):
     tabela.setVerticalHeaderLabels([""] * tabela.rowCount())
     tabela.horizontalHeader().setVisible(False)
     tabela.verticalHeader().setVisible(False)
-
     tabela.setShowGrid(False)
+    tabela.setFocusPolicy(Qt.NoFocus)
+    tabela.setEditTriggers(QTableWidget.NoEditTriggers)
+    tabela.setSelectionMode(QTableWidget.NoSelection)
+
+    tabela.setStyleSheet('''
+        QTableWidget{
+            border: none;
+            background-color: white;
+        }
+                         
+        QTableWidget::item{
+            padding: 10px;
+        }
+    ''')
     #endregion
 
     #region criar o frame

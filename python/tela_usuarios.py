@@ -9,7 +9,7 @@ def mostrarUsuarios(ui, stackWidget):
     try:
         cnx = carregarBD()
         cursor = cnx.cursor()
-        cursor.execute("SELECT id_usuario, id_funcionario,login, nivelAcesso FROM usuarios")
+        cursor.execute("SELECT id_usuario, id_funcionario, login, nivelAcesso FROM usuarios")
         dados = cursor.fetchall()
 
         tabela = ui.tableWidget
@@ -28,6 +28,127 @@ def mostrarUsuarios(ui, stackWidget):
         for idx, _usuario in enumerate(dados):
             frame = QFrame()
 
+            #region config do frame
+            frame.setFixedSize(950, 100)
+
+            frame.setStyleSheet('''
+                QFrame{
+                    background-color: white;
+                    border-radius: 15px;
+                    border: 1px solid;
+                ''')
+            #endregion
+
+            #region labels
+            labelLogin = QLabel(f"Login: {_usuario[2]}", frame)
+            
+            if _usuario[3] == 'admin':
+                nivel = "Administrador"
+                labelFunc = QLabel(nivel, frame)
+            else:
+                labelFunc = QLabel(_usuario[3], frame)
+            
+            #region config labels
+            #login label
+            labelLogin.setGeometry(10, 10, 220, 30)
+
+            labelLogin.setStyleSheet('''
+            QLabel{
+            border: none;
+            background: transparent;
+            font-size: 20px;
+            }
+            ''')
+
+            #função label
+            labelFunc.setGeometry(250, 15, 90, 20)
+
+            match labelFunc.text():
+                case 'Administrador':
+                    labelFunc.setStyleSheet('''
+                    QLabel{
+                        border: none;
+                        background-color:rgb(255, 226, 226) ;
+                        color: rgb(177, 14, 18);
+                        font-size: 12px;
+                        margin-left: 8px;
+                        }
+                    ''')
+                case 'Atendente':
+                    labelFunc.setStyleSheet('''
+                                QLabel{
+                                    border: none;
+                                    background-color: rgb(219, 252, 231) ;
+                                    color: rgb(8, 101, 82);
+                                    font-size: 12px;
+                                    margin-left: 8px;
+                                    }
+                                ''')
+                case 'Mecânico':
+                    labelFunc.setStyleSheet('''
+                                QLabel{
+                                    border: none;
+                                    background-color: rgb(219, 234, 254) ;
+                                    color: rgb(43, 79, 186);
+                                    font-size: 12px;
+                                    margin-left: 8px;
+                                    }
+                                ''')
+            #endregion
+
+            #region pushButton
+            botaoEditar = QPushButton("" , frame)
+            botaoExcluir = QPushButton("" , frame)
+
+            #region config botão
+            botaoEditar.setGeometry(860, 10, 30, 30)
+
+            botaoEditar.setStyleSheet('''
+                    QPushButton{
+                        border: 1px solid rgba(156, 156, 156, 235);
+                        background-color: rgb(255, 255, 255);
+                        border-radius: 9px;
+                    }
+                                                            
+                    QPushButton:hover{
+                        background-color:  rgb(234, 236, 240);
+                    }
+                                                            
+                                        
+                    QPushButton:pressed{
+                        background-color: rgb(167, 167, 167);
+                    }                      
+                ''')
+            
+            botaoExcluir.setGeometry(900, 10, 30, 30)
+
+            botaoExcluir.setStyleSheet('''
+                QPushButton{
+                    border: 1px solid rgba(156, 156, 156, 235);
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 9px;
+                }
+                                                        
+                QPushButton:hover{
+                    background-color:  rgb(234, 236, 240);
+                }
+                                                        
+                                    
+                QPushButton:pressed{
+                    background-color: rgb(167, 167, 167);
+                }
+            ''')
+
+            botaoEditar.setIcon(QIcon("imagem/icons/edit.png"))
+            botaoExcluir.setIcon(QIcon("imagem/icons/delete.png"))
+            botaoEditar.setIconSize(QSize(20, 20))
+            botaoExcluir.setIconSize(QSize(20, 20))
+            botaoEditar.setCursor(Qt.PointingHandCursor)
+            botaoExcluir.setCursor(Qt.PointingHandCursor)
+            #endregion
+            #endregion
+
+            #endregion
             
 
     except Exception as e:
