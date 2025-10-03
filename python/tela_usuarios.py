@@ -90,11 +90,11 @@ def mostrarUsuarios(ui, stackWidget):
             labelLogin.setGeometry(10, 10, 220, 30)
 
             labelLogin.setStyleSheet('''
-            QLabel{
-            border: none;
-            background: transparent;
-            font-size: 20px;
-            }
+                QLabel{
+                border: none;
+                background: transparent;
+                font-size: 20px;
+                }
             ''')
 
             #função label

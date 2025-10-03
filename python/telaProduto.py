@@ -49,9 +49,72 @@ def mostrarProdutos(ui, stackWidget):
             frame = QFrame()
 
             #region config do frame
-
+            frame.setFixedSize(970, 100)
+            
+            frame.setStyleSheet('''
+                QFrame{
+                    background-color: white;
+                    border-radius: 15px;
+                    border: 1px solid;
+                    }
+            ''')
             #endregion
 
+            #region labels
+            labelProduto = QLabel(produto[2], frame)
+            labelCodigo = QLabel(produto[1],frame)
+            labelEstoqueTitulo = QLabel("Estoque: ", frame)
+            labelEstoque = QLabel(f"{produto[4]} Disponível")
+
+            #region config dos labels
+            #nome produto essencialmente
+            labelProduto.setGeometry(20, 10, 180, 30)
+            labelProduto.setStyleSheet('''
+                QLabel{
+                border: none;
+                background: transparent;
+                font-size: 19px;
+                }
+            ''')
+
+            #codigo
+            labelCodigo.setGeometry(20, 40, 110, 30)
+
+            labelCodigo.setStyleSheet('''
+                QLabel{
+                border: none;
+                background: transparent;
+                font-size: 13px;
+                font-weight: bold;
+                color: rgb(154, 113, 130);
+                }
+            ''')
+
+            #titulo estoque
+            labelEstoqueTitulo.setGeometry(180, 40, 60, 20)
+
+            labelEstoqueTitulo.setStyleSheet('''
+                QLabel{
+                    Border: none;
+                    font-size: 14px;
+                    }
+            ''')
+
+            #label estoque
+            labelEstoque.setGeometry(250, 40, 170, 20)
+
+            labelEstoque.setStyleSheet('''
+                QLabel{
+                color: rgb(41, 166, 62);
+                border: none;
+                font-size: 12px;
+                font-weight: bold;
+                }
+            ''')
+            #endregion
+            #endregion
+
+        fechar_conecxao()
     except Exception as e:
         print("Erro ao mostrar produtos:", e)
 
