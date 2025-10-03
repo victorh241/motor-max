@@ -15,8 +15,6 @@ def editarVeiculo(idx, stackWidget):
 
 def excluirVeiculo(idx, ui, stackWidget):
     try:
-        cnx = carregarBD()
-        cursor = cnx.cursor()
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
         msg.setText("Você tem certeza que quer excluir esse veiculo ?")
@@ -25,8 +23,9 @@ def excluirVeiculo(idx, ui, stackWidget):
         if respota == QMessageBox.Ok:
             cnx = carregarBD()
             cursor = cnx.cursor()
-            cursor.execute("DELETE FROM veiculos WHERE id_veiculo = %s", (idx + 1,))
+            cursor.execute("DELETE FROM veiculos WHERE id_veiculo = %s", (idx,))
             cnx.commit()
+            cnx.close()
     except Exception as e:
         print(f"Erro ao excluir veiculo: {e}")
 
