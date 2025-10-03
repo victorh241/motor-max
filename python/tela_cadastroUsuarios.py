@@ -2,7 +2,31 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from bancoDados import carregarBD
 
-#Status: concluido
+def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+    cursor.execute("SELECT id_usuario, id_funcionario, login, senha, função FROM usuarios WHERE id_usuario = %s", (usuario_id,))
+    dados = cursor.fetchone()
+
+    if dados:
+        ui.lineEdit_5.setText(dados[2])  # login
+        ui.lineEdit_6.setText(dados[3])  # senha
+        funcao = dados[4]
+
+        index = ui.comboBox.findText(funcao)
+        if index != -1:
+            ui.comboBox.setCurrentIndex(index)
+
+        cursor.execute("SELECT nome FROM funcionarios WHERE id_funcionario = %s", (dados[1],))
+        funcionario = cursor.fetchone()
+        if funcionario:
+            func_nome = funcionario[0]
+            index_func = ui.comboBox_2.findText(func_nome)
+            if index_func != -1:
+                ui.comboBox_2.setCurrentIndex(index_func)
+
+    ui.pushButton_2.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
+    ui.pushButton_3.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
 
 def atualizarTabelas(ui):
     cnx = carregarBD()
