@@ -169,6 +169,7 @@ def registrarNovoVeiculo(stackWidget, ui):
             ui.lineEdit_7.setText("")
             ui.lineEdit_8.setText("")
             stackWidget.setCurrentIndex(4)
+            cnx.close()
     except Exception as e:
         print(f"Erro: {e}")
 

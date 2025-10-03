@@ -5,25 +5,24 @@ falta:
 falta melhorar o espaçamento dos frames em todas as listagens. - detalhe 
 fazer a listagem do usuário. - importante
 fazer a listagem da ordem de serviço. - importante
-fazer a listagem dos produtos.
-fazer a função de procura dos produtos
-fazer a função de procura do usuário
-fazer a função de procura do cliente
-precisa ver o delete caso a pessoa queira fazer um delete de entidade dependente
-estilização dos frames da listagem
-colocar o texto do telefone quando carregar dados do cliente
-carregar outros telefones quando carregar dados do cliente
-quando adiciona um novo telefone a caixa tem que estar vazia
-mudar o texto da caixa quando mudar índice
-adicionar função de excluir na tela do cliente
-bug no excluir veiculo
-falha de texto funcionário (aumentar tamanho)
-tirar o texto quando sair da tela cadastro funcionário
-aviso caso tenha o cpf que já foi cadastrado
-erro de campo cadastro ordem de serviço
-erro no duplicata quando: mysql.connector.errors.IntegrityError: 1062 (23000)
-bug no funcionário quando excluir
-criar executável
+fazer a listagem dos produtos. - importante
+fazer a função de procura dos produtos - detalhe
+fazer a função de procura do usuário - detalhe
+fazer a função de procura do cliente - detalhe
+estilização dos frames da listagem - detalhe
+colocar o texto do telefone quando carregar dados do cliente - detalhe
+carregar outros telefones quando carregar dados do cliente - detalhe
+quando adiciona um novo telefone a caixa tem que estar vazia - detalhe
+mudar o texto da caixa quando mudar índice - detalhe
+adicionar função de excluir na tela do cliente - importante
+bug no excluir veiculo - importante
+tirar o texto quando sair da tela cadastro funcionário - detalhe
+aviso caso tenha o cpf que já foi cadastrado - importante
+erro de campo cadastro ordem de serviço - detalhe
+erro no duplicata quando: mysql.connector.errors.IntegrityError: 1062 (23000) - importante
+bug no funcionário quando excluir - importante
+criar executável - importante
+listagem da ordem de serviço - importante
 
 pronto:
 listagem clientes
@@ -50,8 +49,8 @@ funções de carregar dados
 banco de dados
 o arquivo do user
 
-dia 06: 
-dia 08: problemas de dependência
-dia 13: problemas da tela ordem cadastro
-dia 15: funções do cliente
-dia 17: correções de bugs
+dia 06: tela usuários
+dia 08: tela produtos
+dia 13: tela ordem de serviço
+dia 15: CRUD
+dia 17: detalhes

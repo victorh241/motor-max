@@ -93,7 +93,7 @@ def mostrarFuncionarios(ui, stackWidget):
         botaoEditar = QPushButton("", frame)
 
         #config dos labels
-        labelNome.setGeometry(10 , 10 , 100, 20)
+        labelNome.setGeometry(10 , 10 , 180, 20)
         labelFunc.setGeometry(10 , 50 , 180, 20)
 
         labelNome.setStyleSheet('''

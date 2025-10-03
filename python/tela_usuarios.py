@@ -5,6 +5,23 @@ from PyQt5.QtCore import QSize, Qt
 
 from bancoDados import carregarBD
 
+def userEditar(stackWidget, usuario_id):
+    stackWidget.setCurrentIndex(12)
+    updateCdsUsuario(stackWidget.widget(12), usuario_id, stackWidget)
+
+def userExcluir(ui, usuario_id):
+    #mensagem de confirmação
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse usuário ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (usuario_id,))
+        cnx.commit()
+
 def mostrarUsuarios(ui, stackWidget):
     try:
         cnx = carregarBD()
@@ -146,6 +163,11 @@ def mostrarUsuarios(ui, stackWidget):
             botaoEditar.setCursor(Qt.PointingHandCursor)
             botaoExcluir.setCursor(Qt.PointingHandCursor)
             #endregion
+
+            tabela.setCellWidget(idx, 0, frame)
+
+            botaoEditar.clicked.connect(lambda _, usuario_id=_usuario[0]: )
+            botaoExcluir.clicked.connect(lambda _, usuario_id=_usuario[0]: )
             #endregion
 
             #endregion
