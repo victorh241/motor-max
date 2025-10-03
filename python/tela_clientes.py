@@ -20,7 +20,7 @@ def editarCliente(idx, ui, stackWidget):
 def excluirCliente(idx, ui, stackWidget):# aqui também tem dependencias no veiculo, ordem de serviço e telefones
     try:
         cnx = carregarBD()
-        cursor = carregarBD.cursor()
+        cursor = cnx.cursor()
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
         msg.setText("Você tem certeza que quer editar esse cliente ?")
@@ -215,8 +215,8 @@ def mostraClientes(ui, stackWidget):
                 }
             ''')
 
-            botaoEditar.setGeometry(440, 15, 35, 35)
-            botaoExcluir.setGeometry(480, 15, 35, 35)
+            botaoEditar.setGeometry(860, 15, 35, 35)
+            botaoExcluir.setGeometry(900, 15, 35, 35)
             #endregion
             row = idx // colunas
             column = idx % colunas
