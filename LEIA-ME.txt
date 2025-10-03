@@ -23,6 +23,7 @@ erro no duplicata quando: mysql.connector.errors.IntegrityError: 1062 (23000) - 
 bug no funcionário quando excluir - importante
 criar executável - importante
 listagem da ordem de serviço - importante
+Atualizar em tempo real - detalhe
 
 pronto:
 listagem clientes

@@ -22,6 +22,7 @@ def userExcluir(ui, usuario_id):
         cursor = cnx.cursor()
         cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (usuario_id,))
         cnx.commit()
+        cnx.close()
 
 def mostrarUsuarios(ui, stackWidget):
     try:
