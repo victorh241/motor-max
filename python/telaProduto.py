@@ -15,9 +15,17 @@ def editarProduto(stackWidget, produtoId):
 
 def excluirProduto(stackWidget, produtoId):
     try:
-        cnx = carregarBD()
-        cursor = cnx.cursor()
-        fechar_conecxao()
+        
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Você tem certeza que quer excluir esse produto ?")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            cnx = carregarBD()
+            cursor = cnx.cursor()
+            cursor.execute("DELETE FROM produtos WHERE id_produto = %s", (produtoId,))
+            fechar_conecxao()
     except Exception as e:
         print(f"Erro ao Excluir: {e}")
 
@@ -80,8 +88,8 @@ def mostrarProdutos(ui, stackWidget):
             labelProduto = QLabel(produto[2], frame)
             labelCodigo = QLabel(produto[1],frame)
             labelEstoqueTitulo = QLabel("Estoque: ", frame)
-            labelEstoque = QLabel(f"{produto[4]} Disponível")
-            labelValor = QLabel(f"R$ {produto[3]}")
+            labelEstoque = QLabel(f"{(str(produto[4]))} Disponível", frame)
+            labelValor = QLabel(f"R$ {str(produto[3])}", frame)
 
             #region config dos labels
             #nome produto essencialmente
@@ -118,7 +126,7 @@ def mostrarProdutos(ui, stackWidget):
             ''')
 
             #label estoque
-            labelEstoque.setGeometry(250, 40, 170, 20)
+            labelEstoque.setGeometry(240, 42, 170, 20)
 
             labelEstoque.setStyleSheet('''
                 QLabel{
@@ -130,7 +138,7 @@ def mostrarProdutos(ui, stackWidget):
             ''')
 
             #valor 
-            labelValor.setGeometry(800, 10, 120, 20)
+            labelValor.setGeometry(780, 10, 120, 20)
 
             labelValor.setStyleSheet('''
                 QLabel{
@@ -169,7 +177,7 @@ def mostrarProdutos(ui, stackWidget):
                 }
             ''')
 
-            botaoExcluir.setGeometry(900, 10, 30, 30)
+            botaoExcluir.setGeometry(920, 10, 30, 30)
 
             botaoExcluir.setIcon(QIcon("imagem/icons/delete.png"))
             botaoExcluir.setIconSize(QSize(20,20))
