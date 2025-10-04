@@ -4,6 +4,9 @@ from bancoDados import carregarBD
 import random
 import string
 
+def carregarProduto(ui, stackWidget, id_produto):
+    pass
+
 def voltarTelaPrincipal(ui ,stackWidget):
     stackWidget.setCurrentIndex(7)
 

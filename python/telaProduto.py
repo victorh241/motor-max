@@ -4,6 +4,22 @@ from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 
 from bancoDados import carregarBD, fechar_conecxao
+from tela_cadastroProduto import carregarProduto
+
+def editarProduto(stackWidget, produtoId):
+    try:
+        stackWidget.setCurrentIndex(13)
+        carregarProduto(stackWidget.currentWidget(), stackWidget, produtoId)
+    except Exception as e:
+        print(f"Erro tentar Editar: {e}")
+
+def excluirProduto(stackWidget, produtoId):
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        fechar_conecxao()
+    except Exception as e:
+        print(f"Erro ao Excluir: {e}")
 
 def mostrarProdutos(ui, stackWidget):
     try:
@@ -65,6 +81,7 @@ def mostrarProdutos(ui, stackWidget):
             labelCodigo = QLabel(produto[1],frame)
             labelEstoqueTitulo = QLabel("Estoque: ", frame)
             labelEstoque = QLabel(f"{produto[4]} Disponível")
+            labelValor = QLabel(f"R$ {produto[3]}")
 
             #region config dos labels
             #nome produto essencialmente
@@ -111,8 +128,78 @@ def mostrarProdutos(ui, stackWidget):
                 font-weight: bold;
                 }
             ''')
+
+            #valor 
+            labelValor.setGeometry(800, 10, 120, 20)
+
+            labelValor.setStyleSheet('''
+                QLabel{
+                border: none;
+                font-size: 18px;
+                font-weight: bold;
+                }
+            ''')
+            #endregion
+
+            #region pushButtons
+            botaoEditar = QPushButton("", frame)
+            botaoExcluir = QPushButton("", frame)
+
+            #region config buttons
+            botaoEditar.setGeometry(880, 10, 30, 30)
+
+            botaoEditar.setIcon(QIcon("imagem/icons/edit.png"))
+            botaoEditar.setIconSize(QSize(20, 20))
+            botaoEditar.setCursor(Qt.PointingHandCursor)
+
+            botaoEditar.setStyleSheet('''
+                QPushButton{
+                    border: 1px solid rgba(156, 156, 156, 235);
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 9px;
+                }
+                                                        
+                QPushButton:hover{
+                    background-color:  rgb(234, 236, 240);
+                }
+                                                        
+                                    
+                QPushButton:pressed{
+                    background-color: rgb(167, 167, 167);
+                }
+            ''')
+
+            botaoExcluir.setGeometry(900, 10, 30, 30)
+
+            botaoExcluir.setIcon(QIcon("imagem/icons/delete.png"))
+            botaoExcluir.setIconSize(QSize(20,20))
+            botaoExcluir.setCursor(Qt.PointingHandCursor)
+
+            botaoExcluir.setStyleSheet('''
+                QPushButton{
+                    border: 1px solid rgba(156, 156, 156, 235);
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 9px;
+                }
+                                                        
+                QPushButton:hover{
+                    background-color:  rgb(234, 236, 240);
+                }
+                                                        
+                                    
+                QPushButton:pressed{
+                    background-color: rgb(167, 167, 167);
+                }
+            ''')
+            #endregion
+            
             #endregion
             #endregion
+
+            tabela.setCellWidget(i, 0, frame)
+
+            botaoEditar.clicked.connect(lambda _, produto_id=produto[0]: editarProduto(stackWidget, produto_id))
+            botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(stackWidget, produto_id))
 
         fechar_conecxao()
     except Exception as e:
