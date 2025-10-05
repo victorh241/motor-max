@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidge
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 
-from bancoDados import carregarBD, fechar_conecxao
+from bancoDados import carregarBD, fechar_coneccao
 from tela_cadastroProduto import carregarProduto
 
 def editarProduto(stackWidget, produtoId):
@@ -25,7 +25,8 @@ def excluirProduto(stackWidget, produtoId):
             cnx = carregarBD()
             cursor = cnx.cursor()
             cursor.execute("DELETE FROM produtos WHERE id_produto = %s", (produtoId,))
-            fechar_conecxao()
+            cnx.commit()
+            fechar_coneccao()
     except Exception as e:
         print(f"Erro ao Excluir: {e}")
 
@@ -209,7 +210,7 @@ def mostrarProdutos(ui, stackWidget):
             botaoEditar.clicked.connect(lambda _, produto_id=produto[0]: editarProduto(stackWidget, produto_id))
             botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(stackWidget, produto_id))
 
-        fechar_conecxao()
+        fechar_coneccao()
     except Exception as e:
         print("Erro ao mostrar produtos:", e)
 

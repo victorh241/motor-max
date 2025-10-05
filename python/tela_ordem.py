@@ -1,6 +1,24 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QLabel, QFrame
-from bancoDados import carregarBD
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect, QMessageBox
+from PyQt5.QtGui import QIcon, QPixmap, QColor
+from PyQt5.QtCore import QSize, Qt
+
+from bancoDados import carregarBD, fechar_coneccao
+
+def excluirServiço(id_servico, ui):
+    #mensagem de confirmação
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse Serviço ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        print(id_servico)
+        cursor.execute("DELETE FROM Serviços WHERE id_serviço = %s", (id_servico,))
+        cnx.commit()
+        fechar_coneccao()
 
 def mostrarServicos(ui, stackWidget):
     try:
@@ -20,6 +38,20 @@ def mostrarServicos(ui, stackWidget):
         tabela.horizontalHeader().setVisible(False)
         tabela.verticalHeader().setVisible(False)
         tabela.setShowGrid(False)
+        tabela.setFocusPolicy(Qt.NoFocus)
+        tabela.setEditTriggers(QTableWidget.NoEditTriggers)
+        tabela.setSelectionMode(QTableWidget.NoSelection)
+
+        tabela.setStyleSheet('''
+            QTableWidget{
+                border: none;
+                background-color: white;
+            }
+                             
+            QTableWidget::item {
+                padding: 10px;
+            }
+        ''')
 
         for idx, _servico in enumerate(resultados):
             frame = QFrame()
@@ -32,6 +64,7 @@ def mostrarServicos(ui, stackWidget):
                     background-color: white;
                     border-radius: 15px;
                     border: 1px solid;
+                    }
             ''')
             #endregion
 
@@ -61,10 +94,43 @@ def mostrarServicos(ui, stackWidget):
             ''')
             #endregion
 
+            #region push botão
+            butaoExcluir = QPushButton("", frame)
+
+            #region config
+            butaoExcluir.setGeometry(920, 5, 30, 30)
+
+            butaoExcluir.setCursor(Qt.PointingHandCursor)
+
+            butaoExcluir.setIcon(QIcon("imagem/icons/delete.png"))
+            butaoExcluir.setIconSize(QSize(20, 20))
+
+            butaoExcluir.setStyleSheet('''
+                QPushButton{
+                border: 1px solid rgba(156, 156, 156, 235);
+                background-color: rgb(255, 255, 255);
+                border-radius: 9px;
+                }                       
+                
+                QPushButton:hover{
+                    background-color:  rgb(234, 236, 240);
+                }
+                                    
+                
+                QPushButton:pressed{
+                    background-color: rgb(167, 167, 167);
+                }
+            ''')
+
+            #endregion
+            #endregion
+
             row = idx // colunas
             column = idx % colunas
 
             ui.tableWidget.setCellWidget(row, column, frame)
+
+            butaoExcluir.clicked.connect(lambda _, idx = _servico[0]: excluirServiço(idx, ui))
 
     except Exception as e:
         print(f"Erro ao carregar serviços: {e}")

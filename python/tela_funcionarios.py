@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidge
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 
-from bancoDados import carregarBD
+from bancoDados import carregarBD, fechar_coneccao
 from tela_funcionarioCadastro import carregarDadosFuncionario
 
 #TODO: melhorar os espaçamentos
@@ -26,6 +26,7 @@ def funcExcluir(ui, index):# aqui existe um problema, se o usuario quer que excl
         cnx = carregarBD()
         cursor = cnx.cursor()
         cursor.execute("DELETE FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
+        fechar_coneccao()
 
     
 

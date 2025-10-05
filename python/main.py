@@ -124,7 +124,7 @@ def janela():
 
         tela.show()
         app.exec()
-        bancoDados.fechar_conecxao()
+        bancoDados.fechar_coneccao()
     except Exception as e:
         print(f"Erro ao iniciar a aplicação: {e}")
 

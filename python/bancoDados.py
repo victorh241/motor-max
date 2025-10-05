@@ -14,7 +14,7 @@ def carregarBD():
         print(f"Error: {err}")
     return conexao
 
-def fechar_conecxao():
+def fechar_coneccao():
     cnx = carregarBD()
     if cnx.is_connected():
         cnx.close()
