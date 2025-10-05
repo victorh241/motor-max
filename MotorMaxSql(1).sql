@@ -95,64 +95,63 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `motormax`.`Atendente`
+-- Table `MotorMax`.`Atendente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `motormax`.`Atendente` (
+CREATE TABLE IF NOT EXISTS `MotorMax`.`Atendente` (
+  `id_atendente` INT NOT NULL AUTO_INCREMENT,
   `Clientes_id_cliente` INT NOT NULL,
   `Funcionario_id_funcionario` INT NOT NULL,
-  PRIMARY KEY (`Clientes_id_cliente`, `Funcionario_id_funcionario`),
   INDEX `fk_Clientes_has_Funcionario_Funcionario1_idx` (`Funcionario_id_funcionario` ASC) VISIBLE,
   INDEX `fk_Clientes_has_Funcionario_Clientes1_idx` (`Clientes_id_cliente` ASC) VISIBLE,
+  PRIMARY KEY (`id_atendente`),
   CONSTRAINT `fk_Clientes_has_Funcionario_Clientes1`
     FOREIGN KEY (`Clientes_id_cliente`)
-    REFERENCES `motormax`.`Clientes` (`id_cliente`)
+    REFERENCES `MotorMax`.`Clientes` (`id_cliente`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Clientes_has_Funcionario_Funcionario1`
     FOREIGN KEY (`Funcionario_id_funcionario`)
-    REFERENCES `motormax`.`Funcionarios` (`id_funcionario`)
+    REFERENCES `MotorMax`.`Funcionarios` (`id_funcionario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `motormax`.`Ordem de Serviço`
+-- Table `MotorMax`.`Ordem de Serviço`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
+CREATE TABLE IF NOT EXISTS `MotorMax`.`Ordem de Serviços` (
   `id_ordemServiço` INT NOT NULL AUTO_INCREMENT,
-  `id_funcionario` INT NOT NULL,
-  `id_cliente` INT NOT NULL,
+  `id_atendente` INT NOT NULL,
   `id_serviço` INT NOT NULL,
-  `codigo` VARCHAR(7) NOT NULL,
   `id_veiculo` INT NOT NULL,
-  `Status` VARCHAR(30) NOT NULL,
-  `desconto` DECIMAL(4,2) NULL,
-  `Agendamento` VARCHAR(10) NOT NULL,
+  `codigo` VARCHAR(7) NOT NULL,
+  `Status` ENUM("Concluiido", "em adamento", "Agendado", "Cancelado") NOT NULL,
+  `desconto` DECIMAL(10,2) NULL,
+  `Agendamento` DATETIME NOT NULL,
   `quantidade_produtos` INT NULL,
   `quantidade_serviços` INT NOT NULL,
   INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
   PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Serviço1_idx` (`id_serviço` ASC) VISIBLE,
-  INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_cliente` ASC, `id_funcionario` ASC) VISIBLE,
+  INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_atendente` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
     FOREIGN KEY (`id_veiculo`)
-    REFERENCES `motormax`.`Veiculos` (`id_veiculo`)
+    REFERENCES `MotorMax`.`Veiculos` (`id_veiculo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Ordem de Serviço_Serviço1`
     FOREIGN KEY (`id_serviço`)
-    REFERENCES `motormax`.`Serviços` (`id_serviço`)
+    REFERENCES `MotorMax`.`Serviços` (`id_serviço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Ordem de Serviço_Atendente1`
-    FOREIGN KEY (`id_cliente` , `id_funcionario`)
-    REFERENCES `motormax`.`Atendente` (`Clientes_id_cliente` , `Funcionario_id_funcionario`)
+    FOREIGN KEY (`id_atendente`)
+    REFERENCES `MotorMax`.`Atendente` (`id_atendente`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `motormax`.`mecanicos`
