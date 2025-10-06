@@ -248,7 +248,7 @@ def cadastrarItemAtendente(ui):
     cursor.execute(sqlComando, dadosComando)
     cnx.commit()
 
-def registrarOrdem(ui, stackWidget):
+def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #region campos
     cnx = carregarBD()
     desconto = ui.lineEdit_4.text()
@@ -264,6 +264,8 @@ def registrarOrdem(ui, stackWidget):
     #endregion
 
     #registrar atendente
+    cursor = cnx.cursor()
+
     cursor.execute("SELECT id_funcionario, login FROM usuarios")
     dadosUser = cursor.fetchall()
     id_funcionario = 0
@@ -273,14 +275,13 @@ def registrarOrdem(ui, stackWidget):
             id_funcionario= _user[0]
 
     cadastrarItemAtendente(ui)
-    cursor.execute("SELECT id_atendente FROM atendente WHERE")
+    cursor.execute("SELECT id_atendente FROM atendente WHERE Funcionario_id_funcionario = %s", (id_funcionario,))
     id_atendente = cursor.fetchone()
 
     
 
     #region procura e assimilação de dados
     #servico
-    cursor = cnx.cursor()
     id_servico = 0
     valorServico = 0
     cursor.execute("SELECT id_serviço, descrição FROM serviços")

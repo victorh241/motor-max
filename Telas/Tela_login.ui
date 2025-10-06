@@ -385,7 +385,7 @@ color: rgb(167, 166, 155);
 }</string>
        </property>
        <property name="text">
-        <string>Mudar Senha</string>
+        <string>Redefinir Senha</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_3">
