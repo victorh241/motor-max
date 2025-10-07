@@ -209,11 +209,12 @@ ENGINE = InnoDB;
 -- Table `motormax`.`equipe_mecanicos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
+  `id_mecanico` INT NOT NULL AUTO_INCREMENT,
   `mecanicos_id_mecanico` INT NOT NULL,
   `Ordem de Serviço_id_ordemServiço` INT NOT NULL,
-  PRIMARY KEY (`mecanicos_id_mecanico`, `Ordem de Serviço_id_ordemServiço`),
   INDEX `fk_mecanicos_has_Ordem de Serviço_Ordem de Serviço1_idx` (`Ordem de Serviço_id_ordemServiço` ASC) VISIBLE,
   INDEX `fk_mecanicos_has_Ordem de Serviço_mecanicos1_idx` (`mecanicos_id_mecanico` ASC) VISIBLE,
+  PRIMARY KEY (`id_mecanico`),
   CONSTRAINT `fk_mecanicos_has_Ordem de Serviço_mecanicos1`
     FOREIGN KEY (`mecanicos_id_mecanico`)
     REFERENCES `motormax`.`mecanicos` (`id_mecanico`)
@@ -261,3 +262,5 @@ SELECT * FROM clientes;
 SELECT * FROM `ordem de serviços`;
 SELECT * FROM atendente;
 SELECT * FROM venda_final;
+SELECT * FROM equipe_mecanicos;
+SELECT * FROM mecanicos;

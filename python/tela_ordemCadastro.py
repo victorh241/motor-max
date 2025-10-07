@@ -346,18 +346,14 @@ def registrarOrdem(ui, stackWidget):
 
         #registrar equipe mecanicos
 
-        # #id da nova ordem de serviço
-        # cursor.execute("SELECT MAX(id_ordemServiço) FROM `Ordem de Serviços`")
-        # id_novaOrdem = cursor.fetchone() # depois me informa mais sobre isso parece super util
-        
-        # #id do mecanico
-        # cursor.execute("SELECT MAX(id_mecanico) FROM mecanicos")
-        # id_mecanico = cursor.fetchone()
+        #id do mecanico
+        cursor.execute("SELECT id_mecanico FROM mecanicos")
+        dadoMecanico = cursor.fetchone()
+        id_mecanico = dadoMecanico[0]
 
-        # comandosqlRegistroEquipe = "INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)"
-        # dadosRegistroEquipe = (id_mecanico[0], id_novaOrdem[0])
-        # cursor.execute(comandoInsertOrdem, dadosOrdem)
-        # cnx.commit()
+        cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
+        cnx.commit()
+        cnx.close()
     else:
         print(id_atendente, id_servico, id_veiculo, codigo, status, data, quantidadeServicos, quantidadeProdutos)
         comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_serviço, id_veiculo, codigo, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
