@@ -273,7 +273,7 @@ def registrarOrdem(ui, stackWidget):
         if _user[1] == user.login:
             id_funcionario= _user[0]
 
-    cadastrarItemAtendente(ui)
+    cadastrarItemAtendente(ui)#alguma coisa ta provando algum bug que eu não entendi
     cursor.execute("SELECT id_atendente FROM atendente WHERE Funcionario_id_funcionario = %s", (id_funcionario,))
     dadosAtendente = cursor.fetchone()
     id_atendente = dadosAtendente[0]
@@ -362,6 +362,24 @@ def registrarOrdem(ui, stackWidget):
 
         print("sucesso !")        
         stackWidget.setCurrentIndex(5)
+
+        #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
+        id_novaOrdem = cursor.lastrowid
+
+        cursor.execute("INSERT INTO Venda_final(id_ordem, `valor final`) VALUES(%s, %s)", (id_novaOrdem, float(ui.label_31.text())))
+        cnx.commit()
+
+        #registrar equipe mecanicos
+
+        #id do mecanico
+        cursor.execute("SELECT id_mecanico FROM mecanicos")
+        dadoMecanico = cursor.fetchone()
+        id_mecanico = dadoMecanico[0]
+
+        print(id_mecanico, id_novaOrdem)
+        cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
+        cnx.commit()
+        cnx.close()
     
 
 def configTelaOrdemCadastro(stackWidget):

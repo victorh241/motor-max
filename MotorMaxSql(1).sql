@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_mecanicos_has_Ordem de Serviço_Ordem de Serviço1`
     FOREIGN KEY (`Ordem de Serviço_id_ordemServiço`)
-    REFERENCES `motormax`.`Ordem de Serviço` (`id_ordemServiço`)
+    REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
