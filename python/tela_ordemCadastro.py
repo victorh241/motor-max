@@ -337,6 +337,13 @@ def registrarOrdem(ui, stackWidget):
         stackWidget.setCurrentIndex(5)
 
         #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
+        cursor.execute("SELECT MAX(id_ordemServiço) FROM `Ordem de Serviços`")
+        dadoNovaOrdem = cursor.fetchone()
+        id_novaOrdem = dadoNovaOrdem[0]
+
+        cursor.execute("INSERT INTO Venda_final(id_ordem, `valor final`) VALUES(%s, %s)", (id_novaOrdem, float(ui.label_31.text())))
+        cnx.commit()
+
         #registrar equipe mecanicos
 
         # #id da nova ordem de serviço
@@ -367,8 +374,11 @@ def configTelaOrdemCadastro(stackWidget):
 
     stackWidget.addWidget(ui)
     configCodigoServico(ui)
-    ui.frame_5.hide()
-    ui.frame_6.hide()
+    if ui.comboBox.count() == 0:
+        ui.frame_5.hide()
+    
+    if ui.comboBox_2.count() == 0:
+        ui.frame_6.hide()
 
     #butões
     ui.pushButton.clicked.connect(lambda: registrarOrdem(ui, stackWidget))

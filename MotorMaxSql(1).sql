@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Venda_final` (
   INDEX `fk_Venda_final_Ordem de Serviço1_idx` (`id_ordem` ASC) VISIBLE,
   CONSTRAINT `fk_Venda_final_Ordem de Serviço1`
     FOREIGN KEY (`id_ordem`)
-    REFERENCES `mydb`.`Ordem de Serviço` (`id_ordemServiço`)
+    REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -259,3 +259,5 @@ SELECT * FROM veiculos;
 SELECT * FROM clientes;
 
 SELECT * FROM `ordem de serviços`;
+SELECT * FROM atendente;
+SELECT * FROM venda_final;
