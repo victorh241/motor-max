@@ -20,7 +20,7 @@ def excluirServiço(id_servico, ui):
         cnx.commit()
         fechar_coneccao()
 
-def mostrarServicos(ui, stackWidget):
+def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
     try:
         cnx = carregarBD()
         cursor = cnx.cursor()

@@ -337,9 +337,7 @@ def registrarOrdem(ui, stackWidget):
         stackWidget.setCurrentIndex(5)
 
         #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
-        cursor.execute("SELECT MAX(id_ordemServiço) FROM `Ordem de Serviços`")
-        dadoNovaOrdem = cursor.fetchone()
-        id_novaOrdem = dadoNovaOrdem[0]
+        id_novaOrdem = cursor.lastrowid
 
         cursor.execute("INSERT INTO Venda_final(id_ordem, `valor final`) VALUES(%s, %s)", (id_novaOrdem, float(ui.label_31.text())))
         cnx.commit()
@@ -351,6 +349,7 @@ def registrarOrdem(ui, stackWidget):
         dadoMecanico = cursor.fetchone()
         id_mecanico = dadoMecanico[0]
 
+        print(id_mecanico, id_novaOrdem)
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
         cnx.commit()
         cnx.close()

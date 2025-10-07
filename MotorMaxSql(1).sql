@@ -131,9 +131,9 @@ CREATE TABLE IF NOT EXISTS `MotorMax`.`Ordem de Serviços` (
   `Agendamento` VARCHAR(10) NOT NULL,
   `quantidade_produtos` INT NULL,
   `quantidade_serviços` INT NOT NULL,
+  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
-  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Serviço1_idx` (`id_serviço` ASC) VISIBLE,
   INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_atendente` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
@@ -264,3 +264,5 @@ SELECT * FROM atendente;
 SELECT * FROM venda_final;
 SELECT * FROM equipe_mecanicos;
 SELECT * FROM mecanicos;
+
+INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (1, 2);
