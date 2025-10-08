@@ -10,7 +10,7 @@ from tela_principal import configTelaPrincipal, nivelAcesso
 from tela_funcionarios import configTelaFuncionarios, mostrarFuncionarios
 from tela_clientes import configTelaClientes, mostraClientes
 from tela_veiculos import configTelaVeiculos, mostrarVeiculos
-from tela_ordem import configTelaOrdem, mostrarServicos
+from tela_ordem import configTelaOrdem, tabelasListagem
 from tela_usuarios import configTelaUsuarios, mostrarUsuarios
 from telaProduto import configTelaProdutos, mostrarProdutos
 from tela_funcionarioCadastro import configTelaFuncionarioCadastro
@@ -68,7 +68,7 @@ def verificarTela(index, stackWidget):
             mostrarVeiculos(stackWidget.currentWidget(), stackWidget)
 
         if index == 5:
-            mostrarServicos(stackWidget.currentWidget(), stackWidget)
+            tabelasListagem(stackWidget.currentWidget(), stackWidget)
 
         if index == 6:
             mostrarUsuarios(stackWidget.currentWidget(), stackWidget)

@@ -1,29 +1,79 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect, QMessageBox, QTabWidget
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 
 from bancoDados import carregarBD, fechar_coneccao
 
+#region botões da ordem de serviços
+def excluirOrdem(idx, ui):
+    pass
+
+def editarOrdem(idx, ui):
+    pass
+#endregion
+
+#region botões do serviço
 def excluirServiço(id_servico, ui):
     #mensagem de confirmação
-    msg = QMessageBox()
-    msg.setWindowTitle("Aviso !")
-    msg.setText("Você tem certeza que quer excluir esse Serviço ?")
-    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-    resposta = msg.exec_()
-    if resposta == QMessageBox.Ok:
-        cnx = carregarBD()
-        cursor = cnx.cursor()
-        print(id_servico)
-        cursor.execute("DELETE FROM Serviços WHERE id_serviço = %s", (id_servico,))
-        cnx.commit()
-        fechar_coneccao()
+    try:
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Você tem certeza que quer excluir esse Serviço ?")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            cnx = carregarBD()
+            cursor = cnx.cursor()
+            print(id_servico)
+            cursor.execute("DELETE FROM Serviços WHERE id_serviço = %s", (id_servico,))
+            cnx.commit()
+            fechar_coneccao()
+    except Exception as e:
+        print(f"Erro na exclussão: {e}")
+
+def editarServico(id_servico, ui):
+    pass
+#endregion
+
+def mudaListagem(idx, ui, stackWidget):
+    if idx == 0:
+        mostrarOrdemServiço(ui, stackWidget)
+    elif idx == 1:
+        mostrarServicos(ui,stackWidget)
+
+def tabelasListagem(ui, stackWidget):
+    mostrarServicos(ui, stackWidget)
+    ui.tabWidget.currentChanged.connect(lambda idx: mudaListagem(idx, ui, stackWidget))
+
+def mostrarOrdemServiço(ui, stackWidget):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+    cursor.execute("SELECT id_ordemServiço, id_serviço, codigo, status, deconto, agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços`")
+    dadosOrdem = cursor.fetchall()
+
+    tabela = ui.tableWidget_2
+
+    for idx, _os in enumerate(dadosOrdem):
+        #region dados
+        cursor.execute("SELECT id_produto, descrição, valorMaoObra FROM serviço WHERE id_serviço = %s", (_os[1]))
+        dadosServico = cursor.fetchone()
+
+        cursor.execute("SELECT FROM WHERE id_produto = %s", (dadosServico[0]))
+        dadosProduto = cursor.fetchone()
+
+        cursor.execute("SELECT `valor final` FROM WHERE id_ordem = %s", (_os[0]))
+        dadosVendaFinal = cursor.fetchone()
+        #endregion
+
+        frame = QFrame()
+    
 
 def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
     try:
         cnx = carregarBD()
         cursor = cnx.cursor()
+
         cursor.execute("SELECT id_serviço , descrição, valorMaoObra FROM serviços")
         resultados = cursor.fetchall()
 
@@ -44,10 +94,10 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
 
         tabela.setStyleSheet('''
             QTableWidget{
-                border: none;
+                border: 1px solid;
                 background-color: white;
             }
-                             
+                            
             QTableWidget::item {
                 padding: 10px;
             }
@@ -131,9 +181,8 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
             ui.tableWidget.setCellWidget(row, column, frame)
 
             butaoExcluir.clicked.connect(lambda _, idx = _servico[0]: excluirServiço(idx, ui))
-
     except Exception as e:
-        print(f"Erro ao carregar serviços: {e}")
+        print(f"Erro ao carregar componentes: {e}")
 
 def voltarTelaPrincipal(stackWidget):
     stackWidget.setCurrentIndex(1)
