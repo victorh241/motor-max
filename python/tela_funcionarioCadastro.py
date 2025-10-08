@@ -105,9 +105,6 @@ def errorCampos(ui):
     }
     ''')
 
-def validarEmail(ui):
-    pass
-
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()

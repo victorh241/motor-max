@@ -73,7 +73,7 @@ border: none;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../imagem/icons/back.png</normaloff>../imagem/icons/back.png</iconset>
+          <normaloff>../../../../../../.designer/imagem/icons/back.png</normaloff>../../../../../../.designer/imagem/icons/back.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -206,7 +206,7 @@ QTabBar::tab:!selected {
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
