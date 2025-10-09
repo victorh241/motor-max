@@ -3,7 +3,6 @@ Grupo: Victor santos, diogo Miranda, Ruy Ribeiro, Juliene de Sousa, Antônio Sil
 
 falta:
 falta melhorar o espaçamento dos frames em todas as listagens. - detalhe 
-fazer a listagem da ordem de serviço. - importante
 fazer a função de procura dos produtos - detalhe
 fazer a função de procura do usuário - detalhe
 fazer a função de procura do cliente - detalhe

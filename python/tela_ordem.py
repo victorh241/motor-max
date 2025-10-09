@@ -44,7 +44,7 @@ def mudaListagem(idx, ui, stackWidget):
         mostrarServicos(ui,stackWidget)
 
 def tabelasListagem(ui, stackWidget):
-    mostrarServicos(ui, stackWidget)
+    mostrarOrdemServiço(ui, stackWidget)
     ui.tabWidget.currentChanged.connect(lambda idx: mudaListagem(idx, ui, stackWidget))
 
 def mostrarOrdemServiço(ui, stackWidget):
