@@ -264,5 +264,3 @@ SELECT * FROM atendente;
 SELECT * FROM venda_final;
 SELECT * FROM equipe_mecanicos;
 SELECT * FROM mecanicos;
-
-INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (1, 2);

@@ -12,7 +12,7 @@ from tela_clienteCadastro import carregarDadosCliente
 def editarCliente(idx, ui, stackWidget):
     try:
         stackWidget.setCurrentIndex(9)
-        carregarDadosCliente(stackWidget.widget(9), idx + 1, stackWidget)
+        carregarDadosCliente(stackWidget.widget(9), idx, stackWidget)
 
     except Exception as e:
         print(f"Erro ao editar cliente: {e}")
@@ -23,14 +23,14 @@ def excluirCliente(idx, ui, stackWidget):# aqui também tem dependencias no veic
         cursor = cnx.cursor()
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
-        msg.setText("Você tem certeza que quer editar esse cliente ?")
+        msg.setText("Você tem certeza que quer excluir esse cliente ?")
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         respota = msg.exec_()
         if respota == QMessageBox.Ok:
             cnx = carregarBD()
             cursor = cnx.cursor()
-            cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx + 1,))
-            cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx + 1,))#não é muito um ponto de discurssão porque o telefone depende diretamente de cliente
+            cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx,))
+            cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx,))
             cnx.commit()
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
@@ -260,8 +260,8 @@ def mostraClientes(ui, stackWidget):
             ui.tableWidget.setCellWidget(row, column, frame)
 
             # Conecta os botões às funções de editar e excluir
-            botaoEditar.clicked.connect(lambda _, r=idx: editarCliente(r, ui, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, r=idx: excluirCliente(r, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, r=_cliente[0]: editarCliente(r, ui, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, r=_cliente[0]: excluirCliente(r, ui, stackWidget))
 
         ui.tableWidget.resizeColumnsToContents()
     except Exception as e:

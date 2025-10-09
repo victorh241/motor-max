@@ -19,6 +19,9 @@ erro de campo cadastro ordem de serviço - detalhe
 bug no funcionário quando excluir - importante
 criar executável - importante
 Atualizar em tempo real - detalhe
+bug do botão de salvar que ficar atualizar quando o ele tentar cadastrar um novo
+bug na hora de cadastrar que fica no editar para sempre
+mudar a tela de login caso seja o primeiro acesso do usuario
 
 pronto:
 listagem clientes
