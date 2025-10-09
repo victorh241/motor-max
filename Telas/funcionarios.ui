@@ -169,7 +169,7 @@ border: none;
       </property>
       <property name="font">
        <font>
-        <pointsize>-1</pointsize>
+        <pointsize>1</pointsize>
         <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
@@ -288,7 +288,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">

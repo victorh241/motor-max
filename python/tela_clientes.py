@@ -62,9 +62,45 @@ def mostraClientes(ui, stackWidget):
         tabela.setVerticalHeaderLabels([""] * tabela.rowCount())
         tabela.horizontalHeader().setVisible(False)
         tabela.verticalHeader().setVisible(False)
+        tabela.setShowGrid(False)
+        tabela.setFocusPolicy(Qt.NoFocus)
+        tabela.setEditTriggers(QTableWidget.NoEditTriggers)
+        tabela.setSelectionMode(QTableWidget.NoSelection)
 
         tabela.setShowGrid(False)
 
+        tabela.setStyleSheet('''
+                QTableWidget{
+                    border: 1px solid;
+                    background-color: white;
+                }
+                                
+                QTableWidget::item {
+                    padding: 10px;
+                }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
+            ''')
         for idx, _cliente in enumerate(dados):
             frame = QFrame()
 

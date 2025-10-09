@@ -82,6 +82,28 @@ def mostrarOrdemServiço(ui, stackWidget):
                 QTableWidget::item {
                     padding: 10px;
                 }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
             ''')
         for idx, _os in enumerate(dadosOrdem):
 
