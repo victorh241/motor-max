@@ -97,8 +97,8 @@ def registrarNovoUsuario(ui, stackWidget):
             if funcionario == _funcio[1]:
                 id_funcionario = _funcio[0]
 
-        sql = "INSERT INTO usuarios(id_funcionario, login, senha, função) VALUES (%s, %s, %s, %s)"
-        val = (id_funcionario, login, senha, func)
+        sql = "INSERT INTO usuarios(id_funcionario, login, senha, função, primeiroAcesso) VALUES (%s, %s, %s, %s, %s)"
+        val = (id_funcionario, login, senha, func, 1)
         cursor.execute(sql, val)
         cnx.commit()
 

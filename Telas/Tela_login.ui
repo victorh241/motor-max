@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1280</width>
-    <height>715</height>
+    <height>857</height>
    </rect>
   </property>
   <property name="acceptDrops">
@@ -46,13 +46,13 @@ background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #f8fafc, stop:1 #e2e8
       <property name="minimumSize">
        <size>
         <width>220</width>
-        <height>80</height>
+        <height>60</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>220</width>
-        <height>35</height>
+        <height>60</height>
        </size>
       </property>
       <property name="frameShape">
@@ -72,7 +72,7 @@ background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #f8fafc, stop:1 #e2e8
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -115,7 +115,7 @@ margin-bottom: 5px;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -133,6 +133,47 @@ margin-bottom: 5px;
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>80</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>80</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label_7">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>80</width>
+         <height>100</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../imagem/MOTORMAX-LGO.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -163,7 +204,8 @@ margin-bottom: 5px;
       <property name="styleSheet">
        <string notr="true">background-color: rgba(255, 255, 255, 240);
 border-radius: 15px;
-border: 1px solid rgba(0, 0, 0,0.1); </string>
+border: 1px solid rgba(0, 0, 0,0.1); 
+</string>
       </property>
       <property name="frameShape">
        <enum>QFrame::Box</enum>
@@ -182,7 +224,7 @@ border: 1px solid rgba(0, 0, 0,0.1); </string>
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -251,7 +293,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -312,7 +354,7 @@ border: 2px solid #7f8082;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -352,7 +394,7 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -362,9 +404,8 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-background: transparent;
+background-color: #f59e0b;
 color: Black;
-border: 2px solid;
 border-radius: 8px;
 padding: 12px;
 font-size: 14px;
@@ -373,19 +414,19 @@ min-height: 20px;
 }
 
 QPushButton:hover{
-background-color: rgb(234, 227, 174);
+background-color: #d97706;
 }
 
-QPushButton:Pressed{
-background-color: rgb(210, 203, 150);
+QPushButton:pressed{
+background-color: #b45309;
 }
 
 QPushButton:disabled{
-color: rgb(167, 166, 155);
+background-color: #582503;
 }</string>
        </property>
        <property name="text">
-        <string>Mudar Senha</string>
+        <string>Redefinir Senha</string>
        </property>
       </widget>
       <widget class="QPushButton" name="pushButton_3">
@@ -502,6 +543,22 @@ border: none;
        </property>
       </widget>
      </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::MinimumExpanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>80</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>

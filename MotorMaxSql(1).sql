@@ -195,6 +195,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Usuarios` (
   `login` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
   `função` ENUM("Atendente", "Mecânico", "admin") NOT NULL,
+  `primeiroAcesso` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id_usuario`),
   INDEX `fk_Usuarios_Funcionario1_idx` (`id_funcionario` ASC) VISIBLE,
   CONSTRAINT `fk_Usuarios_Funcionario1`
@@ -250,7 +251,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES ("joão", "1xx.xxx.xxx-xx", "lucas@gmail.com",1);
 SELECT * FROM funcionarios;
 
-INSERT INTO usuarios(id_funcionario, login, senha, função) VALUES (1 ,"admin", "123456", "admin");
+INSERT INTO usuarios(id_funcionario, login, senha, função, primeiroAcesso) VALUES (1 ,"admin", "123456", "admin", 1);
 SELECT * FROM usuarios;
 
 SELECT * FROM produtos;

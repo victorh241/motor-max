@@ -26,11 +26,11 @@ def dados_usuarios() -> list:
     lista = []
 
     cursor = db.cursor()
-    cursor.execute("SELECT login, senha, função FROM usuarios")
+    cursor.execute("SELECT login, senha, função, primeiroAcesso FROM usuarios")
     result = cursor.fetchall()
 
     for i in range(len(result)):
-        lista.append({'login': result[i][0], 'senha': result[i][1], 'acesso': result[i][2]})
+        lista.append({'login': result[i][0], 'senha': result[i][1], 'acesso': result[i][2], 'primeiroAcesso': result[i][3]})
     
     return lista
 
@@ -93,7 +93,12 @@ def autenticarUsuario(ui, stackWidget):
             acesso = userAtual['acesso']
             user.lvlPermiUserAtual = acesso
             user.login = userAtual['login']
-            stackWidget.setCurrentIndex(1)
+
+            if userAtual['primeiroAcesso'] == 0:#falso
+                stackWidget.setCurrentIndex(1)
+            else:
+                stackWidget.setCurrentIndex(16)
+                user.login = userAtual['login']
         else:
             senhaErrada(ui)
 

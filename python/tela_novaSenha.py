@@ -37,25 +37,38 @@ def atulizarSenha(stackWidget, ui):
     if novaSenhaText.strip() == "" or repSenha.strip() == "":
         erro(ui)
     else:
-        if novaSenhaText.strip() == repSenha.strip():
-            cnx = carregarBD()
-            cursor = cnx.cursor()
-            id_usuario = 0
-            comandoId = ("SELECT id_usuario FROM usuarios WHERE login = %s")
-            dadosId = user.login
-            val = (dadosId,)
-            cursor.execute(comandoId, val)
-            resultadoId = cursor.fetchall()
-            for i in resultadoId:
-                id_usuario = i[0]
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("SELECT senha, primeiroAcesso FROM usuarios WHERE login = %s", (user.login,))
+        dadosUsuarios = cursor.fetchone()
 
-            comando = "UPDATE usuarios SET senha = %s WHERE id_usuario = %s"
-            dados = (repSenha, id_usuario)
-
+        print(dadosUsuarios)
+        if dadosUsuarios[1] == 1:
+            comando = "UPDATE usuarios SET senha = %s, primeiroAcesso = %s WHERE login = %s"
+            dados = (repSenha, 0, user.login)
             cursor.execute(comando, dados)
             cnx.commit()
+            stackWidget.setCurrentIndex(1)
+        else:
+            if novaSenhaText.strip() == repSenha.strip():
+                cnx = carregarBD()
+                cursor = cnx.cursor()
+                id_usuario = 0
+                comandoId = ("SELECT id_usuario FROM usuarios WHERE login = %s")
+                dadosId = user.login
+                val = (dadosId,)
+                cursor.execute(comandoId, val)
+                resultadoId = cursor.fetchall()
+                for i in resultadoId:
+                    id_usuario = i[0]
 
-            stackWidget.setCurrentIndex(0)
+                comando = "UPDATE usuarios SET senha = %s WHERE id_usuario = %s"
+                dados = (repSenha, id_usuario)
+
+                cursor.execute(comando, dados)
+                cnx.commit()
+
+                stackWidget.setCurrentIndex(0)
 
 def configNovaSenha(stackWidget):
     ui = uic.loadUi("Telas/Tela_nova_senha.ui")
