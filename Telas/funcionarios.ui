@@ -169,7 +169,7 @@ border: none;
       </property>
       <property name="font">
        <font>
-        <pointsize>1</pointsize>
+        <pointsize>-1</pointsize>
         <weight>75</weight>
         <italic>false</italic>
         <bold>true</bold>
@@ -288,7 +288,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>1</pointsize>
+         <pointsize>-1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -321,6 +321,9 @@ border: 2px solid #7f8082;
          <height>50</height>
         </rect>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
 border: none;
@@ -333,7 +336,7 @@ background-color: transparent;
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../../../../pythonAulas/MotorMax/imagem/icons/research.png</normaloff>../../../../pythonAulas/MotorMax/imagem/icons/research.png</iconset>
+         <normaloff>../imagem/icons/research.png</normaloff>../imagem/icons/research.png</iconset>
        </property>
        <property name="iconSize">
         <size>

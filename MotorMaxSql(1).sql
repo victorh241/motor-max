@@ -248,7 +248,7 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES ("joão", "1xx.xxx.xxx-xx", "lucas@gmail.com",1);
+INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES ("joão", "111.111.111-11", "lucas@gmail.com",1);
 SELECT * FROM funcionarios;
 
 INSERT INTO usuarios(id_funcionario, login, senha, função, primeiroAcesso) VALUES (1 ,"admin", "123456", "admin", 1);

@@ -11,6 +11,7 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
 
+    ui.pushButton.setText("Atualizar")
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()
     cpf = ui.lineEdit_6.text()
@@ -29,9 +30,9 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
             ui.lineEdit_4.setText("")
             ui.lineEdit_6.setText("")
 
-            ui.pushButton.setText("Salvar")
             ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
+            ui.pushButton.setText("Salvar")
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {
@@ -63,8 +64,10 @@ def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
+    
 
     stackWidget.setCurrentIndex(2)
+    camposSemErro(ui)
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(2)
@@ -72,6 +75,7 @@ def excluir(ui, stackWidget):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
+    camposSemErro(ui)
 
 def errorCampos(ui):
     ui.lineEdit_5.setStyleSheet('''
@@ -105,6 +109,58 @@ def errorCampos(ui):
     }
     ''')
 
+def camposSemErro(ui):
+    ui.lineEdit_5.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
+    ui.lineEdit_4.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
+    ui.lineEdit_6.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()
@@ -123,6 +179,10 @@ def cadastrarNovoFuncionario(ui, stackWidget):
             cnx.commit()
 
             stackWidget.setCurrentIndex(2)
+            ui.lineEdit_5.setText("")
+            ui.lineEdit_4.setText("")
+            ui.lineEdit_6.setText("")
+            camposSemErro(ui)
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {

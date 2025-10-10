@@ -9,12 +9,12 @@ from tela_funcionarioCadastro import carregarDadosFuncionario
 #TODO: melhorar os espaçamentos
 
 def funcEditar(stackWidget, index):
-    funcId = index + 1
+    funcId = index
     stackWidget.setCurrentIndex(8)
     carregarDadosFuncionario(stackWidget.widget(8), funcId, stackWidget)
 
-def funcExcluir(ui, index):# aqui existe um problema, se o usuario quer que exclua o funcionario ele precisa primeiro excluir o usuario vinculado a ele
-    id_funcionario = index + 1
+def funcExcluir(ui, index, stackWidget):# aqui existe um problema, se o usuario quer que exclua o funcionario ele precisa primeiro excluir o usuario vinculado a ele
+    id_funcionario = index
 
     #mensagem de confirmação
     msg = QMessageBox()
@@ -26,16 +26,19 @@ def funcExcluir(ui, index):# aqui existe um problema, se o usuario quer que excl
         cnx = carregarBD()
         cursor = cnx.cursor()
         cursor.execute("DELETE FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
+        cnx.commit()
         fechar_coneccao()
-
-    
+        ui.tableWidget.setRowCount(0)
+        
+        #atualizar tela
+        mostrarFuncionarios(ui, stackWidget)
 
 #region butões
 def mostrarFuncionarios(ui, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
 
-    cursor.execute("SELECT nome , disponivel FROM Funcionarios")
+    cursor.execute("SELECT id_funcionario , nome, disponivel FROM Funcionarios")
     dadosFuncionarios = cursor.fetchall()
 
     tabela = ui.tableWidget
@@ -43,7 +46,6 @@ def mostrarFuncionarios(ui, stackWidget):
 
     tabela.setRowCount(len(dadosFuncionarios))
     tabela.setColumnCount(colunas)
-
 
     #region configs
     #espaçamento 
@@ -105,12 +107,12 @@ def mostrarFuncionarios(ui, stackWidget):
         frame = QFrame()
 
         textoDisponivel = ""
-        if _funcionario[1] == 0:
+        if _funcionario[2] == 0:
             textoDisponivel = "Indisponível"
         else:
             textoDisponivel = "Disponível"
 
-        labelNome = QLabel(f"Nome: {_funcionario[0]}", frame)
+        labelNome = QLabel(f"Nome: {_funcionario[1]}", frame)
         labelFunc = QLabel(f"Disponibilidade: {textoDisponivel}", frame)
         botaoExcluir = QPushButton("", frame)
         botaoEditar = QPushButton("", frame)
@@ -195,8 +197,8 @@ def mostrarFuncionarios(ui, stackWidget):
             ''')
         
         #funções botões
-        botaoEditar.clicked.connect(lambda _,idx=i: funcEditar(stackWidget, idx))
-        botaoExcluir.clicked.connect(lambda _, idx=i: funcExcluir(ui, idx))
+        botaoEditar.clicked.connect(lambda _,idx=_funcionario[0]: funcEditar(stackWidget, idx))
+        botaoExcluir.clicked.connect(lambda _, idx=_funcionario[0]: funcExcluir(ui, idx, stackWidget))
 
         #formatação de tabela de widget
         row = i // colunas
@@ -204,8 +206,6 @@ def mostrarFuncionarios(ui, stackWidget):
 
         tabela.setCellWidget(row, col, frame)
         #endregion
-
-        
 
 def voltarTelaPrincipal(stackWidget):
     stackWidget.setCurrentIndex(1)
