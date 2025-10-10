@@ -63,7 +63,7 @@ margin-top:40px;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -129,7 +129,7 @@ border: 1px solid rgba(0, 0, 0,0.1); </string>
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -176,7 +176,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -240,7 +240,7 @@ border: 2px solid #7f8082;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -287,7 +287,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">

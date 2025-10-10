@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 import re
 from bancoDados import carregarBD
 
+#TODO: erro na hora de registrar o mecanico resolva
+
 def atualizarCliente(ui, clienteId, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()

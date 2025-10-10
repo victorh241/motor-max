@@ -1,9 +1,10 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 import re
-from bancoDados import carregarBD
+from bancoDados import carregarBD, fechar_coneccao
+import traceback
 
 #TODO: fazer os campos vazios
 
@@ -66,6 +67,9 @@ def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
     
+    
+    if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.setText("Salvar")
 
     stackWidget.setCurrentIndex(2)
     camposSemErro(ui)
@@ -76,6 +80,10 @@ def excluir(ui, stackWidget):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
+    
+    if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.setText("Salvar")
+
     camposSemErro(ui)
 
 def errorCampos(ui):
@@ -162,6 +170,16 @@ def camposSemErro(ui):
         }
     ''')
 
+def verificarCpf(ui):
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        
+        cursor.execute("SELECT cpf FROM funcionarios WHERE = ")
+    except Exception as e:
+        print(f"Erro na verificação de cpf {e}")
+        traceback.print_exc()
+
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()
@@ -178,6 +196,7 @@ def cadastrarNovoFuncionario(ui, stackWidget):
 
             cursor.execute(sql, val)
             cnx.commit()
+            fechar_coneccao()
 
             stackWidget.setCurrentIndex(2)
             ui.lineEdit_5.setText("")

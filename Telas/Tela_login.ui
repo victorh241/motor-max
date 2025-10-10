@@ -113,7 +113,7 @@ background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #f8fafc, stop:1 #e2e8
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -156,7 +156,7 @@ margin-bottom: 5px;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -224,7 +224,7 @@ border: 1px solid rgba(0, 0, 0,0.1);
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -293,7 +293,7 @@ background-color: #582503;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -354,7 +354,7 @@ border: 2px solid #7f8082;
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -394,7 +394,7 @@ background-color: rgb(234, 236, 240);
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
