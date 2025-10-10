@@ -33,6 +33,7 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
             ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
             ui.pushButton.setText("Salvar")
+            stackWidget.setCurrentIndex(2)
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {
@@ -52,8 +53,8 @@ def carregarDadosFuncionario(ui, id_funcionario, stackWidget):
     dados = cursor.fetchone() #Explicação isso serve para pegar apenas um resultado
     if dados:
         ui.lineEdit_5.setText(dados[0])
-        ui.lineEdit_4.setText(dados[2])
-        ui.lineEdit_6.setText(dados[1])
+        ui.lineEdit_4.setText(dados[1])
+        ui.lineEdit_6.setText(dados[2])
 
     ui.pushButton.setText("Atualizar")
 
@@ -173,7 +174,7 @@ def cadastrarNovoFuncionario(ui, stackWidget):
             cnx = carregarBD()
             cursor = cnx.cursor()
             sql = "INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES (%s, %s, %s, 1)"
-            val = (nome, email, cpf)
+            val = (nome, cpf, email)
 
             cursor.execute(sql, val)
             cnx.commit()
