@@ -32,6 +32,9 @@ def excluirCliente(idx, ui, stackWidget):# aqui também tem dependencias no veic
             cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx,))
             cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx,))
             cnx.commit()
+
+            ui.tableWidget.setRowCount(0)
+            mostraClientes(ui, stackWidget)
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
 

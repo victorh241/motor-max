@@ -151,6 +151,12 @@ def registrarNovoCliente(ui, stackWidget):
                     cnx.commit()
             
             stackWidget.setCurrentIndex(3)
+            ui.frame_3.hide()
+            ui.lineEdit.setText("")
+            ui.lineEdit_2.setText("")
+            ui.lineEdit_3.setText("")
+            ui.comboBox_2.clear()
+            ui.lineEdit_7.setText("")
         else:
             ui.lineEdit_2.setStyleSheet('''
             QLineEdit {
@@ -170,6 +176,7 @@ def excluirTelefone(ui):
 
     if qntOpcoes == 0:
         ui.frame_3.hide()
+        ui.lineEdit_7.setText("")
 
 def exibirFrameTelefone(ui):
     global listaTelefones
@@ -182,6 +189,7 @@ def exibirFrameTelefone(ui):
     telefoneAtual = ui.lineEdit_7.text()
     if ui.comboBox_2.count() > 0:
         listaTelefones.append(telefoneAtual)
+        ui.lineEdit_7.setText("")
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")

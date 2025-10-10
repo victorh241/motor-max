@@ -90,7 +90,9 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Funcionarios` (
   `CPF` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
   `disponivel` TINYINT NOT NULL,
-  PRIMARY KEY (`id_funcionario`))
+  PRIMARY KEY (`id_funcionario`)),
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
 ENGINE = InnoDB;
 
 
