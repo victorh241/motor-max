@@ -168,6 +168,10 @@ def registrarNovoCliente(ui, stackWidget):
             }
             ''')
 
+def mudaTextoTelefone(ui):
+    if ui.comboBox_2.count() > 1:
+        print(listaTelefones)
+
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
 
@@ -180,16 +184,16 @@ def excluirTelefone(ui):
 
 def exibirFrameTelefone(ui):
     global listaTelefones
+    listaTelefones = []
     ui.frame_3.show()
+    ui.lineEdit_7.setText("")
     ui.comboBox_2.addItem(f"telefone {ui.comboBox_2.count() + 1}")
     novoIndex = ui.comboBox_2.count() - 1
     ui.comboBox_2.setCurrentIndex(novoIndex)
 
-    listaTelefones = []
-    telefoneAtual = ui.lineEdit_7.text()
-    if ui.comboBox_2.count() > 0:
+    if ui.comboBox_2.count() > 1:
+        telefoneAtual = ui.lineEdit_7.text()
         listaTelefones.append(telefoneAtual)
-        ui.lineEdit_7.setText("")
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
@@ -202,3 +206,5 @@ def configClienteCadastro(stackWidget):
     ui.pushButton_3.clicked.connect(lambda: voltarTelaPrincipal(ui,stackWidget))
     ui.pushButton_4.clicked.connect(lambda: exibirFrameTelefone(ui))
     ui.pushButton_5.clicked.connect(lambda: excluirTelefone(ui))
+
+    ui.comboBox_2.currentIndexChanged.connect(lambda: mudaTextoTelefone(ui))

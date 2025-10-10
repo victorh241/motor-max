@@ -267,3 +267,4 @@ SELECT * FROM atendente;
 SELECT * FROM venda_final;
 SELECT * FROM equipe_mecanicos;
 SELECT * FROM mecanicos;
+SELECT * FROM telefones;
