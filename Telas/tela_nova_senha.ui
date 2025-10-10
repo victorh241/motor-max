@@ -15,8 +15,14 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
+    <item alignment="Qt::AlignHCenter">
      <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
@@ -39,7 +45,7 @@ margin-top:40px;
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1262</width>
+         <width>300</width>
          <height>70</height>
         </rect>
        </property>

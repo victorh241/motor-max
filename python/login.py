@@ -21,6 +21,42 @@ def verificarTelaLogin(ui):
     ui.lineEdit_2.setDisabled(False)
     ui.lineEdit.setEnabled(True)
 
+    ui.lineEdit.setStyleSheet('''
+        QLineEdit {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        color: #374151;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+    ''')
+
+    ui.lineEdit_2.setStyleSheet('''
+        QLineEdit {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        color: #374151;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+    ''')
+
 def dados_usuarios() -> list:
     db = carregarBD()
     lista = []
