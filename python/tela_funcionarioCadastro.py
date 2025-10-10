@@ -21,6 +21,8 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
         errorCampos(ui)
     else:
         if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            verificarCpf(ui)
+
             sql = "UPDATE funcionarios SET nome = %s, email = %s, cpf = %s WHERE id_funcionario = %s"
             val = (nome, email, cpf, id_funcionario)
 
@@ -174,8 +176,23 @@ def verificarCpf(ui):
     try:
         cnx = carregarBD()
         cursor = cnx.cursor()
-        
-        cursor.execute("SELECT cpf FROM funcionarios WHERE = ")
+        cpf = ui.lineEdit_6.text()
+
+        cursor.execute("SELECT cpf FROM funcionarios WHERE cpf = %s", (cpf,))
+        results = cursor.fetchall()
+
+        print(results)
+        if len(results) > 1:
+            print("esse cpf está duplicado")
+            msg = QMessageBox()
+            msg.setWindowTitle("Aviso !")
+            msg.setText("Esse Cpf já está sendo usado mude o cpf")
+            msg.StandardButton(QMessageBox.Ok | QMessageBox.Cancel)
+            resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            return
+        else:
+            return
     except Exception as e:
         print(f"Erro na verificação de cpf {e}")
         traceback.print_exc()
@@ -191,6 +208,8 @@ def cadastrarNovoFuncionario(ui, stackWidget):
         if re.match(r"[^@]+@[^@]+\.[^@]+", email):
             cnx = carregarBD()
             cursor = cnx.cursor()
+            verificarCpf(ui)
+
             sql = "INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES (%s, %s, %s, 1)"
             val = (nome, cpf, email)
 
