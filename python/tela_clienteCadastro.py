@@ -2,6 +2,7 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import re
 from bancoDados import carregarBD
+from listaTelefone import listaTelefone
 
 #TODO: erro na hora de registrar o mecanico resolva
 
@@ -143,7 +144,7 @@ def registrarNovoCliente(ui, stackWidget):
                 cursor.execute(comandoTelefone, dadosTelefone)
                 cnx.commit()
             else:
-                telefones = listaTelefones
+                telefones = listaTelefone
                 for _telefone in telefones:
                     comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
                     dadosTelefone = (id_cliente, _telefone)
@@ -168,9 +169,25 @@ def registrarNovoCliente(ui, stackWidget):
             }
             ''')
 
+def salvarTextoEditado(ui):
+    if ui.comboBox_2.count() > 1 and len(ui.lineEdit_7.text()) == 15:
+        indexAtual = ui.comboBox_2.currentIndex()
+        novoIndex = ui.comboBox_2.count() - 1
+
+        if indexAtual != novoIndex:
+            listaTelefone[indexAtual] = ui.lineEdit_7.text()
+            print(listaTelefone, indexAtual)
+
 def mudaTextoTelefone(ui):
+    novoIndex = ui.comboBox_2.count() - 1
+    indexAtual = ui.comboBox_2.currentIndex()
     if ui.comboBox_2.count() > 1:
-        print(listaTelefones)
+        print(listaTelefone)
+        
+        if indexAtual != novoIndex:
+            ui.lineEdit_7.setText(listaTelefone[indexAtual])
+        else:
+            ui.lineEdit_7.setText("")
 
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
@@ -183,17 +200,15 @@ def excluirTelefone(ui):
         ui.lineEdit_7.setText("")
 
 def exibirFrameTelefone(ui):
-    global listaTelefones
-    listaTelefones = []
     ui.frame_3.show()
+    novoTelefone = ui.lineEdit_7.text()
     ui.lineEdit_7.setText("")
     ui.comboBox_2.addItem(f"telefone {ui.comboBox_2.count() + 1}")
     novoIndex = ui.comboBox_2.count() - 1
     ui.comboBox_2.setCurrentIndex(novoIndex)
 
     if ui.comboBox_2.count() > 1:
-        telefoneAtual = ui.lineEdit_7.text()
-        listaTelefones.append(telefoneAtual)
+        listaTelefone.append(novoTelefone)
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
@@ -208,3 +223,4 @@ def configClienteCadastro(stackWidget):
     ui.pushButton_5.clicked.connect(lambda: excluirTelefone(ui))
 
     ui.comboBox_2.currentIndexChanged.connect(lambda: mudaTextoTelefone(ui))
+    ui.lineEdit_7.textEdited.connect(lambda: salvarTextoEditado(ui))
