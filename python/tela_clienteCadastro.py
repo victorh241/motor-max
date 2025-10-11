@@ -138,14 +138,14 @@ def registrarNovoCliente(ui, stackWidget):
                     id_cliente = i[0]
 
             #telefones
-            if ui.comboBox_2.count() > 0:
+            if ui.comboBox_2.count() == 1:
                 comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
                 dadosTelefone = (id_cliente, novoTelefone)
                 cursor.execute(comandoTelefone, dadosTelefone)
                 cnx.commit()
             else:
-                telefones = listaTelefone
-                for _telefone in telefones:
+                listaTelefone.append(novoTelefone)
+                for _telefone in listaTelefone:
                     comandoTelefone = "INSERT INTO telefones(id_cliente, telefone) VALUES (%s ,%s)"
                     dadosTelefone = (id_cliente, _telefone)
                     cursor.execute(comandoTelefone, dadosTelefone)
@@ -176,13 +176,11 @@ def salvarTextoEditado(ui):
 
         if indexAtual != novoIndex:
             listaTelefone[indexAtual] = ui.lineEdit_7.text()
-            print(listaTelefone, indexAtual)
 
 def mudaTextoTelefone(ui):
     novoIndex = ui.comboBox_2.count() - 1
     indexAtual = ui.comboBox_2.currentIndex()
     if ui.comboBox_2.count() > 1:
-        print(listaTelefone)
         
         if indexAtual != novoIndex:
             ui.lineEdit_7.setText(listaTelefone[indexAtual])
