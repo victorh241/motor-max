@@ -15,7 +15,7 @@ def editarOrdem(idx, ui):
 #endregion
 
 #region botões do serviço
-def excluirServiço(id_servico, ui):
+def excluirServiço(id_servico, ui, stackWidget):
     #mensagem de confirmação
     try:
         msg = QMessageBox()
@@ -26,14 +26,16 @@ def excluirServiço(id_servico, ui):
         if resposta == QMessageBox.Ok:
             cnx = carregarBD()
             cursor = cnx.cursor()
-            print(id_servico)
             cursor.execute("DELETE FROM Serviços WHERE id_serviço = %s", (id_servico,))
             cnx.commit()
             fechar_coneccao()
+
+            ui.tableWidget.setRowCount(0)
+            mostrarServicos(ui, stackWidget)
     except Exception as e:
         print(f"Erro na exclussão: {e}")
 
-def editarServico(id_servico, ui):
+def editarServico(id_servico, ui, stackWidget):
     pass
 #endregion
 
@@ -44,7 +46,10 @@ def mudaListagem(idx, ui, stackWidget):
         mostrarServicos(ui,stackWidget)
 
 def tabelasListagem(ui, stackWidget):
-    mostrarOrdemServiço(ui, stackWidget)
+    if ui.tabWidget.currentIndex == 0:
+        mostrarOrdemServiço(ui, stackWidget)
+    else:
+        mostrarServicos(ui, stackWidget)
     ui.tabWidget.currentChanged.connect(lambda idx: mudaListagem(idx, ui, stackWidget))
 
 def mostrarOrdemServiço(ui, stackWidget):
@@ -389,7 +394,6 @@ def mostrarOrdemServiço(ui, stackWidget):
         print(f"listagem da os erro: {e}")
         traceback.print_exc()
 
-
 def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
     try:
         cnx = carregarBD()
@@ -404,6 +408,9 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
         tabela.setRowCount(len(resultados))
         tabela.setColumnCount(colunas)
 
+        for r in range(len(resultados)):
+            tabela.setRowHeight(r, 75)
+
         tabela.setHorizontalHeaderLabels([""] * colunas)
         tabela.setVerticalHeaderLabels([""] * tabela.rowCount())
         tabela.horizontalHeader().setVisible(False)
@@ -414,15 +421,37 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
         tabela.setSelectionMode(QTableWidget.NoSelection)
 
         tabela.setStyleSheet('''
-            QTableWidget{
-                border: 1px solid;
-                background-color: white;
-            }
-                            
-            QTableWidget::item {
-                padding: 10px;
-            }
-        ''')
+                QTableWidget{
+                    border: 1px solid;
+                    background-color: white;
+                }
+                                
+                QTableWidget::item {
+                    padding: 10px;
+                }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
+            ''')
 
         for idx, _servico in enumerate(resultados):
             frame = QFrame()
@@ -501,7 +530,7 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
 
             ui.tableWidget.setCellWidget(row, column, frame)
 
-            butaoExcluir.clicked.connect(lambda _, idx = _servico[0]: excluirServiço(idx, ui))
+            butaoExcluir.clicked.connect(lambda _, idx = _servico[0]: excluirServiço(idx, ui, stackWidget))
     except Exception as e:
         print(f"Erro ao carregar componentes: {e}")
 
