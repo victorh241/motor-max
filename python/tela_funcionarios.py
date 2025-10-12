@@ -53,7 +53,7 @@ def mostrarFuncionarios(ui, stackWidget):
     esp_vertical = 20 # espaçamento vertical
 
     for c in range(colunas):
-        tabela.setColumnWidth(c , 220 + esp_horizontal)
+        tabela.setColumnWidth(c , 300 + esp_horizontal)
 
     for r in range(len(dadosFuncionarios)):
         tabela.setRowHeight(r, 120 + esp_vertical)
@@ -75,15 +75,16 @@ def mostrarFuncionarios(ui, stackWidget):
                 }
                                 
                 QTableWidget::item {
-                    padding: 10px;
+                    padding: 15px;
                 }
                              
                 QScrollBar:vertical{
                  border: none;
                  background: #f0f0f0;
-                 width: 12px;
+                 width: 10px;
+                 height: 90px;
                  margin: 0px;
-                 border-radius: 6px;       
+                 border-radius: 6px;     
                 }
                              
                 QScrollBar::handle:vertical {
@@ -136,8 +137,8 @@ def mostrarFuncionarios(ui, stackWidget):
         ''')
 
         #config dos botões
-        botaoEditar.setGeometry(140, 80, 30, 30)
-        botaoExcluir.setGeometry(180, 80, 30, 30)
+        botaoEditar.setGeometry(220, 80, 30, 30)
+        botaoExcluir.setGeometry(260, 80, 30, 30)
 
         botaoEditar.setStyleSheet('''
             QPushButton{
@@ -187,7 +188,7 @@ def mostrarFuncionarios(ui, stackWidget):
         
 
         #configs do frame
-        frame.setFixedSize(220, 120)
+        frame.setFixedSize(300, 120)
         frame.setStyleSheet('''
             QFrame{
             background-color: white;

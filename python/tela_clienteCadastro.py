@@ -24,6 +24,10 @@ def atualizarCliente(ui, clienteId, stackWidget):
 
         cursor.execute(sql, valores)
         cnx.commit()
+        cnx.close()
+        
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, clienteId, stackWidget))
 
 def carregarDadosCliente(ui, clienteId, stackWidget):
     try:

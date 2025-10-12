@@ -18,7 +18,7 @@ from tela_clienteCadastro import configClienteCadastro
 from tela_cadastroServiços import configCadastroServico
 from tela_ordemCadastro import configTelaOrdemCadastro, atualizarComboBox
 from tela_cadastroUsuarios import configTelaUsuariosCadastro, atualizarTabelas as updateCdsUsuario
-from tela_cadastroProduto import configTelaProdutoCadastro
+from tela_cadastroProduto import configTelaProdutoCadastro, atualizarCodigo
 from tela_recuperarSenha import configTelaRecuperar
 from tela_novaSenha import configNovaSenha
 from tela_cadastroVeiculos import configTelaVeiculosCadastro, atualizarComboBox as updateCdsVeiculos
@@ -52,38 +52,32 @@ Ordem do stack:
 
 def verificarTela(index, stackWidget):
     try:
-        if index == 0:
-            verificarTelaLogin(stackWidget.currentWidget())
-
-        if index == 1:
-            nivelAcesso(stackWidget.currentWidget())
-
-        if index == 2:
-            mostrarFuncionarios(stackWidget.currentWidget(), stackWidget)
-
-        if index == 3:
-            mostraClientes(stackWidget.currentWidget(), stackWidget)
-
-        if index == 4:
-            mostrarVeiculos(stackWidget.currentWidget(), stackWidget)
-
-        if index == 5:
-            tabelasListagem(stackWidget.currentWidget(), stackWidget)
-
-        if index == 6:
-            mostrarUsuarios(stackWidget.currentWidget(), stackWidget)
-
-        if index == 7:
-            mostrarProdutos(stackWidget.currentWidget(), stackWidget)
-
-        if index == 11:
-            atualizarComboBox(stackWidget.currentWidget())
-
-        if index == 12:
-            updateCdsUsuario(stackWidget.currentWidget())
-
-        if index == 14:
-            updateCdsVeiculos(stackWidget.currentWidget())
+        match index:
+            case 0:
+               verificarTelaLogin(stackWidget.currentWidget())
+            case 1:
+                nivelAcesso(stackWidget.currentWidget())
+            case 2:
+                mostrarFuncionarios(stackWidget.currentWidget(), stackWidget)
+            case 3:
+                mostraClientes(stackWidget.currentWidget(), stackWidget)
+            case 4:
+                mostrarVeiculos(stackWidget.currentWidget(), stackWidget) 
+            case 5:
+                tabelasListagem(stackWidget.currentWidget(), stackWidget)
+            case 6:
+                mostrarUsuarios(stackWidget.currentWidget(), stackWidget)
+            case 7:
+               mostrarProdutos(stackWidget.currentWidget(), stackWidget)
+            case 11:
+                atualizarComboBox(stackWidget.currentWidget())
+            case 12:
+                updateCdsUsuario(stackWidget.currentWidget())
+            case 13:
+                atualizarCodigo(stackWidget.currentWidget())
+            case 14:
+                updateCdsVeiculos(stackWidget.currentWidget())
+            
     except Exception as e:
         print(f"erro: {e}")
 

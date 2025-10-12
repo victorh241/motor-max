@@ -13,9 +13,8 @@ def editarProduto(stackWidget, produtoId):
     except Exception as e:
         print(f"Erro tentar Editar: {e}")
 
-def excluirProduto(stackWidget, produtoId):
+def excluirProduto(ui, stackWidget, produtoId):
     try:
-        
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
         msg.setText("Você tem certeza que quer excluir esse produto ?")
@@ -27,6 +26,10 @@ def excluirProduto(stackWidget, produtoId):
             cursor.execute("DELETE FROM produtos WHERE id_produto = %s", (produtoId,))
             cnx.commit()
             fechar_coneccao()
+
+            ui.tableWidget.setRowCount(0)
+            mostrarProdutos(ui, stackWidget)
+
     except Exception as e:
         print(f"Erro ao Excluir: {e}")
 
@@ -66,7 +69,8 @@ def mostrarProdutos(ui, stackWidget):
                 }
                                 
                 QTableWidget::item {
-                    padding: 10px;
+                    padding-top: 10px;
+                    padding-left: 30px;
                 }
                              
                 QScrollBar:vertical{
@@ -230,7 +234,7 @@ def mostrarProdutos(ui, stackWidget):
             tabela.setCellWidget(i, 0, frame)
 
             botaoEditar.clicked.connect(lambda _, produto_id=produto[0]: editarProduto(stackWidget, produto_id))
-            botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(stackWidget, produto_id))
+            botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(ui , stackWidget, produto_id))
 
         fechar_coneccao()
     except Exception as e:

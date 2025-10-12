@@ -26,6 +26,9 @@ def excluirVeiculo(idx, ui, stackWidget):
             cursor.execute("DELETE FROM veiculos WHERE id_veiculo = %s", (idx,))
             cnx.commit()
             cnx.close()
+
+            ui.tableWidget.setRowCount(0)
+            mostrarVeiculos(ui, stackWidget)
     except Exception as e:
         print(f"Erro ao excluir veiculo: {e}")
 
@@ -255,8 +258,8 @@ def mostrarVeiculos(ui, stackWidget):#tem algum erro aqui
 
             tabela.setCellWidget(index, 0, frame)
 
-            botaoEditar.clicked.connect(lambda _, id=_veiculo[1]: editarVeiculo(id, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, id=_veiculo[1]: excluirVeiculo(id, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, id=_veiculo[0]: editarVeiculo(id, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, id=_veiculo[0]: excluirVeiculo(id, ui, stackWidget))
     except Exception as e:
         print("Erro ao conectar ao banco de dados: ", e)
         return
