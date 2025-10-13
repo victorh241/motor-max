@@ -17,6 +17,12 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label_5">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>150</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <pointsize>1</pointsize>
@@ -33,7 +39,7 @@ margin-bottom: 5px;
 }</string>
       </property>
       <property name="text">
-       <string>Recuperar Senha</string>
+       <string>Redifinir Senha</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -118,7 +124,7 @@ background-color: #582503;
 }</string>
        </property>
        <property name="text">
-        <string>Enviar</string>
+        <string>Salvar</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="lineEdit">
@@ -186,7 +192,7 @@ border: 2px solid #7f8082;
        <property name="geometry">
         <rect>
          <x>150</x>
-         <y>400</y>
+         <y>290</y>
          <width>150</width>
          <height>48</height>
         </rect>
@@ -203,9 +209,9 @@ border: 2px solid #7f8082;
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-background-color: transparent;
-color: Black;
-border: 2px solid;
+background-color: #f59e0b;
+color: black;
+border: none;
 border-radius: 8px;
 padding: 12px;
 font-size: 14px;
@@ -214,11 +220,15 @@ min-height: 20px;
 }
 
 QPushButton:hover{
-background-color: rgb(234, 227, 174);
+background-color: #d97706;
 }
 
-QPushButton:Pressed{
-background-color: rgb(210, 203, 150);
+QPushButton:pressed{
+background-color: #b45309;
+}
+
+QPushButton:disable{
+background-color: #582503;
 }</string>
        </property>
        <property name="text">

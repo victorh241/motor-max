@@ -1,9 +1,10 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 import re
-from bancoDados import carregarBD
+from bancoDados import carregarBD, fechar_coneccao
+import traceback
 
 #TODO: fazer os campos vazios
 
@@ -11,6 +12,7 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
 
+    ui.pushButton.setText("Atualizar")
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()
     cpf = ui.lineEdit_6.text()
@@ -19,6 +21,8 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
         errorCampos(ui)
     else:
         if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            verificarCpf(ui)
+
             sql = "UPDATE funcionarios SET nome = %s, email = %s, cpf = %s WHERE id_funcionario = %s"
             val = (nome, email, cpf, id_funcionario)
 
@@ -29,9 +33,10 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
             ui.lineEdit_4.setText("")
             ui.lineEdit_6.setText("")
 
-            ui.pushButton.setText("Salvar")
             ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
+            ui.pushButton.setText("Salvar")
+            stackWidget.setCurrentIndex(2)
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {
@@ -51,8 +56,8 @@ def carregarDadosFuncionario(ui, id_funcionario, stackWidget):
     dados = cursor.fetchone() #Explicação isso serve para pegar apenas um resultado
     if dados:
         ui.lineEdit_5.setText(dados[0])
-        ui.lineEdit_4.setText(dados[2])
-        ui.lineEdit_6.setText(dados[1])
+        ui.lineEdit_4.setText(dados[1])
+        ui.lineEdit_6.setText(dados[2])
 
     ui.pushButton.setText("Atualizar")
 
@@ -63,8 +68,13 @@ def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
+    
+    
+    if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.setText("Salvar")
 
     stackWidget.setCurrentIndex(2)
+    camposSemErro(ui)
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(2)
@@ -72,6 +82,11 @@ def excluir(ui, stackWidget):
     ui.lineEdit_5.setText("")
     ui.lineEdit_4.setText("")
     ui.lineEdit_6.setText("")
+    
+    if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.setText("Salvar")
+
+    camposSemErro(ui)
 
 def errorCampos(ui):
     ui.lineEdit_5.setStyleSheet('''
@@ -105,8 +120,82 @@ def errorCampos(ui):
     }
     ''')
 
-def validarEmail(ui):
-    pass
+def camposSemErro(ui):
+    ui.lineEdit_5.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
+    ui.lineEdit_4.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
+    ui.lineEdit_6.setStyleSheet('''
+    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 12px;
+                font-size: 14px;
+                color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
+
+def verificarCpf(ui):
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cpf = ui.lineEdit_6.text()
+
+        cursor.execute("SELECT cpf FROM funcionarios WHERE cpf = %s", (cpf,))
+        results = cursor.fetchall()
+
+        print(results)
+        if len(results) > 1:
+            print("esse cpf está duplicado")
+            msg = QMessageBox()
+            msg.setWindowTitle("Aviso !")
+            msg.setText("Esse Cpf já está sendo usado mude o cpf")
+            msg.StandardButton(QMessageBox.Ok | QMessageBox.Cancel)
+            resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            return
+        else:
+            return
+    except Exception as e:
+        print(f"Erro na verificação de cpf {e}")
+        traceback.print_exc()
 
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
@@ -119,13 +208,20 @@ def cadastrarNovoFuncionario(ui, stackWidget):
         if re.match(r"[^@]+@[^@]+\.[^@]+", email):
             cnx = carregarBD()
             cursor = cnx.cursor()
+            verificarCpf(ui)
+
             sql = "INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES (%s, %s, %s, 1)"
-            val = (nome, email, cpf)
+            val = (nome, cpf, email)
 
             cursor.execute(sql, val)
             cnx.commit()
+            fechar_coneccao()
 
             stackWidget.setCurrentIndex(2)
+            ui.lineEdit_5.setText("")
+            ui.lineEdit_4.setText("")
+            ui.lineEdit_6.setText("")
+            camposSemErro(ui)
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {

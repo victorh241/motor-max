@@ -13,9 +13,8 @@ def editarProduto(stackWidget, produtoId):
     except Exception as e:
         print(f"Erro tentar Editar: {e}")
 
-def excluirProduto(stackWidget, produtoId):
+def excluirProduto(ui, stackWidget, produtoId):
     try:
-        
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
         msg.setText("Você tem certeza que quer excluir esse produto ?")
@@ -27,6 +26,10 @@ def excluirProduto(stackWidget, produtoId):
             cursor.execute("DELETE FROM produtos WHERE id_produto = %s", (produtoId,))
             cnx.commit()
             fechar_coneccao()
+
+            ui.tableWidget.setRowCount(0)
+            mostrarProdutos(ui, stackWidget)
+
     except Exception as e:
         print(f"Erro ao Excluir: {e}")
 
@@ -60,15 +63,38 @@ def mostrarProdutos(ui, stackWidget):
         tabela.setSelectionMode(QTableWidget.NoSelection)
 
         tabela.setStyleSheet('''
-        QTableWidget{
-            border: none;
-            background-color: white;
-        }
-                         
-        QTableWidget::item{
-            padding: 10px;
-        }
-    ''')
+                QTableWidget{
+                    border: 1px solid;
+                    background-color: white;
+                }
+                                
+                QTableWidget::item {
+                    padding-top: 10px;
+                    padding-left: 30px;
+                }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
+            ''')
         
         for i, produto in enumerate(produtos):
             frame = QFrame()
@@ -208,7 +234,7 @@ def mostrarProdutos(ui, stackWidget):
             tabela.setCellWidget(i, 0, frame)
 
             botaoEditar.clicked.connect(lambda _, produto_id=produto[0]: editarProduto(stackWidget, produto_id))
-            botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(stackWidget, produto_id))
+            botaoExcluir.clicked.connect(lambda _, produto_id=produto[0]: excluirProduto(ui , stackWidget, produto_id))
 
         fechar_coneccao()
     except Exception as e:

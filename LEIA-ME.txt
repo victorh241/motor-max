@@ -3,7 +3,10 @@ Grupo: Victor santos, diogo Miranda, Ruy Ribeiro, Juliene de Sousa, Antônio Sil
 
 falta:
 falta melhorar o espaçamento dos frames em todas as listagens. - detalhe 
+<<<<<<< HEAD
 fazer a listagem da ordem de serviço. - importante
+=======
+>>>>>>> cff27d9a317d16b94af19447465caaf04750faca
 fazer a função de procura dos produtos - detalhe
 fazer a função de procura do usuário - detalhe
 fazer a função de procura do cliente - detalhe
@@ -17,11 +20,12 @@ bug no excluir veiculo - importante
 tirar o texto quando sair da tela cadastro funcionário - detalhe
 aviso caso tenha o cpf que já foi cadastrado - importante
 erro de campo cadastro ordem de serviço - detalhe
-erro no duplicata quando: mysql.connector.errors.IntegrityError: 1062 (23000) - importante
 bug no funcionário quando excluir - importante
 criar executável - importante
-listagem da ordem de serviço - importante
 Atualizar em tempo real - detalhe
+bug do botão de salvar que ficar atualizar quando o ele tentar cadastrar um novo
+bug na hora de cadastrar que fica no editar para sempre
+mudar a tela de login caso seja o primeiro acesso do usuario
 
 pronto:
 listagem clientes
@@ -47,6 +51,8 @@ campos de erro na tela de veículos
 funções de carregar dados
 banco de dados
 o arquivo do user
+
+
 
 dia 06: tela usuários
 dia 08: tela produtos

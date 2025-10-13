@@ -229,7 +229,7 @@ border: none;
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
-           <pointsize>-1</pointsize>
+           <pointsize>1</pointsize>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -311,7 +311,7 @@ border-radius: 4px;</string>
        </property>
        <property name="font">
         <font>
-         <pointsize>-1</pointsize>
+         <pointsize>1</pointsize>
         </font>
        </property>
        <property name="styleSheet">

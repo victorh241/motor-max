@@ -26,6 +26,9 @@ def excluirVeiculo(idx, ui, stackWidget):
             cursor.execute("DELETE FROM veiculos WHERE id_veiculo = %s", (idx,))
             cnx.commit()
             cnx.close()
+
+            ui.tableWidget.setRowCount(0)
+            mostrarVeiculos(ui, stackWidget)
     except Exception as e:
         print(f"Erro ao excluir veiculo: {e}")
 
@@ -50,14 +53,48 @@ def mostrarVeiculos(ui, stackWidget):#tem algum erro aqui
             tabela.setRowHeight(r, 190 + esp_vertical)
         
         #header
-        tabela.setHorizontalHeaderLabels([""])
+        tabela.setHorizontalHeaderLabels([""] * 1)
         tabela.setVerticalHeaderLabels([""] * tabela.rowCount())
         tabela.horizontalHeader().setVisible(False)
         tabela.verticalHeader().setVisible(False)
-
         tabela.setShowGrid(False)
+        tabela.setFocusPolicy(Qt.NoFocus)
+        tabela.setEditTriggers(QTableWidget.NoEditTriggers)
+        tabela.setSelectionMode(QTableWidget.NoSelection)
         #endregion
 
+        tabela.setStyleSheet('''
+                QTableWidget{
+                    border: 1px solid;
+                    background-color: white;
+                }
+                                
+                QTableWidget::item {
+                    padding: 10px;
+                }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
+            ''')
         for index, _veiculo in enumerate(dados):
             #frame
             frame = QFrame()
@@ -221,8 +258,8 @@ def mostrarVeiculos(ui, stackWidget):#tem algum erro aqui
 
             tabela.setCellWidget(index, 0, frame)
 
-            botaoEditar.clicked.connect(lambda _, id=_veiculo[1]: editarVeiculo(id, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, id=_veiculo[1]: excluirVeiculo(id, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, id=_veiculo[0]: editarVeiculo(id, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, id=_veiculo[0]: excluirVeiculo(id, ui, stackWidget))
     except Exception as e:
         print("Erro ao conectar ao banco de dados: ", e)
         return

@@ -87,7 +87,9 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Funcionarios` (
   `CPF` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
   `disponivel` TINYINT NOT NULL,
-  PRIMARY KEY (`id_funcionario`))
+  PRIMARY KEY (`id_funcionario`)),
+  UNIQUE INDEX `cpf_UNIQUE` (`cpf` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
 ENGINE = InnoDB;
 
 
@@ -123,14 +125,14 @@ CREATE TABLE IF NOT EXISTS `MotorMax`.`Ordem de Serviços` (
   `id_serviço` INT NOT NULL,
   `id_veiculo` INT NOT NULL,
   `codigo` VARCHAR(7) NOT NULL,
-  `Status` ENUM("Concluiido", "em adamento", "Agendado", "Cancelado") NOT NULL,
+  `Status` ENUM("Concluido", "Em Andamento", "Agendado", "Cancelado") NOT NULL,
   `desconto` DECIMAL(10,2) NULL,
-  `Agendamento` DATETIME NOT NULL,
+  `Agendamento` VARCHAR(10) NOT NULL,
   `quantidade_produtos` INT NULL,
   `quantidade_serviços` INT NOT NULL,
+  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
-  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Serviço1_idx` (`id_serviço` ASC) VISIBLE,
   INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_atendente` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
@@ -192,6 +194,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Usuarios` (
   `login` VARCHAR(45) NOT NULL,
   `senha` VARCHAR(45) NOT NULL,
   `função` ENUM("Atendente", "Mecânico", "admin") NOT NULL,
+  `primeiroAcesso` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id_usuario`),
   INDEX `fk_Usuarios_Funcionario1_idx` (`id_funcionario` ASC) VISIBLE,
   CONSTRAINT `fk_Usuarios_Funcionario1`
@@ -206,11 +209,12 @@ ENGINE = InnoDB;
 -- Table `motormax`.`equipe_mecanicos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
+  `id_mecanico` INT NOT NULL AUTO_INCREMENT,
   `mecanicos_id_mecanico` INT NOT NULL,
   `Ordem de Serviço_id_ordemServiço` INT NOT NULL,
-  PRIMARY KEY (`mecanicos_id_mecanico`, `Ordem de Serviço_id_ordemServiço`),
   INDEX `fk_mecanicos_has_Ordem de Serviço_Ordem de Serviço1_idx` (`Ordem de Serviço_id_ordemServiço` ASC) VISIBLE,
   INDEX `fk_mecanicos_has_Ordem de Serviço_mecanicos1_idx` (`mecanicos_id_mecanico` ASC) VISIBLE,
+  PRIMARY KEY (`id_mecanico`),
   CONSTRAINT `fk_mecanicos_has_Ordem de Serviço_mecanicos1`
     FOREIGN KEY (`mecanicos_id_mecanico`)
     REFERENCES `motormax`.`mecanicos` (`id_mecanico`)
@@ -218,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_mecanicos_has_Ordem de Serviço_Ordem de Serviço1`
     FOREIGN KEY (`Ordem de Serviço_id_ordemServiço`)
-    REFERENCES `motormax`.`Ordem de Serviço` (`id_ordemServiço`)
+    REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -234,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Venda_final` (
   INDEX `fk_Venda_final_Ordem de Serviço1_idx` (`id_ordem` ASC) VISIBLE,
   CONSTRAINT `fk_Venda_final_Ordem de Serviço1`
     FOREIGN KEY (`id_ordem`)
-    REFERENCES `mydb`.`Ordem de Serviço` (`id_ordemServiço`)
+    REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -243,10 +247,10 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES ("joão", "1xx.xxx.xxx-xx", "lucas@gmail.com",1);
+INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES ("joão", "111.111.111-11", "lucas@gmail.com",1);
 SELECT * FROM funcionarios;
 
-INSERT INTO usuarios(id_funcionario, login, senha, função) VALUES (1 ,"admin", "123456", "admin");
+INSERT INTO usuarios(id_funcionario, login, senha, função, primeiroAcesso) VALUES (1 ,"admin", "123456", "admin", 1);
 SELECT * FROM usuarios;
 
 SELECT * FROM produtos;
@@ -256,3 +260,8 @@ SELECT * FROM veiculos;
 SELECT * FROM clientes;
 
 SELECT * FROM `ordem de serviços`;
+SELECT * FROM atendente;
+SELECT * FROM venda_final;
+SELECT * FROM equipe_mecanicos;
+SELECT * FROM mecanicos;
+SELECT * FROM telefones;

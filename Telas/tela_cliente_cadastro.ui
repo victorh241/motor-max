@@ -570,7 +570,7 @@ right: 6px;
 }</string>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>-1</number>
        </property>
        <property name="maxVisibleItems">
         <number>5</number>
@@ -670,13 +670,13 @@ background: transparent;</string>
           <x>960</x>
           <y>10</y>
           <width>35</width>
-          <height>48</height>
+          <height>35</height>
          </rect>
         </property>
         <property name="minimumSize">
          <size>
           <width>35</width>
-          <height>48</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -704,7 +704,6 @@ border-radius: 8px;
 padding: 12px;
 font-size: 14px;
 font-weight: bold;
-min-height: 20px;
 }
 
 QPushButton:hover{

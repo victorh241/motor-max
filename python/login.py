@@ -21,16 +21,52 @@ def verificarTelaLogin(ui):
     ui.lineEdit_2.setDisabled(False)
     ui.lineEdit.setEnabled(True)
 
+    ui.lineEdit.setStyleSheet('''
+        QLineEdit {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        color: #374151;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+    ''')
+
+    ui.lineEdit_2.setStyleSheet('''
+        QLineEdit {
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        color: #374151;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+    ''')
+
 def dados_usuarios() -> list:
     db = carregarBD()
     lista = []
 
     cursor = db.cursor()
-    cursor.execute("SELECT login, senha, função FROM usuarios")
+    cursor.execute("SELECT login, senha, função, primeiroAcesso FROM usuarios")
     result = cursor.fetchall()
 
     for i in range(len(result)):
-        lista.append({'login': result[i][0], 'senha': result[i][1], 'acesso': result[i][2]})
+        lista.append({'login': result[i][0], 'senha': result[i][1], 'acesso': result[i][2], 'primeiroAcesso': result[i][3]})
     
     return lista
 
@@ -93,7 +129,12 @@ def autenticarUsuario(ui, stackWidget):
             acesso = userAtual['acesso']
             user.lvlPermiUserAtual = acesso
             user.login = userAtual['login']
-            stackWidget.setCurrentIndex(1)
+
+            if userAtual['primeiroAcesso'] == 0:#falso
+                stackWidget.setCurrentIndex(1)
+            else:
+                stackWidget.setCurrentIndex(16)
+                user.login = userAtual['login']
         else:
             senhaErrada(ui)
 

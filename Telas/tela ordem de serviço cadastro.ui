@@ -574,10 +574,10 @@ right: 6px;
 }</string>
        </property>
        <property name="currentText">
-        <string>Concluido</string>
+        <string/>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>-1</number>
        </property>
        <property name="maxVisibleItems">
         <number>5</number>

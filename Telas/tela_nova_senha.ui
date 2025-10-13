@@ -15,29 +15,73 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QLabel" name="label_5">
-      <property name="font">
-       <font>
-        <pointsize>1</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+    <item alignment="Qt::AlignHCenter">
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>300</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>120</height>
+       </size>
       </property>
       <property name="styleSheet">
-       <string notr="true">QLabel {
+       <string notr="true">QFrame{
+margin-top:40px;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>300</width>
+         <height>70</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>70</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>70</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>1</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
 font-size: 24px;
 font-weight: bold;
 color: #1f2937;
-margin-bottom: 5px;
 }</string>
-      </property>
-      <property name="text">
-       <string>Inserir nova senha</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
+       </property>
+       <property name="text">
+        <string>Inserir nova senha</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
      </widget>
     </item>
     <item alignment="Qt::AlignHCenter">
@@ -118,7 +162,7 @@ background-color: #582503;
 }</string>
        </property>
        <property name="text">
-        <string>Enviar</string>
+        <string>Salvar</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="lineEdit">
@@ -206,9 +250,9 @@ border: 2px solid #7f8082;
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton{
-background-color: transparent;
-color: Black;
-border: 2px solid;
+background-color: #f59e0b;
+color: black;
+border: none;
 border-radius: 8px;
 padding: 12px;
 font-size: 14px;
@@ -217,11 +261,15 @@ min-height: 20px;
 }
 
 QPushButton:hover{
-background-color: rgb(234, 227, 174);
+background-color: #d97706;
 }
 
-QPushButton:Pressed{
-background-color: rgb(210, 203, 150);
+QPushButton:pressed{
+background-color: #b45309;
+}
+
+QPushButton:disable{
+background-color: #582503;
 }</string>
        </property>
        <property name="text">
@@ -289,7 +337,7 @@ border: 2px solid #7f8082;
         <string notr="true">border: none;</string>
        </property>
        <property name="text">
-        <string>Repita a senha *</string>
+        <string>Confirmar senha *</string>
        </property>
       </widget>
      </widget>

@@ -12,7 +12,7 @@ from tela_clienteCadastro import carregarDadosCliente
 def editarCliente(idx, ui, stackWidget):
     try:
         stackWidget.setCurrentIndex(9)
-        carregarDadosCliente(stackWidget.widget(9), idx + 1, stackWidget)
+        carregarDadosCliente(stackWidget.widget(9), idx, stackWidget)
 
     except Exception as e:
         print(f"Erro ao editar cliente: {e}")
@@ -23,15 +23,18 @@ def excluirCliente(idx, ui, stackWidget):# aqui também tem dependencias no veic
         cursor = cnx.cursor()
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
-        msg.setText("Você tem certeza que quer editar esse cliente ?")
+        msg.setText("Você tem certeza que quer excluir esse cliente ?")
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         respota = msg.exec_()
         if respota == QMessageBox.Ok:
             cnx = carregarBD()
             cursor = cnx.cursor()
-            cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx + 1,))
-            cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx + 1,))#não é muito um ponto de discurssão porque o telefone depende diretamente de cliente
+            cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (idx,))
+            cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (idx,))
             cnx.commit()
+
+            ui.tableWidget.setRowCount(0)
+            mostraClientes(ui, stackWidget)
     except Exception as e:
         print(f"Erro ao excluir cliente: {e}")
 
@@ -62,9 +65,45 @@ def mostraClientes(ui, stackWidget):
         tabela.setVerticalHeaderLabels([""] * tabela.rowCount())
         tabela.horizontalHeader().setVisible(False)
         tabela.verticalHeader().setVisible(False)
+        tabela.setShowGrid(False)
+        tabela.setFocusPolicy(Qt.NoFocus)
+        tabela.setEditTriggers(QTableWidget.NoEditTriggers)
+        tabela.setSelectionMode(QTableWidget.NoSelection)
 
         tabela.setShowGrid(False)
 
+        tabela.setStyleSheet('''
+                QTableWidget{
+                    border: 1px solid;
+                    background-color: white;
+                }
+                                
+                QTableWidget::item {
+                    padding: 10px;
+                }
+                             
+                QScrollBar:vertical{
+                 border: none;
+                 background: #f0f0f0;
+                 width: 12px;
+                 margin: 0px;
+                 border-radius: 6px;       
+                }
+                             
+                QScrollBar::handle:vertical {
+                background: #b0b0b0;
+                min-height: 20px;
+                border-radius: 6px;
+                }
+                             
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+                height: 0px;
+                subcontrol-origin: margin;
+                }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+                background: none;
+                }
+            ''')
         for idx, _cliente in enumerate(dados):
             frame = QFrame()
 
@@ -224,8 +263,8 @@ def mostraClientes(ui, stackWidget):
             ui.tableWidget.setCellWidget(row, column, frame)
 
             # Conecta os botões às funções de editar e excluir
-            botaoEditar.clicked.connect(lambda _, r=idx: editarCliente(r, ui, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, r=idx: excluirCliente(r, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, r=_cliente[0]: editarCliente(r, ui, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, r=_cliente[0]: excluirCliente(r, ui, stackWidget))
 
         ui.tableWidget.resizeColumnsToContents()
     except Exception as e:
