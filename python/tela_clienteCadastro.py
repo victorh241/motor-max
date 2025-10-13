@@ -19,15 +19,37 @@ def atualizarCliente(ui, clienteId, stackWidget):
     if nome.strip() == "" or email.strip() == "" or cpf.strip() == "" or novoTelefone.strip() == "" or qntOpcoesTelefones == 0:
         erroCampos(ui)
     else:
+        #cliente
         sql = "UPDATE Clientes SET nome = %s, email = %s, cpf = %s WHERE id_cliente = %s"
         valores = (nome, email, cpf, clienteId)
 
         cursor.execute(sql, valores)
         cnx.commit()
+
+        #telefone
+        cursor.execute("SELECT id_telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
+        dadosTelefone = cursor.fetchall()
+
+        listaTelefone[ui.comboBox_2.count() - 1] = ui.lineEdit_7.text()
+        for i in range(len(listaTelefone)):
+            print(listaTelefone[i], dadosTelefone[i][0])
+            sqlTelefone = "UPDATE telefones SET telefone = %s WHERE id_telefone = %s"
+            valoresTelefone = (listaTelefone[i] , dadosTelefone[i][0])
+            cursor.execute(sqlTelefone, valoresTelefone)
+            cnx.commit()
+
         cnx.close()
         
         ui.pushButton.clicked.disconnect()
         ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, clienteId, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_3.setText("")
+        ui.comboBox_2.clear()
+        ui.lineEdit_7.setText("")
+        modoAtualizarCliente = False
+
+        stackWidget.setCurrentIndex(3)
 
 def carregarDadosCliente(ui, clienteId, stackWidget):
     try:
@@ -36,6 +58,7 @@ def carregarDadosCliente(ui, clienteId, stackWidget):
 
         cursor.execute("SELECT nome, cpf, email FROM Clientes WHERE id_cliente = %s", (clienteId,))
         dadosCliente = cursor.fetchone()
+        modoAtualizarCliente = True
 
         if dadosCliente:
             ui.lineEdit.setText(dadosCliente[0])  # nome
@@ -49,17 +72,15 @@ def carregarDadosCliente(ui, clienteId, stackWidget):
 
             cursor.execute("SELECT telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
             telefones = cursor.fetchall()
+            listaTelefone.clear()
             ui.frame_3.show()
             ui.comboBox_2.clear()
             for _telefone in telefones:
+                listaTelefone.append(_telefone[0])
                 novoIndex = ui.comboBox_2.count() + 1
                 ui.comboBox_2.addItem(f"telefone {novoIndex}")
                 ui.comboBox_2.setCurrentIndex(novoIndex - 1)
-                if ui.lineEdit_7.text() == "":
-                    ui.lineEdit_7.setText(_telefone[0])
-                else:
-                    ui.comboBox_2.addItem(f"telefone {novoIndex + 1}")
-                    ui.lineEdit_7.setText("")
+                ui.lineEdit_7.setText(_telefone[0])
     except Exception as e:
         print(f"Erro ao carregar dados do cliente: {e}")
 
@@ -187,9 +208,13 @@ def mudaTextoTelefone(ui):
     if ui.comboBox_2.count() > 1:
         
         if indexAtual != novoIndex:
+            print(indexAtual)
             ui.lineEdit_7.setText(listaTelefone[indexAtual])
         else:
-            ui.lineEdit_7.setText("")
+            if not modoAtualizarCliente:
+                ui.lineEdit_7.setText("")
+            else:
+                ui.lineEdit_7.setText(listaTelefone[novoIndex])
 
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
@@ -213,6 +238,8 @@ def exibirFrameTelefone(ui):
         listaTelefone.append(novoTelefone)
 
 def configClienteCadastro(stackWidget):
+    global modoAtualizarCliente
+    modoAtualizarCliente = False
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
 
     stackWidget.addWidget(ui)

@@ -276,9 +276,8 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
             id_funcionario= _user[0]
 
     cadastrarItemAtendente(ui)
-    cursor.execute("SELECT id_atendente FROM atendente WHERE")
+    cursor.execute("SELECT id_atendente FROM atendente WHERE")#tem um erro no primeiro registro sempre verificar porque no primeiro registro
     id_atendente = cursor.fetchone()
-
     
 
     #region procura e assimilação de dados

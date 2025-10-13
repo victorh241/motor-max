@@ -15,7 +15,6 @@ def funcEditar(stackWidget, index):
 
 def funcExcluir(ui, index, stackWidget):# aqui existe um problema, se o usuario quer que exclua o funcionario ele precisa primeiro excluir o usuario vinculado a ele
     id_funcionario = index
-
     #mensagem de confirmação
     msg = QMessageBox()
     msg.setWindowTitle("Aviso !")
