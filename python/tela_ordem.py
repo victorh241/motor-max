@@ -5,6 +5,7 @@ from PyQt5.QtCore import QSize, Qt
 import traceback
 
 from bancoDados import carregarBD, fechar_coneccao
+from tela_ordemCadastro import atualizarOrdem
 
 #region botões da ordem de serviços
 def excluirOrdem(idx, ui, stackWidget):
@@ -28,8 +29,12 @@ def excluirOrdem(idx, ui, stackWidget):
         #atualizar tela
         mostrarOrdemServiço(ui, stackWidget)
 
-def editarOrdem(idx, ui, stackWidget):
-    pass
+def editarOrdem(idx, stackWidget):
+    try:
+        stackWidget.setCurrentIndex(11)
+        atualizarOrdem(stackWidget.widget(11), stackWidget, idx)
+    except Exception as e:
+        print(f"Erro na função de editar {e}")
 #endregion
 
 #region botões do serviço
@@ -52,9 +57,6 @@ def excluirServiço(id_servico, ui, stackWidget):
             mostrarServicos(ui, stackWidget)
     except Exception as e:
         print(f"Erro na exclussão: {e}")
-
-def editarServico(id_servico, ui, stackWidget):
-    pass
 #endregion
 
 def mudaListagem(idx, ui, stackWidget):
@@ -406,8 +408,8 @@ def mostrarOrdemServiço(ui, stackWidget):
 
             tabela.setCellWidget(row, column, frame)
 
-            botaoEditar.clicked.connect(lambda _, idx=_os[0]: editarOrdem(idx, ui, stackWidget))
-            botaoExcluir.clicked.connect(lambda _, idx=_os[0]: excluirOrdem(idx, ui, stackWidget))
+            botaoEditar.clicked.connect(lambda _, idx=_os[0]: editarOrdem(idx, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, idx=_os[0]: excluirOrdem(idx, ui,stackWidget))
     except Exception as e:
         print(f"listagem da os erro: {e}")
         traceback.print_exc()

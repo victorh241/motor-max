@@ -7,6 +7,26 @@ import string
 
 #status quase concluido falta revisar
 
+def atualizarOrdem(ui, stackWidget, id_ordem):
+    cnx = carregarBD()
+    cursor = cnx.cursor(buffered=True)
+
+    cursor.execute("SELECT id_ordemServiço, id_atendente, id_serviço, id_veiculo, Status, desconto, Agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços` WHERE = %s", (id_ordem,))
+    dadosOrdem = cursor.fetchone()
+
+
+    if dadosOrdem:
+        cursor.execute("SELECT `Clientes_id_cliente` FROM atendente WHERE = %s", (dadosOrdem[1],))
+        dadosAtendente = cursor.fetchone()
+        id_cliente = dadosAtendente[0]
+
+        cursor.execute("SELECT nome FROM clientes WHERE = %s", (id_cliente,))
+        nomeCliente = cursor.fetchone()
+
+        ui.comboBox_2.setCurrentText(nomeCliente[0])
+        
+
+
 def gere_codigo_ordem() -> str:
     letters = "".join(random.choice(string.ascii_letters) for _ in range(3))
     digits = "".join(random.choice(string.digits) for _ in range(3))

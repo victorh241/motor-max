@@ -13,7 +13,6 @@ def editarCliente(idx, ui, stackWidget):
     try:
         stackWidget.setCurrentIndex(9)
         carregarDadosCliente(stackWidget.widget(9), idx, stackWidget)
-
     except Exception as e:
         print(f"Erro ao editar cliente: {e}")
 
