@@ -103,9 +103,8 @@ def registrarNovoUsuario(ui, stackWidget):
         cnx.commit()
 
         if func == "Mecânico":
-            novoId_funcionario = cursor.lastrowid
             sqlComando = "INSERT INTO mecanicos(id_funcionario) VALUES (%s)"
-            dadosComando = (novoId_funcionario,)
+            dadosComando = (id_funcionario,)
 
             cursor.execute(sqlComando, dadosComando)
             cnx.commit()

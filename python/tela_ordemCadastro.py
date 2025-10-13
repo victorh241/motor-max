@@ -240,34 +240,6 @@ def adcionarNovoProduto(ui):
         ui.spinBox_2.setValue(0)
 #endregion
 
-def cadastrarItemAtendente(ui):
-    cnx = carregarBD()
-    cursor = cnx.cursor()
-
-    #buscar id do cliente
-    cursor.execute("SELECT id_cliente, nome FROM clientes")
-    dadosCliente = cursor.fetchall()
-    id_cliente = 0
-
-    for _cliente in dadosCliente:
-        if ui.comboBox_2.currentText() == _cliente[1]:
-            id_cliente = _cliente[0]
-    
-    #busca id do funcionario que registra a nota
-    cursor.execute("SELECT id_funcionario, login FROM usuarios")
-    dadosUser = cursor.fetchall()
-    id_funcionario = 0
-
-    for _user in dadosUser:
-        if _user[1] == user.login:
-            id_funcionario= _user[0]
-
-    #registrar
-    sqlComando = "INSERT INTO Atendente(Clientes_id_cliente, Funcionario_id_funcionario) VALUES (%s, %s)"
-    dadosComando = (id_cliente, id_funcionario)
-    cursor.execute(sqlComando, dadosComando)
-    cnx.commit()
-
 def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #region campos
     cnx = carregarBD()
@@ -295,11 +267,31 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         if _user[1] == user.login:
             id_funcionario= _user[0]
 
-    cadastrarItemAtendente(ui)
-    cursor.execute("SELECT id_atendente FROM atendente WHERE Funcionario_id_funcionario = %s", (id_funcionario,))
-    dadosAtendente = cursor.fetchone()
-    id_atendente = dadosAtendente[0]
+    #buscar id do cliente
+    cursor.execute("SELECT id_cliente, nome FROM clientes")
+    dadosCliente = cursor.fetchall()
+    id_cliente = 0
+
+    for _cliente in dadosCliente:
+        if ui.comboBox_2.currentText() == _cliente[1]:
+            id_cliente = _cliente[0]
     
+    #busca id do funcionario que registra a nota
+    cursor.execute("SELECT id_funcionario, login FROM usuarios")
+    dadosUser = cursor.fetchall()
+    id_funcionario = 0
+
+    for _user in dadosUser:
+        if _user[1] == user.login:
+            id_funcionario= _user[0]
+
+    #registrar
+    sqlComando = "INSERT INTO Atendente(Clientes_id_cliente, Funcionario_id_funcionario) VALUES (%s, %s)"
+    dadosComando = (id_cliente, id_funcionario)
+    cursor.execute(sqlComando, dadosComando)
+    cnx.commit()
+    id_atendente = cursor.lastrowid
+    print(id_atendente)
 
     #region procura e assimilação de dados
     #servico

@@ -10,7 +10,7 @@ def userEditar(stackWidget, usuario_id):
     stackWidget.setCurrentIndex(12)
     carregarDadosUsuario(stackWidget.widget(12), usuario_id, stackWidget)
 
-def userExcluir(ui, usuario_id):
+def userExcluir(ui, usuario_id, stackWidget):
     #mensagem de confirmação
     msg = QMessageBox()
     msg.setWindowTitle("Aviso !")
@@ -23,6 +23,9 @@ def userExcluir(ui, usuario_id):
         cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (usuario_id,))
         cnx.commit()
         cnx.close()
+
+        ui.tableWidget.setRowCount(0)
+        mostrarUsuarios(ui, stackWidget)
 
 def mostrarUsuarios(ui, stackWidget):
     try:
@@ -215,7 +218,7 @@ def mostrarUsuarios(ui, stackWidget):
             tabela.setCellWidget(idx, 0, frame)
 
             botaoEditar.clicked.connect(lambda _, usuario_id=_usuario[0]: userEditar(stackWidget, usuario_id))
-            botaoExcluir.clicked.connect(lambda _, usuario_id=_usuario[0]: userExcluir(ui, usuario_id))
+            botaoExcluir.clicked.connect(lambda _, usuario_id=_usuario[0]: userExcluir(ui, usuario_id, stackWidget))
             #endregion
 
             #endregion

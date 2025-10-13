@@ -115,7 +115,6 @@ def janela():
 
         stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
 
-
         tela.show()
         app.exec()
         bancoDados.fechar_coneccao()
