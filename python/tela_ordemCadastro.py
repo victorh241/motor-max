@@ -265,7 +265,7 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #endregion
 
     #registrar atendente
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
 
     cursor.execute("SELECT id_funcionario, login FROM usuarios")
     dadosUser = cursor.fetchall()
@@ -276,21 +276,19 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
             id_funcionario= _user[0]
 
     cadastrarItemAtendente(ui)
-    cursor.execute("SELECT id_atendente FROM atendente WHERE")#tem um erro no primeiro registro sempre verificar porque no primeiro registro
-    id_atendente = cursor.fetchone()
+    cursor.execute("SELECT id_atendente FROM atendente WHERE Funcionario_id_funcionario = %s", (id_funcionario,))
+    dadosAtendente = cursor.fetchone()
+    id_atendente = dadosAtendente[0]
     
 
     #region procura e assimilação de dados
     #servico
     id_servico = 0
     valorServico = 0
-    cursor.execute("SELECT id_serviço, descrição FROM serviços")
-    dadosServico = cursor.fetchall()
+    cursor.execute("SELECT id_serviço FROM Serviços WHERE descrição = %s", (servico,))
+    dadosServico = cursor.fetchone()
+    id_servico = dadosServico[0]
 
-    for _servico in dadosServico:
-        if _servico[1] == servico:
-            id_servico = _servico[0]
-    
     #veiculo
     id_veiculo = 0
     cursor.execute("SELECT id_veiculo, marca, modelo FROM veiculos")
@@ -322,10 +320,12 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #tem o codigo
     cursor.execute("SELECT codigo FROM `ordem de serviços`")
     codigosResultado = cursor.fetchall()
-    for _codigo in codigosResultado:
-        if codigo == _codigo[0]:
-            print("codigo igual")
-            ui.lineEdit_5.setText(gere_codigo_ordem())
+
+    if codigosResultado:
+        for _codigo in codigosResultado:
+            if codigo == _codigo[0]:
+                print("codigo igual")
+                ui.lineEdit_5.setText(gere_codigo_ordem())
 
     if desconto.strip() != ".":
         print(id_atendente, id_servico, id_veiculo, codigo, status, desconto, data, quantidadeServicos, quantidadeProdutos)

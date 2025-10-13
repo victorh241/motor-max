@@ -7,10 +7,28 @@ import traceback
 from bancoDados import carregarBD, fechar_coneccao
 
 #region botões da ordem de serviços
-def excluirOrdem(idx, ui):
-    pass
+def excluirOrdem(idx, ui, stackWidget):
+    id_ordem = idx
+    #mensagem de confirmação
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir essa ordem de serviço ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor(buffered=True)
+        cursor.execute("DELETE FROM Venda_final WHERE id_ordem = %s", (id_ordem,))
+        cursor.execute("DELETE FROM equipe_mecanicos WHERE `Ordem de Serviço_id_ordemServiço` = %s", (id_ordem,))
+        cursor.execute("DELETE FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
+        cnx.commit()
+        fechar_coneccao()
+        ui.tableWidget_2.setRowCount(0)
+        
+        #atualizar tela
+        mostrarOrdemServiço(ui, stackWidget)
 
-def editarOrdem(idx, ui):
+def editarOrdem(idx, ui, stackWidget):
     pass
 #endregion
 
@@ -46,7 +64,7 @@ def mudaListagem(idx, ui, stackWidget):
         mostrarServicos(ui,stackWidget)
 
 def tabelasListagem(ui, stackWidget):
-    if ui.tabWidget.currentIndex == 0:
+    if ui.tabWidget.currentIndex() == 0:
         mostrarOrdemServiço(ui, stackWidget)
     else:
         mostrarServicos(ui, stackWidget)
@@ -249,7 +267,7 @@ def mostrarOrdemServiço(ui, stackWidget):
                 
                 
             #titulo serviço
-            labelTituloServico.setGeometry(890, 120, 90, 15)
+            labelTituloServico.setGeometry(-5, 120, 90, 15)
             labelTituloServico.setStyleSheet('''
                 QLabel{
                 border: none;
@@ -260,7 +278,7 @@ def mostrarOrdemServiço(ui, stackWidget):
             ''')
             labelTituloServico.setAlignment(Qt.AlignRight)
 
-            labelTituloProdutos.setGeometry(20, 140, 90, 15)
+            labelTituloProdutos.setGeometry(0, 140, 90, 15)
             labelTituloProdutos.setStyleSheet('''
                 QLabel{
                 border: none;
@@ -343,8 +361,8 @@ def mostrarOrdemServiço(ui, stackWidget):
             botaoEditar.setIcon(QIcon("imagem/icons/edit.png"))
             botaoEditar.setIconSize(QSize(20,20))
 
-            botaoExcluir.setGeometry(910, 220, 30, 30)
-            botaoEditar.setGeometry(950, 220, 30, 30)
+            botaoExcluir.setGeometry(950, 220, 30, 30)
+            botaoEditar.setGeometry(910, 220, 30, 30)
 
             botaoExcluir.setStyleSheet('''
                 QPushButton{
@@ -388,8 +406,8 @@ def mostrarOrdemServiço(ui, stackWidget):
 
             tabela.setCellWidget(row, column, frame)
 
-            botaoEditar.clicked.connect(lambda _, idx=_os[0]: excluirOrdem(idx, ui))
-            botaoExcluir.clicked.connect(lambda _, idx=_os[0]: editarOrdem(idx, ui))
+            botaoEditar.clicked.connect(lambda _, idx=_os[0]: editarOrdem(idx, ui, stackWidget))
+            botaoExcluir.clicked.connect(lambda _, idx=_os[0]: excluirOrdem(idx, ui, stackWidget))
     except Exception as e:
         print(f"listagem da os erro: {e}")
         traceback.print_exc()
