@@ -1,8 +1,10 @@
 #region imports
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget
+from PyQt5.QtGui import QIcon
 from PyQt5 import uic
 import bancoDados
+import traceback
 
 #region telas
 from login import configLogin, verificarTelaLogin
@@ -80,6 +82,7 @@ def verificarTela(index, stackWidget):
             
     except Exception as e:
         print(f"erro: {e}")
+        traceback.print_exc()
 
 def janela():
     try:
@@ -109,11 +112,16 @@ def janela():
             configNovaSenha(stack_widget)
         except Exception as e:
             print(f"Erro na configuração de uma das telas, Erro: {e}")
+            traceback.print_exc()
         #endregion
 
         stack_widget.setCurrentIndex(0)
 
         stack_widget.currentChanged.connect(lambda index: verificarTela(index, stack_widget))
+
+        #fivicon da janela
+        telaIcon = QIcon("imagem/fivicon.png")
+        tela.setWindowIcon(telaIcon)
 
         tela.show()
         app.exec()

@@ -4,6 +4,7 @@ from bancoDados import carregarBD
 import user
 import random
 import string
+import traceback
 
 #status quase concluido falta revisar
 
@@ -11,26 +12,31 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
     cnx = carregarBD()
     cursor = cnx.cursor(buffered=True)
 
-    cursor.execute("SELECT id_ordemServiço, id_atendente, id_serviço, id_veiculo, Status, desconto, Agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços` WHERE = %s", (id_ordem,))
+    cursor.execute("SELECT id_ordemServiço, id_atendente, id_serviço, id_veiculo, Status, desconto, Agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
     dadosOrdem = cursor.fetchone()
 
 
     if dadosOrdem:
-        cursor.execute("SELECT `Clientes_id_cliente` FROM atendente WHERE = %s", (dadosOrdem[1],))
+        cursor.execute("SELECT `Clientes_id_cliente` FROM atendente WHERE id_atendente = %s", (dadosOrdem[1],))
         dadosAtendente = cursor.fetchone()
         id_cliente = dadosAtendente[0]
 
-        cursor.execute("SELECT nome FROM clientes WHERE = %s", (id_cliente,))
+        cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (id_cliente,))
         nomeCliente = cursor.fetchone()
 
         ui.comboBox_2.setCurrentText(nomeCliente[0])
-        
-
 
 def gere_codigo_ordem() -> str:
     letters = "".join(random.choice(string.ascii_letters) for _ in range(3))
     digits = "".join(random.choice(string.digits) for _ in range(3))
     return f"{digits}-{letters}"
+
+def carregarDadosVeiculo(ui, id_cliente: int):
+    cnx = carregarBD()
+    cursor = cnx.cursor(buffered=True)
+    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente,))
+    dadosVeiculo = cursor.fetchall()
+    return dadosVeiculo
 
 def atualizarComboBox(ui):
     cnx = carregarBD()
@@ -38,17 +44,24 @@ def atualizarComboBox(ui):
     comboCliente = ui.comboBox_2
     comboServico = ui.comboBox_6
     comboProdutos = ui.comboBox_7
+    comboVeiculo = ui.comboBox
     comboCliente.clear()
     comboServico.clear()
     comboProdutos.clear()
 
     #cliente
-    cursor.execute("SELECT nome FROM clientes")
+    cursor.execute("SELECT nome, id_cliente FROM clientes")
     result = cursor.fetchall()
 
     for _cliente in result:
         comboCliente.addItem(_cliente[0])
-    
+
+    dadosVeiculos = carregarDadosVeiculo(ui, result[1][1])
+    for _veiculo in dadosVeiculos:
+        print(_veiculo[0])
+        if _veiculo[0] == result[1][1]:
+            comboVeiculo.addItem(f"{_veiculo[1]} {_veiculo[2]}")
+
     #servico
     cursor.execute("SELECT descrição FROM serviços")
     dadosServico = cursor.fetchall()
@@ -70,6 +83,8 @@ def voltarTelaPrincipal(ui, stackWidget):
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox_3.setCurrentIndex(-1)
+    ui.comboBox_4.clear()
+    ui.comboBox_5.clear()
     ui.frame_5.hide()
     ui.frame_6.hide()
 
@@ -79,6 +94,8 @@ def excluir(ui, stackWidget):
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox_3.setCurrentIndex(-1)
+    ui.comboBox_4.clear()
+    ui.comboBox_5.clear()
     ui.frame_5.hide()
     ui.frame_6.hide()
 
@@ -92,11 +109,9 @@ def configVeiculosComboBox(ui):
 
     cursor.execute("SELECT id_cliente, nome FROM clientes")
     dadosCliente = cursor.fetchall()
-
-    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos")
-    dadosVeiculo = cursor.fetchall()
-
     id_cliente = 0
+
+    dadosVeiculo = carregarDadosVeiculo(ui, dadosCliente[1][0])
 
     for _cliente in dadosCliente:
         if _cliente[1] == clienteAtual:
@@ -394,7 +409,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
         cnx.commit()
         cnx.close()
-    
 
 def configTelaOrdemCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço cadastro.ui")
