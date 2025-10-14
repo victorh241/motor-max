@@ -111,11 +111,12 @@ def configVeiculosComboBox(ui):
     dadosCliente = cursor.fetchall()
     id_cliente = 0
 
-    dadosVeiculo = carregarDadosVeiculo(ui, dadosCliente[1][0])
-
     for _cliente in dadosCliente:
         if _cliente[1] == clienteAtual:
             id_cliente = _cliente[0]
+
+    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos")
+    dadosVeiculo = cursor.fetchall()
 
     for _veiculo in dadosVeiculo:
         if _veiculo[0] == id_cliente:
