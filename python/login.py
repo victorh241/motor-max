@@ -1,7 +1,7 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QWidget, QProgressBar, QLabel, QFrame 
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QLineEdit, QWidget, QProgressBar, QLabel, QFrame
+from PyQt5.QtGui import QIcon, QPixmap, QMouseEvent
+from PyQt5.QtCore import QTimer, QPropertyAnimation, QEasingCurve, Qt
 import user
 import mysql.connector
 from bancoDados import carregarBD
@@ -151,6 +151,9 @@ def mostrarSenha(ui):
 def telaReperarSenha(stackWidget):
     stackWidget.setCurrentIndex(15)
 
+def animationLogin(ui, mouse_event):
+    print("funciono")
+
 def configLogin(stackWidget):
     ui = uic.loadUi("Telas/Tela_login.ui")
 
@@ -162,3 +165,7 @@ def configLogin(stackWidget):
     ui.pushButton.clicked.connect(lambda: entrarButton(ui, stackWidget))
     ui.pushButton_2.clicked.connect(lambda: telaReperarSenha(stackWidget))
     ui.pushButton_3.clicked.connect(lambda: mostrarSenha(ui))
+
+    #region animações
+    ui.pushButton.enterEvent = lambda event: animationLogin(ui, event)
+    #endregion
