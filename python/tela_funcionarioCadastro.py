@@ -139,12 +139,12 @@ def camposSemErro(ui):
     ''')
 
     ui.lineEdit_4.setStyleSheet('''
-    QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
-                border: 2px solid #e5e7eb;
-                border-radius: 8px;
-                padding: 12px;
-                font-size: 14px;
-                color: #374151;
+    QLineEdit{
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            color: #374151;
             }
         QLineEdit:focus{
         border: 2px solid #7f8082;
@@ -174,64 +174,105 @@ def camposSemErro(ui):
 
 def verificarCpf(ui):
     try:
-        cnx = carregarBD()
-        cursor = cnx.cursor()
-        cpf = ui.lineEdit_6.text()
+        print("esse cpf está duplicado")
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Esse Cpf já está sendo usado mude o cpf")
+        msg.StandardButton(QMessageBox.Ok)
+        resposta = msg.exec_()
+        ui.lineEdit_6.setStyleSheet('''
+        QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+                    border: 2px solid #e5e7eb;
+                    border-radius: 8px;
+                    padding: 12px;
+                    font-size: 14px;
+                    color: #374151;
+                }
+            QLineEdit:focus{
+            border: 2px solid #7f8082;
+            }
 
-        cursor.execute("SELECT cpf FROM funcionarios WHERE cpf = %s", (cpf,))
-        results = cursor.fetchall()
-
-        print(results)
-        if len(results) > 1:
-            print("esse cpf está duplicado")
-            msg = QMessageBox()
-            msg.setWindowTitle("Aviso !")
-            msg.setText("Esse Cpf já está sendo usado mude o cpf")
-            msg.StandardButton(QMessageBox.Ok | QMessageBox.Cancel)
-            resposta = msg.exec_()
-        if resposta == QMessageBox.Ok:
-            return
-        else:
-            return
+            QLineEdit:hover{
+            background-color: rgb(234, 236, 240);
+            }
+        ''')
     except Exception as e:
         print(f"Erro na verificação de cpf {e}")
         traceback.print_exc()
+
+def mensagemEmail(ui):
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("O email que você inseriu já está em uso!")
+    msg.setStandardButtons(QMessageBox.Ok)
+    resposta = msg.exec_()
+    
+    ui.lineEdit_4.setStyleSheet('''
+    QLineEdit{
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            color: #374151;
+            }
+        QLineEdit:focus{
+        border: 2px solid #7f8082;
+        }
+
+        QLineEdit:hover{
+        background-color: rgb(234, 236, 240);
+        }
+    ''')
 
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
     email = ui.lineEdit_4.text()
     cpf = ui.lineEdit_6.text()
 
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    cursor.execute("SELECT * FROM funcionarios WHERE email = %s", (email,))
+    dados = cursor.fetchone()
+
+    if dados:
+        mensagemEmail(ui)
+        return
+
+    cursor.execute("SELECT cpf FROM funcionarios WHERE cpf = %s", (cpf,))
+    results = cursor.fetchone()
+
+    if results:
+        verificarCpf(ui)
+        return
+
     if nome.strip() == "" or email.strip() == "" or cpf.strip() == "":
         errorCampos(ui)
+        return
+    
+    if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        sql = "INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES (%s, %s, %s, 1)"
+        val = (nome, cpf, email)
+
+        cursor.execute(sql, val)
+        cnx.commit()
+        fechar_coneccao()
+
+        stackWidget.setCurrentIndex(2)
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_4.setText("")
+        ui.lineEdit_6.setText("")
+        camposSemErro(ui)
     else:
-        if re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            cnx = carregarBD()
-            cursor = cnx.cursor()
-            verificarCpf(ui)
-
-            sql = "INSERT INTO funcionarios(nome, cpf, email, disponivel) VALUES (%s, %s, %s, 1)"
-            val = (nome, cpf, email)
-
-            cursor.execute(sql, val)
-            cnx.commit()
-            fechar_coneccao()
-
-            stackWidget.setCurrentIndex(2)
-            ui.lineEdit_5.setText("")
-            ui.lineEdit_4.setText("")
-            ui.lineEdit_6.setText("")
-            camposSemErro(ui)
-        else:
-            ui.lineEdit_4.setStyleSheet('''
-            QLineEdit {
-            border: 2px solid red;
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 14px;
-            color: #374151;
-            }
-            ''')
+        ui.lineEdit_4.setStyleSheet('''
+        QLineEdit {
+        border: 2px solid red;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 14px;
+        color: #374151;
+        }
+        ''')
 
 def configTelaFuncionarioCadastro(stackWidget):
     ui = uic.loadUi("Telas/funcionario_cadastro.ui")
