@@ -115,39 +115,30 @@ CREATE TABLE IF NOT EXISTS `MotorMax`.`Atendente` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `MotorMax`.`Ordem de Serviço`
+-- Table `motormax`.`Ordem de Serviço`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MotorMax`.`Ordem de Serviços` (
+CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
   `id_ordemServiço` INT NOT NULL AUTO_INCREMENT,
   `id_atendente` INT NOT NULL,
-  `id_serviço` INT NOT NULL,
-  `id_veiculo` INT NOT NULL,
   `codigo` VARCHAR(7) NOT NULL,
-  `Status` ENUM("Concluido", "Em Andamento", "Agendado", "Cancelado") NOT NULL,
+  `equipe_responsavel` INT NOT NULL,
+  `id_carro` INT NOT NULL,
+  `Status` ENUM("Concluiido", "em adamento", "Agendado", "Cancelado") NOT NULL,
   `desconto` DECIMAL(10,2) NULL,
-  `Agendamento` VARCHAR(10) NOT NULL,
-  `quantidade_produtos` INT NULL,
-  `quantidade_serviços` INT NOT NULL,
-  PRIMARY KEY (`id_ordemServiço`),
-  INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
+  `Agendamento` DATETIME NOT NULL,
+  INDEX `fk_Serviço_Carro1_idx` (`id_carro` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
-  INDEX `fk_Ordem de Serviço_Serviço1_idx` (`id_serviço` ASC) VISIBLE,
+  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_atendente` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
-    FOREIGN KEY (`id_veiculo`)
-    REFERENCES `MotorMax`.`Veiculos` (`id_veiculo`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Ordem de Serviço_Serviço1`
-    FOREIGN KEY (`id_serviço`)
-    REFERENCES `MotorMax`.`Serviços` (`id_serviço`)
+    FOREIGN KEY (`id_carro`)
+    REFERENCES `motormax`.`Veiculos` (`id_veiculo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Ordem de Serviço_Atendente1`
     FOREIGN KEY (`id_atendente`)
-    REFERENCES `MotorMax`.`Atendente` (`id_atendente`)
+    REFERENCES `motormax`.`Atendente` (`id_atendente`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -239,6 +230,54 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Venda_final` (
   CONSTRAINT `fk_Venda_final_Ordem de Serviço1`
     FOREIGN KEY (`id_ordem`)
     REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `motormax`.`Serviço_detalhes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `motormax`.`Serviço_detalhes` (
+  `id_serviDetalhe` INT NOT NULL AUTO_INCREMENT,
+  `id_serviço` INT NOT NULL,
+  `id_ordem` INT NOT NULL,
+  `quantidade_serviço` INT NOT NULL,
+  `valor_unitario` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`id_serviDetalhe`),
+  INDEX `fk_Serviços_has_Ordem de Serviço_Ordem de Serviço1_idx` (`id_ordem` ASC) VISIBLE,
+  INDEX `fk_Serviços_has_Ordem de Serviço_Serviços1_idx` (`id_serviço` ASC) VISIBLE,
+  CONSTRAINT `fk_Serviços_has_Ordem de Serviço_Serviços1`
+    FOREIGN KEY (`id_serviço`)
+    REFERENCES `motormax`.`Serviços` (`id_serviço`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Serviços_has_Ordem de Serviço_Ordem de Serviço1`
+    FOREIGN KEY (`id_ordem`)
+    REFERENCES `motormax`.`Ordem de Serviço` (`id_ordemServiço`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `motormax`.`produtos_detalhes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `motormax`.`produtos_detalhes` (
+  `id_produtoDetalhes` INT NOT NULL AUTO_INCREMENT,
+  `id_produto` INT NOT NULL,
+  `id_ordem` INT NOT NULL,
+  `quantidade_produto` INT NOT NULL,
+  `valor_unitario` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`id_produtoDetalhes`),
+  INDEX `fk_Produtos_has_Ordem de Serviço_Ordem de Serviço1_idx` (`id_ordem` ASC) VISIBLE,
+  INDEX `fk_Produtos_has_Ordem de Serviço_Produtos1_idx` (`id_produto` ASC) VISIBLE,
+  CONSTRAINT `fk_Produtos_has_Ordem de Serviço_Produtos1`
+    FOREIGN KEY (`id_produto`)
+    REFERENCES `motormax`.`Produtos` (`id_produto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Produtos_has_Ordem de Serviço_Ordem de Serviço1`
+    FOREIGN KEY (`id_ordem`)
+    REFERENCES `motormax`.`Ordem de Serviço` (`id_ordemServiço`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

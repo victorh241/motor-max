@@ -356,7 +356,8 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
                 ui.lineEdit_5.setText(gere_codigo_ordem())
 
     if desconto.strip() != ".":
-        print(id_atendente, id_servico, id_veiculo, codigo, status, desconto, data, quantidadeServicos, quantidadeProdutos)
+        
+
         desconto = float(desconto)/100
         comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_serviço, id_veiculo, codigo, Status, desconto, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, desconto, data, quantidadeServicos, quantidadeProdutos)
