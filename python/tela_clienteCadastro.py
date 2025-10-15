@@ -38,16 +38,17 @@ def atualizarCliente(ui, clienteId, stackWidget):
             cursor.execute(sqlTelefone, valoresTelefone)
             cnx.commit()
 
-        cnx.close()
-        
-        ui.pushButton.clicked.disconnect()
-        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, clienteId, stackWidget))
-        ui.lineEdit.setText("")
-        ui.lineEdit_2.setText("")
-        ui.lineEdit_3.setText("")
-        ui.comboBox_2.clear()
-        ui.lineEdit_7.setText("")
-        modoAtualizarCliente = False
+            cnx.close()
+            
+            ui.pushButton.clicked.disconnect()
+            ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
+            ui.lineEdit.setText("")
+            ui.lineEdit_2.setText("")
+            ui.lineEdit_3.setText("")
+            ui.comboBox_2.clear()
+            ui.lineEdit_7.setText("")
+            ui.pushButton.setText("Salvar")
+            ui.frame_3.hide()
 
         stackWidget.setCurrentIndex(3)
 
@@ -58,7 +59,6 @@ def carregarDadosCliente(ui, clienteId, stackWidget):
 
         cursor.execute("SELECT nome, cpf, email FROM Clientes WHERE id_cliente = %s", (clienteId,))
         dadosCliente = cursor.fetchone()
-        modoAtualizarCliente = True
 
         if dadosCliente:
             ui.lineEdit.setText(dadosCliente[0])  # nome
@@ -93,6 +93,17 @@ def voltarTelaPrincipal(ui, stackWidget):
     ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
+
+    if  ui.pushButton.text() == "Atualizar":
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_3.setText("")
+        ui.comboBox_2.clear()
+        ui.lineEdit_7.setText("")
+        ui.pushButton.setText("Salvar")
+        ui.frame_3.hide()
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(3)
 
@@ -101,6 +112,17 @@ def excluir(ui, stackWidget):
     ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
+
+    if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_3.setText("")
+        ui.comboBox_2.clear()
+        ui.lineEdit_7.setText("")
+        ui.pushButton.setText("Salvar")
+        ui.frame_3.hide()
 #endregion
 
 def erroCampos(ui):
@@ -211,7 +233,7 @@ def mudaTextoTelefone(ui):
             print(indexAtual)
             ui.lineEdit_7.setText(listaTelefone[indexAtual])
         else:
-            if not modoAtualizarCliente:
+            if ui.pushButton.text() == "Atualizar":
                 ui.lineEdit_7.setText("")
             else:
                 ui.lineEdit_7.setText(listaTelefone[novoIndex])
@@ -238,8 +260,6 @@ def exibirFrameTelefone(ui):
         listaTelefone.append(novoTelefone)
 
 def configClienteCadastro(stackWidget):
-    global modoAtualizarCliente
-    modoAtualizarCliente = False
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
 
     stackWidget.addWidget(ui)

@@ -313,9 +313,10 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #servico
     id_servico = 0
     valorServico = 0
-    cursor.execute("SELECT id_serviço FROM Serviços WHERE descrição = %s", (servico,))
+    cursor.execute("SELECT id_serviço, valorMaoObra FROM Serviços WHERE descrição = %s", (servico,))
     dadosServico = cursor.fetchone()
     id_servico = dadosServico[0]
+    valorServico = dadosServico[1]
 
     #veiculo
     id_veiculo = 0
@@ -333,16 +334,10 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     #produto
     if produto != "":
         id_produto = 0
-        cursor.execute("SELECT id_produto, descrição FROM produtos")
-        dadosProdutos = cursor.fetchall()
-
-        for _produto in dadosProdutos:
-                if _produto[1] == produto:
-                    id_produto = _produto[0]
-
-        comandoSqlUpdateServico = "UPDATE serviços SET id_produto = %s WHERE id_serviço = %s"
-        val = (id_produto, id_servico)
-        cursor.execute(comandoSqlUpdateServico, val)
+        cursor.execute("SELECT id_produto, preco_unitario FROM produtos WHERE descrição = %s", (produto,))
+        dadosProdutos = cursor.fetchone()
+        id_produto = dadosProdutos[0]
+        precoProduto = dadosProdutos[1]
     #endregion
 
     #tem o codigo
@@ -356,10 +351,10 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
                 ui.lineEdit_5.setText(gere_codigo_ordem())
 
     if desconto.strip() != ".":
-        print(id_atendente, id_servico, id_veiculo, codigo, status, desconto, data, quantidadeServicos, quantidadeProdutos)
+        
         desconto = float(desconto)/100
-        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_serviço, id_veiculo, codigo, Status, desconto, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, desconto, data, quantidadeServicos, quantidadeProdutos)
+        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_veiculo, codigo, Status, desconto, agendamento) VALUES (%s, %s, %s, %s, %s, %s)"
+        dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, desconto, data)
         cursor.execute(comandoInsertOrdem, dadosOrdem)
         cnx.commit()
         print("sucesso !")
@@ -371,7 +366,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         cursor.execute("INSERT INTO Venda_final(id_ordem, `valor final`) VALUES(%s, %s)", (id_novaOrdem, float(ui.label_31.text())))
         cnx.commit()
-
         #registrar equipe mecanicos
 
         #id do mecanico
@@ -379,12 +373,21 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         dadoMecanico = cursor.fetchone()
         id_mecanico = dadoMecanico[0]
 
-        print(id_mecanico, id_novaOrdem)
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
+        cnx.commit()
+
+        #registrar os detalhes de serviço
+        datalheSerComanadoSql = "INSERT INTO Serviço_detalhes(id_serviço, id_ordem, quantidade_serviço, valor_unitario) VALUES (%s, %s, %s, %s)"
+        detalheSerDados = (id_servico, id_novaOrdem, quantidadeServicos, valorServico)
+        cursor.execute(datalheSerComanadoSql, detalheSerDados)
+        cnx.commit()
+
+        #registrar os detalhes do produtos
+        detalheProComandoSql = "INSERT INTO produtos_detalhes(id_produto, id_ordem, quantidade_produto, valor_unitario) VALUES (%s, %s, %s, %s)"
+        dadosdetalheProduto = (id_produto, id_novaOrdem, quantidadeProdutos, precoProduto)
         cnx.commit()
         cnx.close()
     else:
-        print(id_atendente, id_servico, id_veiculo, codigo, status, data, quantidadeServicos, quantidadeProdutos)
         comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_serviço, id_veiculo, codigo, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, data, quantidadeServicos, quantidadeProdutos)
         cursor.execute(comandoInsertOrdem, dadosOrdem)
@@ -408,6 +411,17 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         print(id_mecanico, id_novaOrdem)
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
+        cnx.commit()
+
+        #registrar os detalhes de serviço
+        datalheSerComanadoSql = "INSERT INTO Serviço_detalhes(id_serviço, id_ordem, quantidade_serviço, valor_unitario) VALUES (%s, %s, %s, %s)"
+        detalheSerDados = (id_servico, id_novaOrdem, quantidadeServicos, valorServico)
+        cursor.execute(datalheSerComanadoSql, detalheSerDados)
+        cnx.commit()
+
+        #registrar detalhes do produto
+        detalheProComandoSql = "INSERT INTO produtos_detalhes(id_produto, id_ordem, quantidade_produto, valor_unitario) VALUES (%s, %s, %s, %s)"
+        dadosdetalheProduto = (id_produto, id_novaOrdem, quantidadeProdutos, precoProduto)
         cnx.commit()
         cnx.close()
 

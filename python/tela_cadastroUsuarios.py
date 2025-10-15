@@ -2,6 +2,9 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from bancoDados import carregarBD
 
+def atualizarUsuario(ui, stackWidget, usuario_id):
+    pass
+
 def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
     cnx = carregarBD()
     cursor = cnx.cursor()
@@ -25,8 +28,6 @@ def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
             if index_func != -1:
                 ui.comboBox_2.setCurrentIndex(index_func)
 
-    ui.pushButton_2.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
-    ui.pushButton_3.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
 
 def atualizarTabelas(ui):
     cnx = carregarBD()
@@ -69,6 +70,9 @@ def voltarTelaUsuario(ui, stackWidget):
     ui.lineEdit_6.setText("")
     ui.comboBox.setCurrentIndex(-1)
     ui.comboBox_2.setCurrentIndex(-1)
+
+    if ui.pushButton.text() == "Atualizar":
+        pass
 
 def funcionarioComboBox(ui):
     cnx = carregarBD()
@@ -113,7 +117,6 @@ def registrarNovoUsuario(ui, stackWidget):
 
 
 def configTelaUsuariosCadastro(stackWidget):
-    global ui
     ui = uic.loadUi("Telas/tela_cadastro_usuario.ui")
 
     stackWidget.addWidget(ui)

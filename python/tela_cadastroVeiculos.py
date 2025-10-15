@@ -28,6 +28,8 @@ def atualizarVeiculo(stackWidget, ui, id_veiculo):
 
         stackWidget.setCurrentIndex(4)
         ui.pushButton.setText("Salvar")
+        ui.pushButton.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoVeiculo(stackWidget, ui))
         ui.lineEdit_5.setText("")
         ui.lineEdit_6.setText("")
         ui.lineEdit_7.setText("")
@@ -86,6 +88,13 @@ def voltarTela(ui ,stackWidget):
     
     if ui.pushButton.text() == "Atualizar":
         ui.pushButton.setText("Salvar")
+        ui.pushButton.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoVeiculo(stackWidget, ui))
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.lineEdit_7.setText("")
+        ui.lineEdit_8.setText("")
+        ui.comboBox.setCurrentIndex(-1)
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(4)
@@ -98,6 +107,13 @@ def excluir(ui, stackWidget):
 
     if ui.pushButton.text() == "Atualizar":
         ui.pushButton.setText("Salvar")
+        ui.pushButton.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoVeiculo(stackWidget, ui))
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.lineEdit_7.setText("")
+        ui.lineEdit_8.setText("")
+        ui.comboBox.setCurrentIndex(-1)
 
 def erroCampos(ui):
     ui.lineEdit_5.setStyleSheet('''
