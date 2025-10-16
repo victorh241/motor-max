@@ -60,10 +60,13 @@ def verificarTela(index, stackWidget):
             case 1:
                 nivelAcesso(stackWidget.currentWidget())
             case 2:
+                stackWidget.currentWidget().tableWidget.setRowCount(0)
                 mostrarFuncionarios(stackWidget.currentWidget(), stackWidget)
             case 3:
+                stackWidget.currentWidget().tableWidget.setRowCount(0)
                 mostraClientes(stackWidget.currentWidget(), stackWidget)
             case 4:
+                stackWidget.currentWidget().tableWidget.setRowCount(0)
                 mostrarVeiculos(stackWidget.currentWidget(), stackWidget) 
             case 5:
                 tabelasListagem(stackWidget.currentWidget(), stackWidget)

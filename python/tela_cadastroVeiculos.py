@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from bancoDados import carregarBD
 
 def atualizarVeiculo(stackWidget, ui, id_veiculo):
@@ -166,6 +166,13 @@ def configComboBoxCliente(ui):
     for i in result:
         ui.comboBox.addItem(i[0])
 
+def mensagemPlaca(ui):
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Esse Placa já está sendo usado")
+    msg.StandardButton(QMessageBox.Ok)
+    resposta = msg.exec_()
+
 def registrarNovoVeiculo(stackWidget, ui):
     try:
         cnx = carregarBD()
@@ -179,25 +186,34 @@ def registrarNovoVeiculo(stackWidget, ui):
 
         if placa.strip() == "" or ano.strip() == "" or marca.strip() == "" or modelo.strip() == "" or clienteNome == "":
             erroCampos(ui)
-        else:
-            id_cliente = 0
-            cursor.execute("SELECT id_cliente, nome FROM clientes")
-            dadosCliente = cursor.fetchall()
-            for _cliente in dadosCliente:
-                if _cliente[1] == clienteNome:
-                    id_cliente = _cliente[0]
+            return
+        
+        #verificar se tem duplicata de placa
+        cursor.execute("SELECT * FROM veiculos WHERE placa = %s", (placa,))
+        dadosPlaca = cursor.fetchone()
 
-            sql = "INSERT INTO veiculos(id_cliente, placa, ano, marca, modelo) VALUES (%s, %s, %s, %s, %s)"
-            dadosVeiculos = (id_cliente, placa, ano, marca, modelo)
-            cursor.execute(sql, dadosVeiculos)
-            cnx.commit()
+        if dadosPlaca:
+            mensagemPlaca(ui)
+            return
 
-            ui.lineEdit_5.setText("")
-            ui.lineEdit_6.setText("")
-            ui.lineEdit_7.setText("")
-            ui.lineEdit_8.setText("")
-            stackWidget.setCurrentIndex(4)
-            cnx.close()
+        id_cliente = 0
+        cursor.execute("SELECT id_cliente, nome FROM clientes")
+        dadosCliente = cursor.fetchall()
+        for _cliente in dadosCliente:
+            if _cliente[1] == clienteNome:
+                id_cliente = _cliente[0]
+
+        sql = "INSERT INTO veiculos(id_cliente, placa, ano, marca, modelo) VALUES (%s, %s, %s, %s, %s)"
+        dadosVeiculos = (id_cliente, placa, ano, marca, modelo)
+        cursor.execute(sql, dadosVeiculos)
+        cnx.commit()
+
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.lineEdit_7.setText("")
+        ui.lineEdit_8.setText("")
+        stackWidget.setCurrentIndex(4)
+        cnx.close()
     except Exception as e:
         print(f"Erro: {e}")
 

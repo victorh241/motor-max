@@ -7,6 +7,35 @@ import traceback
 
 #TODO: erro na hora de registrar o mecanico resolva
 
+def excluirCliente(ui, stackWidget, id_cliente):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse cliente ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    respota = msg.exec_()
+    if respota == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM telefones WHERE id_cliente = %s", (id_cliente,))
+        cursor.execute("DELETE FROM clientes WHERE id_cliente = %s", (id_cliente,))
+        cnx.commit()
+
+        stackWidget.setCurrentIndex(3)
+
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_3.setText("")
+        ui.comboBox_2.clear()
+        ui.lineEdit_7.setText("")
+        ui.pushButton.setText("Salvar")
+        ui.frame_3.hide()
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+
 def atualizarCliente(ui, clienteId, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
@@ -50,6 +79,8 @@ def atualizarCliente(ui, clienteId, stackWidget):
             ui.lineEdit_7.setText("")
             ui.pushButton.setText("Salvar")
             ui.frame_3.hide()
+            ui.pushButton_2.clicked.disconnect()
+            ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
         stackWidget.setCurrentIndex(3)
 
@@ -70,6 +101,8 @@ def carregarDadosCliente(ui, clienteId, stackWidget):
             ui.pushButton.setText("Atualizar")
             ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: atualizarCliente(ui, clienteId, stackWidget))
+            ui.pushButton_2.clicked.disconnect()
+            ui.pushButton_2.clicked.connect(lambda: excluirCliente(ui, stackWidget, clienteId))
 
             cursor.execute("SELECT telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
             telefones = cursor.fetchall()
@@ -94,6 +127,7 @@ def voltarTelaPrincipal(ui, stackWidget):
     ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
+    ui.frame_3.hide()
 
     if  ui.pushButton.text() == "Atualizar":
         ui.pushButton.clicked.disconnect()
@@ -105,6 +139,8 @@ def voltarTelaPrincipal(ui, stackWidget):
         ui.lineEdit_7.setText("")
         ui.pushButton.setText("Salvar")
         ui.frame_3.hide()
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(3)
@@ -114,6 +150,7 @@ def excluir(ui, stackWidget):
     ui.lineEdit_3.setText("")
     ui.comboBox_2.clear()
     ui.lineEdit_7.setText("")
+    ui.frame_3.hide()
 
     if ui.pushButton.text() == "Atualizar":
         ui.pushButton.clicked.disconnect()
@@ -185,10 +222,9 @@ def mensagemEmail(ui):
 
 def mensagemCpf(ui):
     try:
-        print("esse cpf está duplicado")
         msg = QMessageBox()
         msg.setWindowTitle("Aviso !")
-        msg.setText("Esse Cpf já está sendo usado mude o cpf")
+        msg.setText("Esse Cpf já está sendo usado")
         msg.StandardButton(QMessageBox.Ok)
         resposta = msg.exec_()
         ui.lineEdit_3.setStyleSheet('''

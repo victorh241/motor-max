@@ -8,6 +8,30 @@ import traceback
 
 #TODO: fazer os campos vazios
 
+def excluirFuncionario(ui, stackWidget, id_funcionario):
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse funcionário ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM Funcionarios WHERE id_funcionario = %s", (id_funcionario,))
+        cnx.commit()
+        fechar_coneccao()
+        stackWidget.setCurrentIndex(2)
+
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_4.setText("")
+        ui.lineEdit_6.setText("")
+
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
+        ui.pushButton.setText("Salvar")
+        ui.pushButton_2.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+
 def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
     cnx = carregarBD()
     cursor = cnx.cursor()
@@ -21,7 +45,6 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
         errorCampos(ui)
     else:
         if re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            verificarCpf(ui)
 
             sql = "UPDATE funcionarios SET nome = %s, email = %s, cpf = %s WHERE id_funcionario = %s"
             val = (nome, email, cpf, id_funcionario)
@@ -37,6 +60,8 @@ def atualizarDadosFuncionario(ui, id_funcionario, stackWidget):
             ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
             ui.pushButton.setText("Salvar")
             stackWidget.setCurrentIndex(2)
+            ui.pushButton_2.disconnect()
+            ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
         else:
             ui.lineEdit_4.setStyleSheet('''
             QLineEdit {
@@ -63,6 +88,8 @@ def carregarDadosFuncionario(ui, id_funcionario, stackWidget):
 
     ui.pushButton.clicked.disconnect()
     ui.pushButton.clicked.connect(lambda: atualizarDadosFuncionario(ui, id_funcionario, stackWidget))
+    ui.pushButton_2.disconnect()
+    ui.pushButton_2.clicked.connect(lambda: excluirFuncionario(ui, stackWidget, id_funcionario))
 
 def voltarTelaPrincipal(stackWidget, ui):
     ui.lineEdit_5.setText("")
@@ -71,7 +98,16 @@ def voltarTelaPrincipal(stackWidget, ui):
     
     
     if ui.pushButton.text() == "Atualizar":
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_4.setText("")
+        ui.lineEdit_6.setText("")
+
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: cadastrarNovoFuncionario(ui, stackWidget))
         ui.pushButton.setText("Salvar")
+        stackWidget.setCurrentIndex(2)
+        ui.pushButton_2.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
     stackWidget.setCurrentIndex(2)
     camposSemErro(ui)
@@ -172,16 +208,10 @@ def camposSemErro(ui):
         }
     ''')
 
-def verificarCpf(ui):
+def mensagemCpf(ui):
     try:
-        print("esse cpf está duplicado")
-        msg = QMessageBox()
-        msg.setWindowTitle("Aviso !")
-        msg.setText("Esse Cpf já está sendo usado mude o cpf")
-        msg.StandardButton(QMessageBox.Ok)
-        resposta = msg.exec_()
         ui.lineEdit_6.setStyleSheet('''
-        QLineEdit[echoMode="2"], QLineEdit[echoMode="0"] {
+        QLineEdit{
                     border: 2px solid #e5e7eb;
                     border-radius: 8px;
                     padding: 12px;
@@ -196,17 +226,16 @@ def verificarCpf(ui):
             background-color: rgb(234, 236, 240);
             }
         ''')
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Esse Cpf já está sendo usado")
+        msg.StandardButton(QMessageBox.Ok)
+        resposta = msg.exec_()
     except Exception as e:
         print(f"Erro na verificação de cpf {e}")
         traceback.print_exc()
 
 def mensagemEmail(ui):
-    msg = QMessageBox()
-    msg.setWindowTitle("Aviso !")
-    msg.setText("O email que você inseriu já está em uso!")
-    msg.setStandardButtons(QMessageBox.Ok)
-    resposta = msg.exec_()
-    
     ui.lineEdit_4.setStyleSheet('''
     QLineEdit{
             border: 2px solid #e5e7eb;
@@ -223,6 +252,11 @@ def mensagemEmail(ui):
         background-color: rgb(234, 236, 240);
         }
     ''')
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("O email que você inseriu já está em uso!")
+    msg.setStandardButtons(QMessageBox.Ok)
+    resposta = msg.exec_()
 
 def cadastrarNovoFuncionario(ui, stackWidget):
     nome = ui.lineEdit_5.text()
@@ -243,7 +277,7 @@ def cadastrarNovoFuncionario(ui, stackWidget):
     results = cursor.fetchone()
 
     if results:
-        verificarCpf(ui)
+        mensagemCpf(ui)
         return
 
     if nome.strip() == "" or email.strip() == "" or cpf.strip() == "":
