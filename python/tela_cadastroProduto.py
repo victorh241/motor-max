@@ -1,8 +1,34 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from bancoDados import carregarBD
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
+from bancoDados import carregarBD, fechar_coneccao
 import random
 import string
+
+def excluirProduto(ui, stackWidget, id_produto):
+    cnx = carregarBD()
+    cursor = cnx.cursor()
+
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse produto ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM produtos WHERE id_produto = %s", (id_produto,))
+        cnx.commit()
+        fechar_coneccao()
+
+        stackWidget.setCurrentIndex(7)
+        ui.pushButton.setText("Salvar")
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registraProduto(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_4.setText("")
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
 def atualizarProduto(ui, stackWidget, id_produto):
     cnx = carregarBD()
@@ -24,10 +50,12 @@ def atualizarProduto(ui, stackWidget, id_produto):
         stackWidget.setCurrentIndex(7)
         ui.pushButton.setText("Salvar")
         ui.pushButton.clicked.disconnect()
-        ui.pushButton.clicked.connect(lambda: registraProduto(ui, stackWidget, id_produto))
+        ui.pushButton.clicked.connect(lambda: registraProduto(ui, stackWidget))
         ui.lineEdit.setText("")
         ui.lineEdit_2.setText("")
         ui.lineEdit_4.setText("")
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
 def carregarProduto(ui, stackWidget, id_produto):
     cnx = carregarBD()
@@ -45,6 +73,8 @@ def carregarProduto(ui, stackWidget, id_produto):
     ui.pushButton.setText("Atualizar")
     ui.pushButton.clicked.disconnect()
     ui.pushButton.clicked.connect(lambda: atualizarProduto(ui, stackWidget, id_produto))
+    ui.pushButton_2.clicked.disconnect()
+    ui.pushButton_2.clicked.connect(lambda: excluirProduto(ui, stackWidget, id_produto))
 
 def voltarTelaPrincipal(ui ,stackWidget):
     stackWidget.setCurrentIndex(7)
@@ -55,6 +85,13 @@ def voltarTelaPrincipal(ui ,stackWidget):
 
     if ui.pushButton.text() == "Atualizar":
         ui.pushButton.setText("Salvar")
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registraProduto(ui, stackWidget))
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_4.setText("")
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(7)

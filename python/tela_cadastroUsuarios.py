@@ -22,6 +22,7 @@ def excluirUsuario(ui, stackWidget, usuario_id):
             ui.lineEdit_6.setText("")
             ui.comboBox.setCurrentIndex(-1)
             ui.comboBox_2.setCurrentIndex(-1)
+            ui.pushButton.setText("Salvar")
             ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: registrarNovoUsuario(ui, stackWidget))
             ui.pushButton_2.clicked.disconnect()
@@ -82,6 +83,7 @@ def atualizarUsuario(ui, stackWidget, usuario_id):
         ui.lineEdit_6.setText("")
         ui.comboBox.setCurrentIndex(-1)
         ui.comboBox_2.setCurrentIndex(-1)
+        ui.pushButton.setText("Salvar")
         ui.pushButton.clicked.disconnect()
         ui.pushButton.clicked.connect(lambda: registrarNovoUsuario(ui, stackWidget))
         ui.pushButton_2.clicked.disconnect()
@@ -113,6 +115,7 @@ def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
             if index_func != -1:
                 ui.comboBox_2.setCurrentIndex(index_func)
 
+        ui.pushButton.setText("Atualizar")
         ui.pushButton.clicked.disconnect()
         ui.pushButton.clicked.connect(lambda: atualizarUsuario(ui, stackWidget, usuario_id))
         ui.pushButton_2.clicked.disconnect()
@@ -161,6 +164,7 @@ def voltarTelaUsuario(ui, stackWidget):
     ui.comboBox_2.setCurrentIndex(-1)
 
     if ui.pushButton.text() == "Atualizar":
+        ui.pushButton.setText("Salvar")
         ui.lineEdit_5.setText("")
         ui.lineEdit_6.setText("")
         ui.comboBox.setCurrentIndex(-1)
