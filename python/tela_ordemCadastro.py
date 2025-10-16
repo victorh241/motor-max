@@ -8,6 +8,9 @@ import traceback
 
 #status quase concluido falta revisar
 
+def excluirOrdem(ui, stackWidget, id_ordem):
+    pass
+
 def atualizarOrdem(ui, stackWidget, id_ordem):
     cnx = carregarBD()
     cursor = cnx.cursor(buffered=True)
@@ -31,16 +34,9 @@ def gere_codigo_ordem() -> str:
     digits = "".join(random.choice(string.digits) for _ in range(3))
     return f"{digits}-{letters}"
 
-def carregarDadosVeiculo(ui, id_cliente: int):
-    cnx = carregarBD()
-    cursor = cnx.cursor(buffered=True)
-    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente,))
-    dadosVeiculo = cursor.fetchall()
-    return dadosVeiculo
-
 def atualizarComboBox(ui):
     cnx = carregarBD()
-    cursor = cnx.cursor()
+    cursor = cnx.cursor(buffered=True)
     comboCliente = ui.comboBox_2
     comboServico = ui.comboBox_6
     comboProdutos = ui.comboBox_7
@@ -56,8 +52,9 @@ def atualizarComboBox(ui):
     for _cliente in result:
         comboCliente.addItem(_cliente[0])
 
-    dadosVeiculos = carregarDadosVeiculo(ui, result[1][1])
-    for _veiculo in dadosVeiculos:
+    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos")
+    dadosVeiculo = cursor.fetchall()
+    for _veiculo in dadosVeiculo:
         print(_veiculo[0])
         if _veiculo[0] == result[1][1]:
             comboVeiculo.addItem(f"{_veiculo[1]} {_veiculo[2]}")
@@ -354,7 +351,7 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         
         desconto = float(desconto)/100
         comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_veiculo, codigo, Status, desconto, agendamento) VALUES (%s, %s, %s, %s, %s, %s)"
-        dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, desconto, data)
+        dadosOrdem = (id_atendente, id_veiculo, codigo, status, desconto, data)
         cursor.execute(comandoInsertOrdem, dadosOrdem)
         cnx.commit()
         print("sucesso !")

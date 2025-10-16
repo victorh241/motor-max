@@ -554,6 +554,7 @@ def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
     except Exception as e:
         print(f"Erro ao carregar componentes: {e}")
 
+#region butões
 def voltarTelaPrincipal(stackWidget):
     stackWidget.setCurrentIndex(1)
 
@@ -562,6 +563,7 @@ def telaServicoCadastro(stackWidget):
 
 def telaOrdemCadastro(stackWidget):
     stackWidget.setCurrentIndex(11)
+#endregion
 
 def configTelaOrdem(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço.ui")
