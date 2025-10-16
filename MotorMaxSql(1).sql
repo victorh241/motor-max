@@ -132,7 +132,6 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
   PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Serviço_Carro1_idx` (`id_veiculo` ASC) VISIBLE,
   UNIQUE INDEX `codigo_UNIQUE` (`codigo` ASC) VISIBLE,
-  PRIMARY KEY (`id_ordemServiço`),
   INDEX `fk_Ordem de Serviço_Atendente1_idx` (`id_atendente` ASC) VISIBLE,
   CONSTRAINT `fk_Serviço_Carro1`
     FOREIGN KEY (`id_veiculo`)

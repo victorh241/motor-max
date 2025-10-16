@@ -195,7 +195,7 @@ margin-bottom: 15px;
           </property>
           <property name="font">
            <font>
-            <pointsize>1</pointsize>
+            <pointsize>-1</pointsize>
             <weight>75</weight>
             <italic>false</italic>
             <bold>true</bold>
@@ -271,7 +271,7 @@ border-radius: 15px;
         </property>
         <property name="font">
          <font>
-          <pointsize>1</pointsize>
+          <pointsize>-1</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -340,7 +340,7 @@ background-color: #582503;
           <x>10</x>
           <y>70</y>
           <width>970</width>
-          <height>431</height>
+          <height>511</height>
          </rect>
         </property>
         <property name="styleSheet">

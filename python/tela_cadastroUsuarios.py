@@ -1,9 +1,94 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from bancoDados import carregarBD
 
+def excluirUsuario(ui, stackWidget, usuario_id):
+    try:
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Você tem certeza que quer excluir esse usuário ?")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            cnx = carregarBD()
+            cursor = cnx.cursor()
+            cursor.execute("DELETE FROM usuarios WHERE id_usuario = %s", (usuario_id,))
+            cnx.commit()
+            cnx.close()
+            
+            stackWidget.setCurrentIndex(6)
+
+            ui.lineEdit_5.setText("")
+            ui.lineEdit_6.setText("")
+            ui.comboBox.setCurrentIndex(-1)
+            ui.comboBox_2.setCurrentIndex(-1)
+            ui.pushButton.clicked.disconnect()
+            ui.pushButton.clicked.connect(lambda: registrarNovoUsuario(ui, stackWidget))
+            ui.pushButton_2.clicked.disconnect()
+            ui.pushButton_2.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))    
+    except Exception as e:
+        print(f"erro na exclusão usuario: {e}")
+
 def atualizarUsuario(ui, stackWidget, usuario_id):
-    pass
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor(buffered=True)
+
+        login = ui.lineEdit_5.text()
+        senha = ui.lineEdit_6.text()
+        funcionario = ui.comboBox_2.currentText()
+        func = ui.comboBox.currentText()
+        if login.strip() == "" or senha.strip() == "" or func == "" or funcionario == "":
+            errorCampos(ui)
+            return
+        
+        id_funcionario = 0
+        cursor.execute("SELECT id_funcionario, nome FROM funcionarios")
+        dadosFuncionarios = cursor.fetchall()
+        for _funcio in dadosFuncionarios:
+            if funcionario == _funcio[1]:
+                id_funcionario = _funcio[0]
+        
+        sql = "UPDATE usuarios SET id_funcionario = %s, login = %s, senha = %s, função = %s WHERE id_usuario = %s"
+        val = (id_funcionario, login, senha, func, usuario_id)
+        cursor.execute(sql, val)
+        cnx.commit()
+
+        #verificar se o mecanico já foi registrado
+        cursor.execute("SELECT * FROM mecanicos WHERE id_funcionario = %s", (id_funcionario,))
+        dadosMec = cursor.fetchone()
+
+        if dadosMec:
+            print("já era um mecanico")
+            #verificando se o usuario atual tinha um mecanico
+            cursor.execute("SELECT * FROM mecanicos WHERE id_funcionario = %s", (id_funcionario,))
+            dadosMecanico = cursor.fetchone()
+
+            if dadosMecanico:
+                cursor.execute("DELETE FROM mecanicos WHERE id_funcionario = %s", (id_funcionario,))
+                print("antigo mecanico excluido")
+        else:
+            if func == "Mecânico":
+                sqlComando = "INSERT INTO mecanicos(id_funcionario) VALUES (%s)"
+                dadosComando = (id_funcionario,)
+
+                cursor.execute(sqlComando, dadosComando)
+                cnx.commit()
+        cnx.close()
+
+        stackWidget.setCurrentIndex(6)
+
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.comboBox.setCurrentIndex(-1)
+        ui.comboBox_2.setCurrentIndex(-1)
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoUsuario(ui, stackWidget))
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
+
+    except Exception as e:
+        print(f"erro na atualização: {e}")
 
 def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
     cnx = carregarBD()
@@ -28,6 +113,10 @@ def carregarDadosUsuario(ui, usuario_id, stackWidget):#verificar isso depois
             if index_func != -1:
                 ui.comboBox_2.setCurrentIndex(index_func)
 
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: atualizarUsuario(ui, stackWidget, usuario_id))
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluirUsuario(ui, stackWidget, usuario_id))
 
 def atualizarTabelas(ui):
     cnx = carregarBD()
@@ -72,7 +161,14 @@ def voltarTelaUsuario(ui, stackWidget):
     ui.comboBox_2.setCurrentIndex(-1)
 
     if ui.pushButton.text() == "Atualizar":
-        pass
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.comboBox.setCurrentIndex(-1)
+        ui.comboBox_2.setCurrentIndex(-1)
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoUsuario(ui, stackWidget))
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: voltarTelaUsuario(ui, stackWidget))
 
 def funcionarioComboBox(ui):
     cnx = carregarBD()
@@ -115,6 +211,10 @@ def registrarNovoUsuario(ui, stackWidget):
 
         stackWidget.setCurrentIndex(6)
 
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.comboBox.setCurrentIndex(-1)
+        ui.comboBox_2.setCurrentIndex(-1)
 
 def configTelaUsuariosCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cadastro_usuario.ui")

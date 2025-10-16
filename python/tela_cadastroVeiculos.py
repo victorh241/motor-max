@@ -2,6 +2,31 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from bancoDados import carregarBD
 
+def excluirVeiculo(ui, stackWidget, id_veiculo):
+    msg = QMessageBox()
+    msg.setWindowTitle("Aviso !")
+    msg.setText("Você tem certeza que quer excluir esse funcionário ?")
+    msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+    resposta = msg.exec_()
+    if resposta == QMessageBox.Ok:
+        cnx = carregarBD()
+        cursor = cnx.cursor()
+        cursor.execute("DELETE FROM veiculos WHERE id_veiculo = %s", (id_veiculo,))
+        cnx.commit()
+        cnx.close()
+
+        stackWidget.setCurrentIndex(4)
+        ui.pushButton.setText("Salvar")
+        ui.pushButton.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoVeiculo(stackWidget, ui))
+        ui.lineEdit_5.setText("")
+        ui.lineEdit_6.setText("")
+        ui.lineEdit_7.setText("")
+        ui.lineEdit_8.setText("")
+        ui.comboBox.setCurrentIndex(-1)
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+
 def atualizarVeiculo(stackWidget, ui, id_veiculo):
     placa = ui.lineEdit_5.text()
     ano = ui.lineEdit_6.text()
@@ -35,6 +60,8 @@ def atualizarVeiculo(stackWidget, ui, id_veiculo):
         ui.lineEdit_7.setText("")
         ui.lineEdit_8.setText("")
         ui.comboBox.setCurrentIndex(-1)
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
 def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
     try:
@@ -58,8 +85,10 @@ def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
                 ui.comboBox.addItem(cliente[0])
             
             ui.pushButton.setText("Atualizar")
-            ui.pushButton.disconnect()
+            ui.pushButton.clicked.disconnect()
             ui.pushButton.clicked.connect(lambda: atualizarVeiculo(stackWidget, ui, id_veiculo))
+            ui.pushButton_2.clicked.disconnect()
+            ui.pushButton_2.clicked.connect(lambda: excluirVeiculo(ui, stackWidget, id_veiculo))
     except Exception as e:
         print(f"Erro ao carregar dados do veiculo: {e}")
 

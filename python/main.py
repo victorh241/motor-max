@@ -71,6 +71,7 @@ def verificarTela(index, stackWidget):
             case 5:
                 tabelasListagem(stackWidget.currentWidget(), stackWidget)
             case 6:
+                stackWidget.currentWidget().tableWidget.setRowCount(0)
                 mostrarUsuarios(stackWidget.currentWidget(), stackWidget)
             case 7:
                mostrarProdutos(stackWidget.currentWidget(), stackWidget)
