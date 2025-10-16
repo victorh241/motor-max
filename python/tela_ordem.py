@@ -76,7 +76,7 @@ def mostrarOrdemServiço(ui, stackWidget):
     try:
         cnx = carregarBD()
         cursor = cnx.cursor()
-        cursor.execute("SELECT id_ordemServiço, id_serviço, codigo, id_veiculo, status, desconto, agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços`")
+        cursor.execute("SELECT id_ordemServiço, id_veiculo, codigo, id_atendente,status, desconto, agendamento FROM `Ordem de Serviços`")
         dadosOrdem = cursor.fetchall()
 
         tabela = ui.tableWidget_2
@@ -143,15 +143,22 @@ def mostrarOrdemServiço(ui, stackWidget):
             dadosVendaFinal = cursor.fetchone()
 
             
-            cursor.execute("SELECT id_cliente FROM veiculos WHERE id_veiculo = %s", (_os[3],))
-            _iCliente = cursor.fetchone()
-            id_cliente = _iCliente[0]
+            cursor.execute("SELECT Clientes_id_cliente FROM atendente WHERE id_atendente = %s", (_os[3],))
+            _Cliente = cursor.fetchone()
+            id_cliente = _Cliente[0]
 
             cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (id_cliente,))
             dadosCliente = cursor.fetchone()
 
-            cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_veiculo = %s", (_os[3],))
+            cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_veiculo = %s", (_os[1],))
             dadosVeiculo = cursor.fetchone()
+
+            #detalhes e quantidades
+            cursor.execute("SELECT quantidade_serviço, valor_unitario FROM Serviço_detalhes WHERE id_ordem = %s", (_os[0],))
+            _detalheServico = cursor.fetchall()
+
+            cursor.execute("SELECT quantidade_produto, valor_unitario FROM produtos_detalhes WHERE id_ordem = %s", (_os[0],))
+            _detalheProduto = cursor.fetchall()
             #endregion
 
             frame = QFrame()
@@ -174,8 +181,8 @@ def mostrarOrdemServiço(ui, stackWidget):
             labelVeiculo = QLabel(f"{dadosVeiculo[0]} {dadosVeiculo[1]}", frame)
             labelTituloServico = QLabel("Serviços", frame)
             labelTituloProdutos = QLabel("Produtos", frame)
-            labelValorServicos = QLabel(f"R$ {dadosServico[1] * _os[8]}",frame)
-            labelValorProdutos = QLabel(f"R$ {dadosProduto[0] * _os[7]}",frame)
+            labelValorServicos = QLabel(f"R$ {_detalheServico[0][1] * _detalheServico[0][0]}",frame)
+            labelValorProdutos = QLabel(f"R$ {_detalheProduto[0][1] * _detalheProduto[0][0]}",frame)
             labelTituloValor = QLabel("Total", frame)
             labelValorTotal = QLabel(f"R$ {dadosVendaFinal[0]}",frame)
 
@@ -417,7 +424,7 @@ def mostrarOrdemServiço(ui, stackWidget):
 def mostrarServicos(ui, stackWidget):#mostrar baseado no conteiner tab
     try:
         cnx = carregarBD()
-        cursor = cnx.cursor()
+        cursor = cnx.cursor(buffered=True)
 
         cursor.execute("SELECT id_serviço , descrição, valorMaoObra FROM serviços")
         resultados = cursor.fetchall()

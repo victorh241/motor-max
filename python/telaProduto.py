@@ -69,8 +69,8 @@ def mostrarProdutos(ui, stackWidget):
                 }
                                 
                 QTableWidget::item {
-                    padding-top: 10px;
-                    padding-left: 30px;
+                    padding-top: 5px;
+                    padding-left: 25px;
                 }
                              
                 QScrollBar:vertical{

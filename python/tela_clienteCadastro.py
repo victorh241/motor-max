@@ -5,8 +5,6 @@ from bancoDados import carregarBD
 from listaTelefone import listaTelefone
 import traceback
 
-#TODO: erro na hora de registrar o mecanico resolva
-
 def excluirCliente(ui, stackWidget, id_cliente):
     cnx = carregarBD()
     cursor = cnx.cursor()
@@ -324,6 +322,7 @@ def registrarNovoCliente(ui, stackWidget):
         }
         ''')
 
+#region telefone relacionados
 def salvarTextoEditado(ui):
     if ui.comboBox_2.count() > 1 and len(ui.lineEdit_7.text()) == 15:
         indexAtual = ui.comboBox_2.currentIndex()
@@ -346,6 +345,7 @@ def mudaTextoTelefone(ui):
             else:
                 ui.lineEdit_7.setText(listaTelefone[novoIndex])
 
+
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
 
@@ -366,6 +366,7 @@ def exibirFrameTelefone(ui):
 
     if ui.comboBox_2.count() > 1:
         listaTelefone.append(novoTelefone)
+#endregion
 
 def configClienteCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_cliente_cadastro.ui")
