@@ -340,13 +340,12 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         cursor.execute(comandoInsertOrdem, dadosOrdem)
         cnx.commit()
         
-        stackWidget.setCurrentIndex(5)
-
         #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
         id_novaOrdem = cursor.lastrowid
 
         cursor.execute("INSERT INTO Venda_final(id_ordem, `valor final`) VALUES(%s, %s)", (id_novaOrdem, float(ui.label_31.text())))
         cnx.commit()
+
         #registrar equipe mecanicos
 
         #id do mecanico
@@ -356,7 +355,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
         cnx.commit()
-
         #registrar os detalhes de serviço
         for _servico in listaServico:
             cursor.execute("SELECT id_serviço FROM serviços WHERE descrição = %s", (_servico[0],))
@@ -369,6 +367,7 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         #registrar os detalhes do produtos
         for _produto in listaProduto:
+            print("-----------------------------------------------")
             cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
             _id = cursor.fetchone()
 
@@ -376,15 +375,13 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
             dadosdetalheProduto = (_id[0], id_novaOrdem, _produto[2], _produto[1])
             cursor.execute(detalheProComandoSql, dadosdetalheProduto)
             cnx.commit()
-        
+        stackWidget.setCurrentIndex(5)
     else:
-        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_serviço, id_veiculo, codigo, Status, agendamento, quantidade_produtos, quantidade_serviços) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        dadosOrdem = (id_atendente, id_servico, id_veiculo, codigo, status, data, quantidadeServicos, quantidadeProdutos)
+        comandoInsertOrdem = "INSERT INTO `ordem de serviços`(id_atendente, id_veiculo, codigo, Status, desconto, agendamento) VALUES (%s, %s, %s, %s, %s, %s)"
+        dadosOrdem = (id_atendente, id_veiculo, codigo, status, desconto, data)
         cursor.execute(comandoInsertOrdem, dadosOrdem)
         cnx.commit()
-
-        stackWidget.setCurrentIndex(5)
-
+        
         #armazenar o valor Total no banco de dados (vou esperar o professor para ver essa questão)
         id_novaOrdem = cursor.lastrowid
 
@@ -400,7 +397,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
         cnx.commit()
-
         #registrar os detalhes de serviço
         for _servico in listaServico:
             print("-----------------------------------------------")
@@ -423,6 +419,7 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
             cursor.execute(detalheProComandoSql, dadosdetalheProduto)
             cnx.commit()
         cnx.close()
+        stackWidget.setCurrentIndex(5) 
 
 def configTelaOrdemCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço cadastro.ui")

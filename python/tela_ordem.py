@@ -64,14 +64,18 @@ def excluirServiço(id_servico, ui, stackWidget):
 
 def mudaListagem(idx, ui, stackWidget):
     if idx == 0:
+        ui.tableWidget_2.setRowCount(0)
         mostrarOrdemServiço(ui, stackWidget)
     elif idx == 1:
+        ui.tableWidget.setRowCount(0)
         mostrarServicos(ui,stackWidget)
 
 def tabelasListagem(ui, stackWidget):
     if ui.tabWidget.currentIndex() == 0:
+        ui.tableWidget_2.setRowCount(0)
         mostrarOrdemServiço(ui, stackWidget)
     else:
+        ui.tableWidget.setRowCount(0)
         mostrarServicos(ui, stackWidget)
     ui.tabWidget.currentChanged.connect(lambda idx: mudaListagem(idx, ui, stackWidget))
 
@@ -134,18 +138,7 @@ def mostrarOrdemServiço(ui, stackWidget):
                 }
             ''')
         for idx, _os in enumerate(dadosOrdem):
-
             #region dados
-            cursor.execute("SELECT id_serviço, id_produto, valorMaoObra, descrição FROM serviços WHERE id_serviço = %s", (_os[1],))
-            dadosServico = cursor.fetchone()
-
-            cursor.execute("SELECT preco_unitario, descrição FROM produtos WHERE id_produto = %s", (dadosServico[1],))
-            dadosProduto = cursor.fetchone()
-
-            cursor.execute("SELECT `valor final` FROM venda_final WHERE id_ordem = %s", (_os[0],))
-            dadosVendaFinal = cursor.fetchone()
-
-            
             cursor.execute("SELECT Clientes_id_cliente FROM atendente WHERE id_atendente = %s", (_os[3],))
             _Cliente = cursor.fetchone()
             id_cliente = _Cliente[0]
@@ -246,9 +239,12 @@ def mostrarOrdemServiço(ui, stackWidget):
                 ''')
 
             labelTituloValor = QLabel("Total", frame)
-            labelValorTotal = QLabel(f"R$ {dadosVendaFinal[0]}",frame)
-            labelStatus = QLabel(_os[4], frame)
 
+            cursor.execute("SELECT `valor final` FROM venda_final WHERE id_ordem = %s", (_os[0],))
+            dadosVendaFinal = cursor.fetchone()
+            labelValorTotal = QLabel(f"R$ {dadosVendaFinal[0]}",frame)
+
+            labelStatus = QLabel(_os[4], frame)
 
             #region label config
             #codigo
@@ -458,6 +454,7 @@ def mostrarOrdemServiço(ui, stackWidget):
 
             botaoEditar.clicked.connect(lambda _, idx=_os[0]: editarOrdem(idx, stackWidget))
             botaoExcluir.clicked.connect(lambda _, idx=_os[0]: excluirOrdem(idx, ui,stackWidget))
+            fechar_coneccao()
     except Exception as e:
         print(f"listagem da os erro: {e}")
         traceback.print_exc()

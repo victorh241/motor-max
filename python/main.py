@@ -69,8 +69,6 @@ def verificarTela(index, stackWidget):
                 stackWidget.currentWidget().tableWidget.setRowCount(0)
                 mostrarVeiculos(stackWidget.currentWidget(), stackWidget) 
             case 5:
-                stackWidget.currentWidget().tableWidget.setRowCount(0)
-                stackWidget.currentWidget().tableWidget_2.setRowCount(0)
                 tabelasListagem(stackWidget.currentWidget(), stackWidget)
             case 6:
                 stackWidget.currentWidget().tableWidget.setRowCount(0)

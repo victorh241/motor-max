@@ -57,28 +57,35 @@ def atualizarCliente(ui, clienteId, stackWidget):
         #telefone
         cursor.execute("SELECT id_telefone FROM telefones WHERE id_cliente = %s", (clienteId,))
         dadosTelefone = cursor.fetchall()
+        id_telefone = dadosTelefone[0][0]
 
         listaTelefone[ui.comboBox_2.count() - 1] = ui.lineEdit_7.text()
         for i in range(len(listaTelefone)):
-            print(listaTelefone[i], dadosTelefone[i][0])
-            sqlTelefone = "UPDATE telefones SET telefone = %s WHERE id_telefone = %s"
-            valoresTelefone = (listaTelefone[i] , dadosTelefone[i][0])
-            cursor.execute(sqlTelefone, valoresTelefone)
-            cnx.commit()
+            cursor.execute("SELECT * FROM telefones WHERE telefone = %s", (listaTelefone[i],))
+            dadosTelefone = cursor.fetchone()
+            print(dadosTelefone)
+            if dadosTelefone:
+                sqlTelefone = "UPDATE telefones SET telefone = %s WHERE id_telefone = %s"
+                valoresTelefone = (listaTelefone[i], id_telefone)
+                cursor.execute(sqlTelefone, valoresTelefone)
+                cnx.commit()
+            else:
+                cursor.execute("INSERT INTO telefones(id_cliente, telefone) VALUES (%s, %s)", (clienteId, listaTelefone[i]))
+                cnx.commit()
 
-            cnx.close()
-            
-            ui.pushButton.clicked.disconnect()
-            ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
-            ui.lineEdit.setText("")
-            ui.lineEdit_2.setText("")
-            ui.lineEdit_3.setText("")
-            ui.comboBox_2.clear()
-            ui.lineEdit_7.setText("")
-            ui.pushButton.setText("Salvar")
-            ui.frame_3.hide()
-            ui.pushButton_2.clicked.disconnect()
-            ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+        cnx.close()
+        
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarNovoCliente(ui, stackWidget))
+        ui.lineEdit.setText("")
+        ui.lineEdit_2.setText("")
+        ui.lineEdit_3.setText("")
+        ui.comboBox_2.clear()
+        ui.lineEdit_7.setText("")
+        ui.pushButton.setText("Salvar")
+        ui.frame_3.hide()
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
 
         stackWidget.setCurrentIndex(3)
 
@@ -304,6 +311,7 @@ def registrarNovoCliente(ui, stackWidget):
                 cursor.execute(comandoTelefone, dadosTelefone)
                 cnx.commit()
         
+        cnx.close()
         stackWidget.setCurrentIndex(3)
         ui.frame_3.hide()
         ui.lineEdit.setText("")
