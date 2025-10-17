@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QGraphicsDropShadowEffect, QMessageBox, QTabWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QWidget, QFrame, QPushButton, QLabel, QMessageBox, QTabWidget, QHBoxLayout
 from PyQt5.QtGui import QIcon, QPixmap, QColor
 from PyQt5.QtCore import QSize, Qt
 import traceback
@@ -21,12 +21,15 @@ def excluirOrdem(idx, ui, stackWidget):
         cursor = cnx.cursor(buffered=True)
         cursor.execute("DELETE FROM Venda_final WHERE id_ordem = %s", (id_ordem,))
         cursor.execute("DELETE FROM equipe_mecanicos WHERE `Ordem de Serviço_id_ordemServiço` = %s", (id_ordem,))
+        cursor.execute("DELETE FROM `produtos_detalhes` WHERE id_ordem = %s", (id_ordem,))
+        cursor.execute("DELETE FROM `serviço_detalhes` WHERE id_ordem = %s", (id_ordem,))
         cursor.execute("DELETE FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
         cnx.commit()
         fechar_coneccao()
-        ui.tableWidget_2.setRowCount(0)
+        
         
         #atualizar tela
+        ui.tableWidget_2.setRowCount(0)
         mostrarOrdemServiço(ui, stackWidget)
 
 def editarOrdem(idx, stackWidget):
@@ -133,10 +136,10 @@ def mostrarOrdemServiço(ui, stackWidget):
         for idx, _os in enumerate(dadosOrdem):
 
             #region dados
-            cursor.execute("SELECT id_produto, valorMaoObra FROM serviços WHERE id_serviço = %s", (_os[1],))
+            cursor.execute("SELECT id_serviço, id_produto, valorMaoObra, descrição FROM serviços WHERE id_serviço = %s", (_os[1],))
             dadosServico = cursor.fetchone()
 
-            cursor.execute("SELECT preco_unitario FROM produtos WHERE id_produto = %s", (dadosServico[0],))
+            cursor.execute("SELECT preco_unitario, descrição FROM produtos WHERE id_produto = %s", (dadosServico[1],))
             dadosProduto = cursor.fetchone()
 
             cursor.execute("SELECT `valor final` FROM venda_final WHERE id_ordem = %s", (_os[0],))
@@ -154,10 +157,10 @@ def mostrarOrdemServiço(ui, stackWidget):
             dadosVeiculo = cursor.fetchone()
 
             #detalhes e quantidades
-            cursor.execute("SELECT quantidade_serviço, valor_unitario FROM Serviço_detalhes WHERE id_ordem = %s", (_os[0],))
+            cursor.execute("SELECT quantidade_serviço, valor_unitario, id_serviço FROM Serviço_detalhes WHERE id_ordem = %s", (_os[0],))
             _detalheServico = cursor.fetchall()
 
-            cursor.execute("SELECT quantidade_produto, valor_unitario FROM produtos_detalhes WHERE id_ordem = %s", (_os[0],))
+            cursor.execute("SELECT quantidade_produto, valor_unitario, id_produto FROM produtos_detalhes WHERE id_ordem = %s", (_os[0],))
             _detalheProduto = cursor.fetchall()
             #endregion
 
@@ -181,12 +184,71 @@ def mostrarOrdemServiço(ui, stackWidget):
             labelVeiculo = QLabel(f"{dadosVeiculo[0]} {dadosVeiculo[1]}", frame)
             labelTituloServico = QLabel("Serviços", frame)
             labelTituloProdutos = QLabel("Produtos", frame)
-            labelValorServicos = QLabel(f"R$ {_detalheServico[0][1] * _detalheServico[0][0]}",frame)
-            labelValorProdutos = QLabel(f"R$ {_detalheProduto[0][1] * _detalheProduto[0][0]}",frame)
+
+            for i ,_servico in enumerate(_detalheServico):
+                valor_total = 0
+                valor_total += float(_servico[0] * float(_servico[1]))
+                labelValorServicos = QLabel(f"R$ {valor_total}",frame)
+                labelValorServicos.setGeometry(890, 120, 90, 15)
+                labelValorServicos.setStyleSheet('''
+                    QLabel{
+                    border: none;
+                    background: transparent;
+                    font-size: 12px;
+                    color: rgb(67, 72, 99);
+                    }
+                ''')
+
+                textoServico = ""
+                cursor.execute("SELECT descrição FROM serviços WHERE id_serviço = %s", (_servico[2],))
+                _dadosServicos = cursor.fetchone()
+                textoServico = _dadosServicos[0]
+
+                labelDescriServico = QLabel(f"{textoServico} x{_servico[0]}",frame)
+                labelDescriServico.setGeometry(20 + (110 * i), 70, 110, 15)
+                labelDescriServico.setStyleSheet('''
+                    QLabel{
+                    border: none;
+                    background: transparent;
+                    font-size: 12px;
+                    color: rgb(67, 72, 99);
+                    }
+                ''')
+
+            for i ,_produto in enumerate(_detalheProduto):
+                valor_total = 0
+                valor_total += float(_produto[0] * float(_produto[1]))
+                labelValorProdutos = QLabel(f"R$ {valor_total}",frame)
+                labelValorProdutos.setGeometry(890, 140, 90, 15)
+                labelValorProdutos.setStyleSheet('''
+                    QLabel{
+                    border: none;
+                    background: transparent;
+                    font-size: 12px;
+                    color: rgb(67, 72, 99);
+                    }
+                ''')
+                
+                textoProduto = ""
+                cursor.execute("SELECT descrição FROM produtos WHERE id_produto = %s", (_produto[2],))
+                _dados = cursor.fetchone()
+                textoProduto = _dados[0]
+
+                labelDescriProduto = QLabel(f"{textoProduto} x{_produto[0]}",frame)
+                labelDescriProduto.setGeometry(20 + (110 * i), 90, 110, 15)
+                labelDescriProduto.setStyleSheet('''
+                    QLabel{
+                    border: none;
+                    background: transparent;
+                    font-size: 12px;
+                    color: rgb(67, 72, 99);
+                    }
+                ''')
+
             labelTituloValor = QLabel("Total", frame)
             labelValorTotal = QLabel(f"R$ {dadosVendaFinal[0]}",frame)
-
             labelStatus = QLabel(_os[4], frame)
+
 
             #region label config
             #codigo
@@ -274,7 +336,6 @@ def mostrarOrdemServiço(ui, stackWidget):
                         }
                     ''')
                 
-                
             #titulo serviço
             labelTituloServico.setGeometry(-5, 120, 90, 15)
             labelTituloServico.setStyleSheet('''
@@ -300,26 +361,6 @@ def mostrarOrdemServiço(ui, stackWidget):
 
             labelTituloValor.setGeometry(20, 180, 120, 15)
             labelTituloValor.setStyleSheet('''
-                QLabel{
-                border: none;
-                background: transparent;
-                font-size: 12px;
-                color: rgb(67, 72, 99);
-                }
-            ''')
-
-            labelValorProdutos.setGeometry(890, 140, 90, 15)
-            labelValorProdutos.setStyleSheet('''
-                QLabel{
-                border: none;
-                background: transparent;
-                font-size: 12px;
-                color: rgb(67, 72, 99);
-                }
-            ''')
-
-            labelValorServicos.setGeometry(890, 120, 90, 15)
-            labelValorServicos.setStyleSheet('''
                 QLabel{
                 border: none;
                 background: transparent;

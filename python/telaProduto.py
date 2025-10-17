@@ -50,7 +50,7 @@ def mostrarProdutos(ui, stackWidget):
         tabela.setColumnWidth(0, 600)
 
         for r in range(len(produtos)):
-            tabela.setRowHeight(r, 150)
+            tabela.setRowHeight(r, 120)
         
         #configs da tabela
         tabela.setHorizontalHeaderLabels([""] * colunas)
