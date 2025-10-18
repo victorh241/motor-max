@@ -5,7 +5,7 @@ from PyQt5.QtCore import QSize, Qt
 import traceback
 
 from bancoDados import carregarBD, fechar_coneccao
-from tela_ordemCadastro import atualizarOrdem
+from tela_ordemCadastro import carregarOrdem
 
 #region botões da ordem de serviços
 def excluirOrdem(idx, ui, stackWidget):
@@ -35,9 +35,10 @@ def excluirOrdem(idx, ui, stackWidget):
 def editarOrdem(idx, stackWidget):
     try:
         stackWidget.setCurrentIndex(11)
-        atualizarOrdem(stackWidget.widget(11), stackWidget, idx)
+        carregarOrdem(stackWidget.widget(11), stackWidget, idx)
     except Exception as e:
         print(f"Erro na função de editar {e}")
+        traceback.print_exc()
 #endregion
 
 #region botões do serviço

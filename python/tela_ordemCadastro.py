@@ -12,22 +12,82 @@ def excluirOrdem(ui, stackWidget, id_ordem):
     pass
 
 def atualizarOrdem(ui, stackWidget, id_ordem):
+    pass
+
+def carregarOrdem(ui, stackWidget, id_ordem):
     cnx = carregarBD()
     cursor = cnx.cursor(buffered=True)
 
-    cursor.execute("SELECT id_ordemServiço, id_atendente, id_serviço, id_veiculo, Status, desconto, Agendamento, quantidade_produtos, quantidade_serviços FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
+    cursor.execute("SELECT id_ordemServiço, id_atendente, id_veiculo, Status, codigo, desconto, Agendamento FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
     dadosOrdem = cursor.fetchone()
 
+    cursor.execute("SELECT quantidade_serviço, valor_unitario, id_serviço FROM serviço_detalhes WHERE id_ordem = %s", (id_ordem,))
+    dadosDetalheServico = cursor.fetchall()
+
+    cursor.execute("SELECT quantidade_produto, valor_unitario, id_produto FROM produtos_detalhes WHERE id_ordem = %s", (id_ordem,))
+    dadoDetalheProduto = cursor.fetchall()
 
     if dadosOrdem:
         cursor.execute("SELECT `Clientes_id_cliente` FROM atendente WHERE id_atendente = %s", (dadosOrdem[1],))
         dadosAtendente = cursor.fetchone()
         id_cliente = dadosAtendente[0]
 
+        #carregando cliente
         cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (id_cliente,))
         nomeCliente = cursor.fetchone()
 
         ui.comboBox_2.setCurrentText(nomeCliente[0])
+        
+        #carregando veiculo
+        cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_veiculo = %s", (dadosOrdem[2],))
+        _veiculo = cursor.fetchone()
+        print(_veiculo[0], _veiculo[1])
+        veiculoTexto = f"{_veiculo[0]} {_veiculo[1]}"
+
+        ui.comboBox.setCurrentText(veiculoTexto)
+
+        #servico e produtos
+        ui.frame_5.show()
+
+        cursor.execute("SELECT descrição FROM serviços WHERE id_serviço = %s", (dadosDetalheServico[0][2],))
+        _servico = cursor.fetchone()
+
+        for i in range(ui.comboBox_6.count()):
+            print(ui.comboBox_6.itemText(i))
+            if ui.comboBox_6.itemText(i) == _servico[0]:
+                ui.comboBox_6.setCurrentText(_servico[0])
+                break
+
+        ui.spinBox.setValue(dadosDetalheServico[0][0])
+
+        if dadoDetalheProduto:
+            ui.frame_6.show()
+
+            cursor.execute("SELECT descrição FROM produtos WHERE id_produto = %s", (dadoDetalheProduto[0][2],))
+            _produto = cursor.fetchone()
+
+            for i in range(ui.comboBox_7.count()):
+                if ui.comboBox_7.itemText(i) == _produto[0]:
+                    ui.comboBox_7.setCurrentText(_produto[0])
+                    break
+            
+            #spin box
+            ui.spinBox_2.setValue(dadoDetalheProduto[0][0])
+    
+        #carregando codigo
+        ui.lineEdit_5.setText(dadosOrdem[4])
+        
+        #carregando desconto
+        ui.lineEdit_4.setText(str(dadosOrdem[5]))
+
+        #carregando status
+        for i in range(ui.comboBox_3.count()):
+            if ui.comboBox_3.itemText(i) == dadosOrdem[3]:
+                ui.comboBox_3.setCurrentText(dadosOrdem[3])
+                break
+
+        #carregando agendamento
+        ui.lineEdit_6.setText(dadosOrdem[6])
 
 def gere_codigo_ordem() -> str:
     letters = "".join(random.choice(string.ascii_letters) for _ in range(3))
