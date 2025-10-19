@@ -323,6 +323,8 @@ def alterarLabelServico(ui):
     cursor = cnx.cursor()
     servicoAtual = ui.comboBox_6.currentText()
     TotalServico = 0
+    novoIndex = ui.comboBox_4.count() - 1
+    indexAtual = ui.comboBox_4.currentIndex()
 
     cursor.execute("SELECT descrição, valorMaoObra FROM serviços")
     dadosServico = cursor.fetchall()
@@ -339,12 +341,14 @@ def alterarLabelServico(ui):
         if ui.comboBox_4.count() > 1:
             for _servico in listaServico:
                 TotalServico += _servico[1] + float(ui.label_13.text())
+            
+            if indexAtual != novoIndex:
+                ui.comboBox_6.setCurrentText(listaServico[indexAtual][0])
+                ui.spinBox.setValue(listaServico[indexAtual][2])
         else:
             TotalServico += float(ui.label_13.text())
         
         ui.label_26.setText(str(TotalServico))
-
-    #lista de serviços
 
 def alterarLabelProduto(ui):
     global TotalProdutos
@@ -352,6 +356,8 @@ def alterarLabelProduto(ui):
     cursor = cnx.cursor()
     produtoAtual = ui.comboBox_7.currentText()
     TotalProdutos = 0
+    novoIndex = ui.comboBox_5.count() - 1
+    indexAtual = ui.comboBox_5.currentIndex()
 
     cursor.execute("SELECT descrição, preco_unitario, em_estoque FROM produtos")
     dadosProduto = cursor.fetchall()
@@ -368,6 +374,11 @@ def alterarLabelProduto(ui):
         if ui.comboBox_5.count() > 1:
             for _produto in listaProduto:
                 TotalProdutos += _produto[1] + float(ui.label_17.text())
+            
+
+            if indexAtual != novoIndex:
+                ui.comboBox_5.setCurrentText(listaProduto[indexAtual][0])
+                ui.spinBox_2.setValue(listaProduto[indexAtual][2])
         else:
             TotalProdutos += float(ui.label_17.text())
         ui.label_28.setText(str(TotalProdutos))
@@ -638,6 +649,26 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         cnx.close()
         stackWidget.setCurrentIndex(5) 
 
+def deletarServico(ui):
+    itemAtual = ui.comboBox_4.currentIndex()
+
+    ui.comboBox_4.removeItem(itemAtual)
+
+    qnt = ui.comboBox_4.count()
+
+    if qnt == 0:
+        ui.frame_5.hide()
+
+def deletarProduto(ui):
+    itemAtual = ui.comboBox_5.currentIndex()
+
+    ui.comboBox_5.removeItem(itemAtual)
+
+    qnt = ui.comboBox_5.count()
+
+    if qnt == 0:
+        ui.frame_6.hide()
+
 def configTelaOrdemCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela ordem de serviço cadastro.ui")
 
@@ -672,3 +703,7 @@ def configTelaOrdemCadastro(stackWidget):
     ui.spinBox.valueChanged.connect(lambda: configSubTotal(ui))
     ui.spinBox_2.valueChanged.connect(lambda: alterarLabelProduto(ui))
     ui.spinBox_2.valueChanged.connect(lambda: configSubTotal(ui))
+
+    #deletar serviço e produto
+    ui.pushButton_10.clicked.connect(lambda: deletarServico(ui))
+    ui.pushButton_11.clicked.connect(lambda: deletarProduto(ui))

@@ -343,16 +343,13 @@ def mudaTextoTelefone(ui):
     novoIndex = ui.comboBox_2.count() - 1
     indexAtual = ui.comboBox_2.currentIndex()
     if ui.comboBox_2.count() > 1:
-        
         if indexAtual != novoIndex:
-            print(indexAtual)
             ui.lineEdit_7.setText(listaTelefone[indexAtual])
         else:
             if ui.pushButton.text() == "Atualizar":
                 ui.lineEdit_7.setText("")
             else:
                 ui.lineEdit_7.setText(listaTelefone[novoIndex])
-
 
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
