@@ -1,5 +1,5 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
 from bancoDados import carregarBD
 import user
 import random
@@ -9,10 +9,114 @@ import traceback
 #status quase concluido falta revisar
 
 def excluirOrdem(ui, stackWidget, id_ordem):
-    pass
+    try:
+        msg = QMessageBox()
+        msg.setWindowTitle("Aviso !")
+        msg.setText("Você tem certeza que quer excluir essa ordem de serviço ?")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        resposta = msg.exec_()
+        if resposta == QMessageBox.Ok:
+            cnx = carregarBD()
+            cursor = cnx.cursor(buffered=True)
+            cursor.execute("DELETE FROM Venda_final WHERE id_ordem = %s", (id_ordem,))
+            cursor.execute("DELETE FROM equipe_mecanicos WHERE `Ordem de Serviço_id_ordemServiço` = %s", (id_ordem,))
+            cursor.execute("DELETE FROM `produtos_detalhes` WHERE id_ordem = %s", (id_ordem,))
+            cursor.execute("DELETE FROM `serviço_detalhes` WHERE id_ordem = %s", (id_ordem,))
+            cursor.execute("DELETE FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
+            cnx.commit()
+            cnx.close()
+
+            stackWidget.setCurrentIndex(5)
+
+            ui.comboBox.setCurrentIndex(-1)
+            ui.comboBox.setCurrentIndex(-1)
+            ui.comboBox_3.setCurrentIndex(-1)
+            ui.comboBox_4.clear()
+            ui.comboBox_5.clear()
+            ui.frame_5.hide()
+            ui.frame_6.hide()
+    except Exception as e:
+        print(f"erro de exclusão: {e}")
 
 def atualizarOrdem(ui, stackWidget, id_ordem):
-    pass
+    try:
+        cnx = carregarBD()
+        cursor = cnx.cursor(buffered=True)
+        desconto = ui.lineEdit_4.text()
+        veiculo = ui.comboBox.currentText()
+        status = ui.comboBox_3.currentText()
+        codigo = ui.lineEdit_5.text()
+        data = ui.lineEdit_6.text()
+        servico = ui.comboBox_6.currentText()
+        produto = ui.comboBox_7.currentText()
+        quantidadeServicos = ui.spinBox.value()
+        quantidadeProdutos = ui.spinBox_2.value()
+
+        #carregando dados
+        cursor.execute("SELECT id_ordemServiço, id_veiculo, Status, codigo, desconto, Agendamento FROM `Ordem de Serviços` WHERE id_ordemServiço = %s", (id_ordem,))
+        dadosOrdem = cursor.fetchone()
+
+
+        cursor.execute("SELECT quantidade_serviço, valor_unitario, id_serviço FROM serviço_detalhes WHERE id_ordem = %s", (id_ordem,))
+        dadosDetalheServico = cursor.fetchall()
+
+        cursor.execute("SELECT quantidade_produto, valor_unitario, id_produto FROM produtos_detalhes WHERE id_ordem = %s", (id_ordem,))
+        dadoDetalheProduto = cursor.fetchall()
+
+        #id veiculo
+        id_veiculo = 0
+        cursor.execute("SELECT id_veiculo, marca, modelo FROM veiculos")
+        dadosVeiculos = cursor.fetchall()
+        for _veiculo in dadosVeiculos:
+            nomeVeiculo = f"{_veiculo[1]} {_veiculo[2]}"
+            if veiculo == nomeVeiculo:
+                id_veiculo = _veiculo[0]
+
+        #outras variaveis
+
+        cursor.execute("UPDATE `Ordem de Serviços` SET id_veiculo = %s, status = %s, desconto, agendamento = %s WHERE id_ordemServiço = %s", (id_veiculo, status, desconto, data, id_ordem))
+        cnx.commit()
+
+        #detalhes
+        #registrar os detalhes de serviço
+        servico = ui.comboBox_6.currentText()
+        valorUnitario = float(ui.label_19.text())
+        novoServico = [servico, valorUnitario, quantidadeServicos]
+        listaServico.append(novoServico)
+        for _servico in listaServico:
+            cursor.execute("SELECT id_serviço FROM serviços WHERE descrição = %s", (_servico[0],))
+            _id = cursor.fetchone()
+
+            datalheSerComanadoSql = "UPDATE Serviço_detalhes SET id_serviço = %s, quantidade_serviço = %s, valor_unitario = %s WHERE id_ordem = %s"
+            detalheSerDados = (_id[0], _servico[2], _servico[1])
+            cursor.execute(datalheSerComanadoSql, detalheSerDados)
+            cnx.commit()
+
+        #registrar os detalhes do produtos
+        produto = ui.comboBox_7.currentText()
+        totalProdutoAtual = float(ui.label_20.text())
+        novoProduto = [produto, totalProdutoAtual, quantidadeProdutos]
+        listaProduto.append(novoProduto)
+        for _produto in listaProduto:
+            print(_produto)
+            cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
+            _id = cursor.fetchone()
+
+            detalheProComandoSql = "UPDATE produtos_detalhes SET id_produto = %s, quantidade_produto = %s, valor_unitario = %s WHERE id_ordem = %s"
+            dadosdetalheProduto = (_id[0], _produto[2], _produto[1])
+            cursor.execute(detalheProComandoSql, dadosdetalheProduto)
+            cnx.commit()
+        cnx.close()
+        print("sucesso!")
+        stackWidget.setCurrentIndex(5)
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: registrarOrdem(ui, stackWidget))
+        ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
+        ui.pushButton.setText("Salvar")
+
+    except Exception as e:
+        print(f"erro atualização: {e}")
 
 def carregarOrdem(ui, stackWidget, id_ordem):
     cnx = carregarBD()
@@ -41,7 +145,6 @@ def carregarOrdem(ui, stackWidget, id_ordem):
         #carregando veiculo
         cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_veiculo = %s", (dadosOrdem[2],))
         _veiculo = cursor.fetchone()
-        print(_veiculo[0], _veiculo[1])
         veiculoTexto = f"{_veiculo[0]} {_veiculo[1]}"
 
         ui.comboBox.setCurrentText(veiculoTexto)
@@ -53,11 +156,11 @@ def carregarOrdem(ui, stackWidget, id_ordem):
         _servico = cursor.fetchone()
 
         for i in range(ui.comboBox_6.count()):
-            print(ui.comboBox_6.itemText(i))
             if ui.comboBox_6.itemText(i) == _servico[0]:
                 ui.comboBox_6.setCurrentText(_servico[0])
                 break
-
+        
+        print(dadosDetalheServico[0][0])
         ui.spinBox.setValue(dadosDetalheServico[0][0])
 
         if dadoDetalheProduto:
@@ -72,6 +175,7 @@ def carregarOrdem(ui, stackWidget, id_ordem):
                     break
             
             #spin box
+            print(dadoDetalheProduto[0][0])
             ui.spinBox_2.setValue(dadoDetalheProduto[0][0])
     
         #carregando codigo
@@ -88,6 +192,13 @@ def carregarOrdem(ui, stackWidget, id_ordem):
 
         #carregando agendamento
         ui.lineEdit_6.setText(dadosOrdem[6])
+
+        #conectando funções
+        ui.pushButton.setText("Atualizar")
+        ui.pushButton.clicked.disconnect()
+        ui.pushButton_2.clicked.disconnect()
+        ui.pushButton.clicked.connect(lambda: atualizarOrdem(ui, stackWidget, id_ordem))
+        ui.pushButton_2.clicked.connect(lambda: excluirOrdem(ui, stackWidget, id_ordem))
 
 def gere_codigo_ordem() -> str:
     letters = "".join(random.choice(string.ascii_letters) for _ in range(3))
@@ -143,6 +254,15 @@ def voltarTelaPrincipal(ui, stackWidget):
     ui.comboBox_5.clear()
     ui.frame_5.hide()
     ui.frame_6.hide()
+
+    if ui.pushButton.text() == "Atualizar":
+        ui.comboBox.setCurrentIndex(-1)
+        ui.comboBox.setCurrentIndex(-1)
+        ui.comboBox_3.setCurrentIndex(-1)
+        ui.comboBox_4.clear()
+        ui.comboBox_5.clear()
+        ui.frame_5.hide()
+        ui.frame_6.hide()
 
 def excluir(ui, stackWidget):
     stackWidget.setCurrentIndex(5)
@@ -276,13 +396,12 @@ def adcionarNovoServico(ui):
     ui.comboBox_4.setCurrentIndex(novoIndex)
     
     listaServico = []
-    if ui.comboBox_4.count() > 0:
+    if ui.comboBox_4.count() > 1:
         servico = ui.comboBox_6.currentText()
         valorUnitario = float(ui.label_19.text())
         qnt = ui.spinBox.value()
-        novoServico = [servico, valorUnitario,qnt]
+        novoServico = [servico, valorUnitario, qnt]
         listaServico.append(novoServico)
-        ui.spinBox.setValue(0)
 
 def adcionarNovoProduto(ui):
     global listaProduto
@@ -292,10 +411,10 @@ def adcionarNovoProduto(ui):
     ui.comboBox_5.setCurrentIndex(novoIndex)
     
     listaProduto = []
-    if ui.comboBox_5.count() > 0:
+    if ui.comboBox_5.count() > 1:
         produto = ui.comboBox_7.currentText()
+        totalProdutoAtual = float(ui.label_20.text())
         qnt = ui.spinBox_2.value()
-        totalProdutoAtual = float(ui.label_20.text()) 
         novoProduto = [produto, totalProdutoAtual, qnt]
         listaProduto.append(novoProduto)
         ui.spinBox_2.setValue(0)
@@ -306,7 +425,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
     cnx = carregarBD()
     cursor = cnx.cursor(buffered=True)
     desconto = ui.lineEdit_4.text()
-    cliente = ui.comboBox_2.currentText()
     veiculo = ui.comboBox.currentText()
     status = ui.comboBox_3.currentText()
     codigo = ui.lineEdit_5.text()
@@ -416,23 +534,31 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         cursor.execute("INSERT INTO equipe_mecanicos(mecanicos_id_mecanico, `Ordem de Serviço_id_ordemServiço`) VALUES (%s, %s)", (id_mecanico, id_novaOrdem))
         cnx.commit()
         #registrar os detalhes de serviço
+        servico = ui.comboBox_6.currentText()
+        valorUnitario = float(ui.label_19.text())
+        novoServico = [servico, valorUnitario, quantidadeServicos]
+        listaServico.append(novoServico)
         for _servico in listaServico:
             cursor.execute("SELECT id_serviço FROM serviços WHERE descrição = %s", (_servico[0],))
             _id = cursor.fetchone()
 
             datalheSerComanadoSql = "INSERT INTO Serviço_detalhes(id_serviço, id_ordem, quantidade_serviço, valor_unitario) VALUES (%s, %s, %s, %s)"
-            detalheSerDados = (_id[0], id_novaOrdem, _servico[2], _servico[1])
+            detalheSerDados = (_id[0], id_novaOrdem, quantidadeServicos, _servico[1])
             cursor.execute(datalheSerComanadoSql, detalheSerDados)
             cnx.commit()
 
         #registrar os detalhes do produtos
+        produto = ui.comboBox_7.currentText()
+        totalProdutoAtual = float(ui.label_20.text())
+        novoProduto = [produto, totalProdutoAtual, quantidadeProdutos]
+        listaProduto.append(novoProduto)
         for _produto in listaProduto:
-            print("-----------------------------------------------")
+            print(_produto)
             cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
             _id = cursor.fetchone()
 
             detalheProComandoSql = "INSERT INTO produtos_detalhes(id_produto, id_ordem, quantidade_produto, valor_unitario) VALUES (%s, %s, %s, %s)"
-            dadosdetalheProduto = (_id[0], id_novaOrdem, _produto[2], _produto[1])
+            dadosdetalheProduto = (_id[0], id_novaOrdem, quantidadeProdutos, _produto[1])
             cursor.execute(detalheProComandoSql, dadosdetalheProduto)
             cnx.commit()
         stackWidget.setCurrentIndex(5)
@@ -459,7 +585,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         cnx.commit()
         #registrar os detalhes de serviço
         for _servico in listaServico:
-            print("-----------------------------------------------")
             cursor.execute("SELECT id_serviço FROM serviços WHERE descrição = %s", (_servico[0],))
             _id = cursor.fetchone()
 
@@ -470,7 +595,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
         #registrar os detalhes do produtos
         for _produto in listaProduto:
-            print("-----------------------------------------------")
             cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
             _id = cursor.fetchone()
 
