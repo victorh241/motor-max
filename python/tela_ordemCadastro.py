@@ -7,6 +7,10 @@ import string
 import traceback
 
 #status quase concluido falta revisar
+global listaServico
+global listaProduto
+listaServico = []
+listaProduto = []
 
 def excluirOrdem(ui, stackWidget, id_ordem):
     try:
@@ -37,6 +41,7 @@ def excluirOrdem(ui, stackWidget, id_ordem):
             ui.frame_6.hide()
     except Exception as e:
         print(f"erro de exclusão: {e}")
+        traceback.print_exc()
 
 def atualizarOrdem(ui, stackWidget, id_ordem):
     try:
@@ -73,8 +78,9 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
                 id_veiculo = _veiculo[0]
 
         #outras variaveis
-
-        cursor.execute("UPDATE `Ordem de Serviços` SET id_veiculo = %s, status = %s, desconto, agendamento = %s WHERE id_ordemServiço = %s", (id_veiculo, status, desconto, data, id_ordem))
+        sqlComandoUpdateOrdem = "UPDATE `Ordem de Serviços` SET id_veiculo = %s, status = %s, desconto = %s, agendamento = %s WHERE id_ordemServiço = %s"
+        dadosOrdemAtualizar = (id_veiculo, status, desconto, data, id_ordem)
+        cursor.execute(sqlComandoUpdateOrdem, dadosOrdemAtualizar)
         cnx.commit()
 
         #detalhes
@@ -88,7 +94,7 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
             _id = cursor.fetchone()
 
             datalheSerComanadoSql = "UPDATE Serviço_detalhes SET id_serviço = %s, quantidade_serviço = %s, valor_unitario = %s WHERE id_ordem = %s"
-            detalheSerDados = (_id[0], _servico[2], _servico[1])
+            detalheSerDados = (_id[0], _servico[2], _servico[1], id_ordem)
             cursor.execute(datalheSerComanadoSql, detalheSerDados)
             cnx.commit()
 
@@ -103,7 +109,7 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
             _id = cursor.fetchone()
 
             detalheProComandoSql = "UPDATE produtos_detalhes SET id_produto = %s, quantidade_produto = %s, valor_unitario = %s WHERE id_ordem = %s"
-            dadosdetalheProduto = (_id[0], _produto[2], _produto[1])
+            dadosdetalheProduto = (_id[0], _produto[2], _produto[1], id_ordem)
             cursor.execute(detalheProComandoSql, dadosdetalheProduto)
             cnx.commit()
         cnx.close()
@@ -117,6 +123,7 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
 
     except Exception as e:
         print(f"erro atualização: {e}")
+        traceback.print_exc()
 
 def carregarOrdem(ui, stackWidget, id_ordem):
     cnx = carregarBD()
@@ -199,6 +206,29 @@ def carregarOrdem(ui, stackWidget, id_ordem):
         ui.pushButton_2.clicked.disconnect()
         ui.pushButton.clicked.connect(lambda: atualizarOrdem(ui, stackWidget, id_ordem))
         ui.pushButton_2.clicked.connect(lambda: excluirOrdem(ui, stackWidget, id_ordem))
+
+        #listas
+        listaServico.clear()
+        for _dServico in dadosDetalheServico:
+            cursor.execute("SELECT descrição FROM serviços WHERE id_serviço = %s", (_dServico[2],))
+            desServico = cursor.fetchone()
+
+            listaServico.append([desServico[0], _dServico[1], _dServico[0]])
+            novoIndex = ui.comboBox_4.count() + 1
+            ui.comboBox_4.addItem(f"Serviço {novoIndex}")
+            ui.comboBox_4.setCurrentIndex(novoIndex - 1)
+            ui.comboBox_6.setCurrentText(desServico[0])
+        
+        listaProduto.clear()
+        for _dProduto in dadoDetalheProduto:
+            cursor.execute("SELECT descrição FROM produtos WHERE id_produto = %s", (_dProduto[2],))
+            desProduto = cursor.fetchone()
+
+            listaProduto.append([desProduto[0], _dProduto[1], _dProduto[0]])
+            novoIndex = ui.comboBox_5.count() + 1
+            ui.comboBox_5.addItem(f"Produto {novoIndex}")
+            ui.comboBox_5.setCurrentIndex(novoIndex - 1)
+            ui.comboBox_7.setCurrentText(desProduto[0])
 
 def gere_codigo_ordem() -> str:
     letters = "".join(random.choice(string.ascii_letters) for _ in range(3))
@@ -306,8 +336,11 @@ def alterarLabelServico(ui):
         TotalServico += float(ui.label_13.text())
         ui.label_26.setText(str(TotalServico))
     else:
-        for _servico in listaServico:
-            TotalServico += _servico[1] + float(ui.label_13.text())
+        if ui.comboBox_4.count() > 1:
+            for _servico in listaServico:
+                TotalServico += _servico[1] + float(ui.label_13.text())
+        else:
+            TotalServico += float(ui.label_13.text())
         
         ui.label_26.setText(str(TotalServico))
 
@@ -332,9 +365,11 @@ def alterarLabelProduto(ui):
         TotalProdutos += float(ui.label_17.text())
         ui.label_28.setText(str(TotalProdutos))
     else:
-        for _produto in listaProduto:
-            TotalProdutos += _produto[1] + float(ui.label_17.text())
-        
+        if ui.comboBox_5.count() > 1:
+            for _produto in listaProduto:
+                TotalProdutos += _produto[1] + float(ui.label_17.text())
+        else:
+            TotalProdutos += float(ui.label_17.text())
         ui.label_28.setText(str(TotalProdutos))
 
 def configSubTotal(ui):
@@ -389,13 +424,11 @@ def diminuirProduto(ui):
 
 #region adcionar serviço e produto
 def adcionarNovoServico(ui):
-    global listaServico
     ui.frame_5.show()
     ui.comboBox_4.addItem(f"Serviço {ui.comboBox_4.count() + 1}")
     novoIndex = ui.comboBox_4.count() - 1
     ui.comboBox_4.setCurrentIndex(novoIndex)
     
-    listaServico = []
     if ui.comboBox_4.count() > 1:
         servico = ui.comboBox_6.currentText()
         valorUnitario = float(ui.label_19.text())
