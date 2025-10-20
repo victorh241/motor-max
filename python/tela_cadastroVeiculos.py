@@ -80,9 +80,13 @@ def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
             cursor.execute("SELECT nome FROM clientes WHERE id_cliente = %s", (dadosVeiculo[1],))
             cliente = cursor.fetchone()
 
-            ui.comboBox.clear()
-            if cliente:
-                ui.comboBox.addItem(cliente[0])
+            cursor.execute("SELECT nome FROM clientes")
+            dadosClientes = cursor.fetchall()
+
+            for _cliente in dadosClientes:
+                ui.comboBox.addItem(_cliente[0])
+            
+            ui.comboBox.setCurrentText(cliente[0])
             
             ui.pushButton.setText("Atualizar")
             ui.pushButton.clicked.disconnect()

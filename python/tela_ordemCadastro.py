@@ -148,13 +148,14 @@ def carregarOrdem(ui, stackWidget, id_ordem):
         nomeCliente = cursor.fetchone()
 
         ui.comboBox_2.setCurrentText(nomeCliente[0])
+        ui.comboBox.clear()
         
         #carregando veiculo
         cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_veiculo = %s", (dadosOrdem[2],))
         _veiculo = cursor.fetchone()
         veiculoTexto = f"{_veiculo[0]} {_veiculo[1]}"
 
-        ui.comboBox.setCurrentText(veiculoTexto)
+        ui.comboBox.addItem(veiculoTexto)
 
         #servico e produtos
         ui.frame_5.show()
@@ -313,8 +314,16 @@ def configVeiculosComboBox(ui):
     if ui.comboBox.count() > 0:
         ui.comboBox.clear()
 
-    cursor.execute("SELECT id_cliente, nome FROM clientes")
-    dadosCliente = cursor.fetchall()        
+    id_cliente = 0
+    cursor.execute("SELECT id_cliente FROM clientes WHERE nome = %s", (clienteAtual,))
+    _dadosId = cursor.fetchone()
+    id_cliente = _dadosId[0]
+
+    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente,))
+    veiculos = cursor.fetchall()
+
+    for _veiculo in veiculos:
+        ui.comboBox.addItem(f"{_veiculo[0]} {_veiculo[1]}")
 
 #region mudar o texto dos labels
 def alterarLabelServico(ui):
