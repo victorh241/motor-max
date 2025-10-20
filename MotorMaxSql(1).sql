@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Veiculos` (
   CONSTRAINT `fk_Veiculo_Cliente1`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `motormax`.`Clientes` (`id_cliente`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Serviços` (
   CONSTRAINT `fk_Serviço_Produtos1`
     FOREIGN KEY (`id_produto`)
     REFERENCES `motormax`.`Produtos` (`id_produto`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `MotorMax`.`Atendente` (
   CONSTRAINT `fk_Clientes_has_Funcionario_Funcionario1`
     FOREIGN KEY (`Funcionario_id_funcionario`)
     REFERENCES `MotorMax`.`Funcionarios` (`id_funcionario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Ordem de Serviços` (
   CONSTRAINT `fk_Ordem de Serviço_Atendente1`
     FOREIGN KEY (`id_atendente`)
     REFERENCES `motormax`.`Atendente` (`id_atendente`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`mecanicos` (
   CONSTRAINT `fk_mecanico_Funcionario1`
     FOREIGN KEY (`id_funcionario`)
     REFERENCES `motormax`.`Funcionarios` (`id_funcionario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Telefones` (
   CONSTRAINT `fk_Telefone_Cliente1`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `motormax`.`Clientes` (`id_cliente`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Usuarios` (
   CONSTRAINT `fk_Usuarios_Funcionario1`
     FOREIGN KEY (`id_funcionario`)
     REFERENCES `motormax`.`Funcionarios` (`id_funcionario`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -214,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`equipe_mecanicos` (
   CONSTRAINT `fk_mecanicos_has_Ordem de Serviço_Ordem de Serviço1`
     FOREIGN KEY (`Ordem de Serviço_id_ordemServiço`)
     REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -255,7 +255,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`Serviço_detalhes` (
   CONSTRAINT `fk_Serviços_has_Ordem de Serviço_Ordem de Serviço1`
     FOREIGN KEY (`id_ordem`)
     REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `motormax`.`produtos_detalhes` (
   CONSTRAINT `fk_Produtos_has_Ordem de Serviço_Ordem de Serviço1`
     FOREIGN KEY (`id_ordem`)
     REFERENCES `motormax`.`Ordem de Serviços` (`id_ordemServiço`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

@@ -49,6 +49,8 @@ def atulizarSenha(stackWidget, ui):
             cursor.execute(comando, dados)
             cnx.commit()
             stackWidget.setCurrentIndex(1)
+            ui.lineEdit.setText("")
+            ui.lineEdit_2.setText("")
         else:
             if novaSenhaText.strip() == repSenha.strip():
                 cnx = carregarBD()
@@ -69,6 +71,8 @@ def atulizarSenha(stackWidget, ui):
                 cnx.commit()
 
                 stackWidget.setCurrentIndex(0)
+                ui.lineEdit.setText("")
+                ui.lineEdit_2.setText("")
 
 def configNovaSenha(stackWidget):
     ui = uic.loadUi("Telas/Tela_nova_senha.ui")
