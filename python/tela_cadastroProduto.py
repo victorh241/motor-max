@@ -1,5 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PyQt5.QtGui import QDoubleValidator
 from bancoDados import carregarBD, fechar_coneccao
 import random
 import string
@@ -184,6 +185,27 @@ def registraProduto(ui, stackWidget):
         ui.lineEdit_2.setText("")
         ui.lineEdit_4.setText("")
 
+def textoPreco(ui):
+    texto = ui.lineEdit_2.text()
+
+    sinais_bloqueados = ui.lineEdit_2.blockSignals(True)
+
+    textoLimpo = texto.replace('R$', '').replace('.', '').replace(',', '').strip()
+
+    if not textoLimpo:
+        ui.lineEdit_2.setText("")
+        return
+    
+    valor_centavos = int(textoLimpo)
+
+    valor_reais = valor_centavos / 100.00
+
+    texto_formatado = f"R$ {valor_reais:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+
+    ui.lineEdit_2.setText(texto_formatado)
+
+    ui.lineEdit_2.blockSignals(sinais_bloqueados)
+
 def configTelaProdutoCadastro(stackWidget):
     ui = uic.loadUi("Telas/tela_produtos_cadastro.ui")
 
@@ -193,3 +215,11 @@ def configTelaProdutoCadastro(stackWidget):
     ui.pushButton.clicked.connect(lambda: registraProduto(ui, stackWidget))
     ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
     ui.pushButton_3.clicked.connect(lambda: voltarTelaPrincipal(ui ,stackWidget))
+
+    validator = QDoubleValidator()
+    validator.setRange(0.00, 999999.99)
+    validator.setDecimals(2)
+
+    ui.lineEdit_2.setValidator(validator)
+
+    ui.lineEdit_2.textChanged.connect(lambda: textoPreco(ui))

@@ -1,5 +1,6 @@
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QDoubleValidator
 import re
 from bancoDados import carregarBD
 
@@ -55,6 +56,27 @@ def registrarVeiculos(ui, stackWidget):
         ui.lineEdit_6.setText("")
         stackWidget.setCurrentIndex(5)
 
+def textoPreco(ui):
+    texto = ui.lineEdit_6.text()
+
+    sinais_bloqueados = ui.lineEdit_6.blockSignals(True)
+
+    textoLimpo = texto.replace('R$', '').replace('.', '').replace(',', '').strip()
+
+    if not textoLimpo:
+        ui.lineEdit_6.setText("")
+        return
+    
+    valor_centavos = int(textoLimpo)
+
+    valor_reais = valor_centavos / 100.00
+
+    texto_formatado = f"R$ {valor_reais:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+
+    ui.lineEdit_6.setText(texto_formatado)
+
+    ui.lineEdit_6.blockSignals(sinais_bloqueados)
+
 def configCadastroServico(stackWidget):
     ui = uic.loadUi("Telas/tela_serviços_cadastro.ui")
 
@@ -63,3 +85,11 @@ def configCadastroServico(stackWidget):
     ui.pushButton.clicked.connect(lambda: registrarVeiculos(ui, stackWidget))
     ui.pushButton_2.clicked.connect(lambda: excluir(ui, stackWidget))
     ui.pushButton_3.clicked.connect(lambda: voltarTela(ui ,stackWidget))
+
+    validator = QDoubleValidator()
+    validator.setRange(0.00, 999999.99)
+    validator.setDecimals(2)
+
+    ui.lineEdit_6.setValidator(validator)
+
+    ui.lineEdit_6.textChanged.connect(lambda: textoPreco(ui))
