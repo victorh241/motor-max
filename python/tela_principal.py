@@ -29,6 +29,8 @@ def botaoLogout(ui, stackWidget):
     resposta = msg.exec_()
     if resposta == QMessageBox.Ok:
         stackWidget.setCurrentIndex(0)
+        user.login = ""
+        user.lvlPermiUserAtual = ""
     else:
         pass
 #endregion
@@ -37,7 +39,12 @@ def nivelAcesso(ui):
     acessoNivel = user.lvlPermiUserAtual
     match acessoNivel:
         case "admin":
-            pass
+            ui.pushButton_4.setEnabled(True)
+            ui.pushButton_4.setDisabled(False)
+            ui.pushButton.setEnabled(True)
+            ui.pushButton.setDisabled(False)
+            ui.pushButton_2.setEnabled(True)
+            ui.pushButton_2.setDisabled(False)
         case "Mecânico":
             ui.pushButton_4.setEnabled(False)
             ui.pushButton_4.setDisabled(True)
@@ -48,6 +55,10 @@ def nivelAcesso(ui):
         case "Atendente":
             ui.pushButton_4.setEnabled(False)
             ui.pushButton_4.setDisabled(True)
+            ui.pushButton.setEnabled(True)
+            ui.pushButton.setDisabled(False)
+            ui.pushButton_2.setEnabled(True)
+            ui.pushButton_2.setDisabled(False)
 
 def configTelaPrincipal(stackWidget):
     ui = uic.loadUi("Telas/tela_principal.ui")
