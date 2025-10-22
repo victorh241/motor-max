@@ -370,6 +370,7 @@ def exibirFrameTelefone(ui):
 
     if ui.comboBox_2.count() > 1:
         listaTelefone.append(novoTelefone)
+        ui.lineEdit_7.setText("")
 #endregion
 
 def configClienteCadastro(stackWidget):

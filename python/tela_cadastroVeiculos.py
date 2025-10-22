@@ -83,6 +83,7 @@ def carregarDadosVeiculo(ui, id_veiculo, stackWidget):
             cursor.execute("SELECT nome FROM clientes")
             dadosClientes = cursor.fetchall()
 
+            ui.comboBox.clear()
             for _cliente in dadosClientes:
                 ui.comboBox.addItem(_cliente[0])
             
