@@ -348,11 +348,10 @@ def mudaTextoTelefone(ui):
         else:
             if ui.pushButton.text() == "Atualizar":
                 ui.lineEdit_7.setText("")
-            else:
-                ui.lineEdit_7.setText(listaTelefone[novoIndex])
 
 def excluirTelefone(ui):
     itemAtual = ui.comboBox_2.currentIndex()
+    listaTelefone.pop(itemAtual)
 
     ui.comboBox_2.removeItem(itemAtual)
     qntOpcoes = ui.comboBox_2.count()

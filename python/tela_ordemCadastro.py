@@ -676,6 +676,7 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
 
 def deletarServico(ui):
     itemAtual = ui.comboBox_4.currentIndex()
+    listaServico.pop(itemAtual)
 
     ui.comboBox_4.removeItem(itemAtual)
 
@@ -686,6 +687,7 @@ def deletarServico(ui):
 
 def deletarProduto(ui):
     itemAtual = ui.comboBox_5.currentIndex()
+    listaProduto.pop(itemAtual)
 
     ui.comboBox_5.removeItem(itemAtual)
 
