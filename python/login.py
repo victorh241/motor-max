@@ -151,9 +151,6 @@ def mostrarSenha(ui):
 def telaReperarSenha(stackWidget):
     stackWidget.setCurrentIndex(15)
 
-def animationLogin(ui, mouse_event):
-    print("funciono")
-
 def configLogin(stackWidget):
     ui = uic.loadUi("Telas/Tela_login.ui")
 
@@ -165,7 +162,3 @@ def configLogin(stackWidget):
     ui.pushButton.clicked.connect(lambda: entrarButton(ui, stackWidget))
     ui.pushButton_2.clicked.connect(lambda: telaReperarSenha(stackWidget))
     ui.pushButton_3.clicked.connect(lambda: mostrarSenha(ui))
-
-    #region animações
-    ui.pushButton.enterEvent = lambda event: animationLogin(ui, event)
-    #endregion
