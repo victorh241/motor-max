@@ -307,7 +307,7 @@ def excluir(ui, stackWidget):
     ui.frame_5.hide()
     ui.frame_6.hide()
 
-def configVeiculosComboBox(ui):
+def configVeiculosComboBox(ui):#lembre para alterar isso 
     clienteAtual = ui.comboBox_2.currentText()
     cnx = carregarBD()
     cursor = cnx.cursor()
@@ -322,7 +322,7 @@ def configVeiculosComboBox(ui):
     if _dadosId:
         id_cliente = _dadosId[0]
 
-    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente,))
+    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente[0],))
     veiculos = cursor.fetchall()
 
     for _veiculo in veiculos:
