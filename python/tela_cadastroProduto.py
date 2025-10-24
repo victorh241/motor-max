@@ -170,13 +170,19 @@ def registraProduto(ui, stackWidget):
     preco = ui.lineEdit_2.text()
     quantidade_emEstoque = ui.lineEdit_4.text()
 
+    #formatar preco
+    valorPreco = 0
+    textoLimpo =  preco.replace('.', '').replace('R$', '').replace(',', '.')
+    valorPreco = float(textoLimpo)
+    print(valorPreco)
+
     if descricao.strip() == "" or codigoProduto.strip() == "" or preco.strip() == "" or quantidade_emEstoque.strip() == "":
         erro(ui)
     else:
         cursor = cnx.cursor()
 
         sqlComando = "INSERT INTO produtos(codigo_produto, descrição, preco_unitario, em_estoque) VALUES (%s, %s, %s, %s)"
-        dados = (codigoProduto, descricao, preco, quantidade_emEstoque)
+        dados = (codigoProduto, descricao, valorPreco, quantidade_emEstoque)
         cursor.execute(sqlComando, dados)
         cnx.commit()
 

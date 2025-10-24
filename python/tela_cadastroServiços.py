@@ -42,13 +42,17 @@ def registrarVeiculos(ui, stackWidget):
     descrição = ui.lineEdit_5.text()
     valor = ui.lineEdit_6.text()
 
+    #formatar valor
+    textoLimpo = valor.replace('.', '').replace('R$', '').replace(',', '.')
+    valorServico = float(textoLimpo)
+
     if descrição.strip() == "" or valor.strip() == "":
         campoErro(ui)
     else:
         cursor = cnx.cursor()
 
         sqlCommand = "INSERT INTO serviços(descrição, valorMaoObra) VALUES (%s, %s)"
-        dados = (descrição, valor)
+        dados = (descrição, valorServico)
         cursor.execute(sqlCommand, dados)
         cnx.commit()
         

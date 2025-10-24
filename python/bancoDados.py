@@ -5,7 +5,7 @@ def carregarBD():
     db = {
         'host': 'localhost',
         'user': 'root',
-        'password': '1234',
+        'password': '',
         'database': 'motormax'
     }
     try:

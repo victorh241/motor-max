@@ -104,7 +104,6 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
         novoProduto = [produto, totalProdutoAtual, quantidadeProdutos]
         listaProduto.append(novoProduto)
         for _produto in listaProduto:
-            print(_produto)
             cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
             _id = cursor.fetchone()
 
@@ -113,7 +112,6 @@ def atualizarOrdem(ui, stackWidget, id_ordem):
             cursor.execute(detalheProComandoSql, dadosdetalheProduto)
             cnx.commit()
         cnx.close()
-        print("sucesso!")
         stackWidget.setCurrentIndex(5)
         ui.pushButton.clicked.disconnect()
         ui.pushButton_2.clicked.disconnect()
@@ -168,7 +166,6 @@ def carregarOrdem(ui, stackWidget, id_ordem):
                 ui.comboBox_6.setCurrentText(_servico[0])
                 break
         
-        print(dadosDetalheServico[0][0])
         ui.spinBox.setValue(dadosDetalheServico[0][0])
 
         if dadoDetalheProduto:
@@ -183,7 +180,6 @@ def carregarOrdem(ui, stackWidget, id_ordem):
                     break
             
             #spin box
-            print(dadoDetalheProduto[0][0])
             ui.spinBox_2.setValue(dadoDetalheProduto[0][0])
     
         #carregando codigo
@@ -254,11 +250,10 @@ def atualizarComboBox(ui):
     for _cliente in result:
         comboCliente.addItem(_cliente[0])
 
-    cursor.execute("SELECT id_cliente, marca, modelo FROM veiculos")
+    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente == %s", (result[0][1],))
     dadosVeiculo = cursor.fetchall()
     for _veiculo in dadosVeiculo:
-        if _veiculo[0] == result[0][1]:
-            comboVeiculo.addItem(f"{_veiculo[1]} {_veiculo[2]}")
+        comboVeiculo.addItem(f"{_veiculo[0]} {_veiculo[1]}")
 
     #servico
     cursor.execute("SELECT descrição FROM serviços")
@@ -318,11 +313,10 @@ def configVeiculosComboBox(ui):#lembre para alterar isso
     id_cliente = 0
     cursor.execute("SELECT id_cliente FROM clientes WHERE nome = %s", (clienteAtual,))
     _dadosId = cursor.fetchone()
-    print(_dadosId)
     if _dadosId:
         id_cliente = _dadosId[0]
 
-    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente[0],))
+    cursor.execute("SELECT marca, modelo FROM veiculos WHERE id_cliente = %s", (id_cliente,))
     veiculos = cursor.fetchall()
 
     for _veiculo in veiculos:
@@ -632,7 +626,6 @@ def registrarOrdem(ui, stackWidget): # colocar o valor final no banco de dados
         novoProduto = [produto, totalProdutoAtual, quantidadeProdutos]
         listaProduto.append(novoProduto)
         for _produto in listaProduto:
-            print(_produto)
             cursor.execute("SELECT id_produto FROM produtos WHERE descrição = %s", (_produto[0],))
             _id = cursor.fetchone()
 
